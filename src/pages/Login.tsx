@@ -1,13 +1,23 @@
-import React from 'react';
-import  BasicButtons  from '../components/atoms/Button.tsx';
+import { Stack } from "@mui/material";
+import LoginBox from "../components/molecules/loginBox";
+import Logo from "../components/atoms/Logo";
 
-const LoginPage = () => {
+export default function LoginPage() {
   return (
     <>
-    <h1>Connexion</h1>
-    <BasicButtons label={'Se connecter'}/>
+      <Stack
+        style={{
+          textAlign: "left",
+        }}
+        sx={{ minHeight: "110vh", backgroundColor: "#d7edf8" }}
+        p={2}
+      >
+        {" "}
+        <Logo />
+        <Stack alignItems="center" justifyContent="center" pt={18}>
+          <LoginBox />
+        </Stack>
+      </Stack>
     </>
-  )
+  );
 }
-
-export default LoginPage
