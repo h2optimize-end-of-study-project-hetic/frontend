@@ -1,9 +1,12 @@
-const App = () => {
+import { BrowserRouter } from "react-router";
+import AppRoutes from './routes/routes';
+
+function App() {
   return (
-    <>
-      <h1>H₂Optimize</h1>
-    </>
-  )
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
