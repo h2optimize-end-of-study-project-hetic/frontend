@@ -5,8 +5,9 @@ import LoginPage from "../pages/Login";
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/" element={<MainLayout />} />
+      <Route path="/" element={<MainLayout />}>
+        <Route path="/login" element={<LoginPage />} />
+      </Route>
     </Routes>
   );
 }
