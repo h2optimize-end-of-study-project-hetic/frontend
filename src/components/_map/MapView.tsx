@@ -55,19 +55,28 @@ const MapView = ({ image, bounds, rooms }: Props) => {
           key={room.id}
           positions={room.polygon}
           pathOptions={{
-            color: room.occupied ? "red" : "green",
-            fillOpacity: 0.5,
+            color: room.occupied ? "var(--dark-red)" : "var(--dark-green)",
+            fillColor: room.occupied
+              ? "var(--light-red)"
+              : "var(--light-green)",
+            fillOpacity: 1,
+            weight: 1,
           }}
         >
-          <Tooltip permanent direction="center" opacity={1}>
+          <Tooltip permanent direction="center" opacity={0.8}>
             <strong>{room.name}</strong>
           </Tooltip>
 
           <Popup>
-            <strong>{room.name}</strong>
-            <p>Capacité : {room.capacity}</p>
-            <p>Occupée : {room.occupied ? "Oui" : "Non"}</p>
-            <p>Température : {room.temperature}°C</p>
+            <p>
+              Salle : <strong>{room.name}</strong>
+              <br />
+              Capacité : {room.capacity}
+              <br />
+              Occupée : {room.occupied ? "Oui" : "Non"}
+              <br />
+              Température : {room.temperature}°C
+            </p>
           </Popup>
         </Polygon>
       ))}
