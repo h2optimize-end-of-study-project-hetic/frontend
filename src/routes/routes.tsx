@@ -2,6 +2,7 @@ import MainLayout from "../components/layouts/MainLayout";
 import { Routes, Route } from "react-router";
 import LoginPage from "../pages/Login";
 import Dashboard from "../pages/Dashboard";
+import NotFound from "../pages/NotFound";
 
 export default function AppRoutes() {
   return (
@@ -9,6 +10,7 @@ export default function AppRoutes() {
       <Route path="/" element={<MainLayout />}>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   );
