@@ -1,6 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material";
 import BasicTextFields from "../atoms/Input";
-import BasicButtons from "../atoms/Button";
+import BasicButtons from "../atoms/BasicButtons";
 import LoginActions from "../atoms/Link";
 
 export default function LoginBox() {
