@@ -1,31 +1,34 @@
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
+import TextField, { type TextFieldProps } from "@mui/material/TextField";
+import { type ForwardedRef, forwardRef } from "react";
 
-type TextFieldsProps = {
+type Props = TextFieldProps & {
   label: string;
 };
-export default function BasicTextFields({ label }: TextFieldsProps) {
+
+const BasicTextFields = forwardRef(function BasicTextFields(
+  { label, ...props }: Props,
+  ref: ForwardedRef<HTMLInputElement>
+) {
   return (
-    <Box component="form" noValidate autoComplete="off">
+    <Box component="div">
       <TextField
-        id="outlined-basic"
         label={label}
         variant="outlined"
         size="small"
+        fullWidth
+        inputRef={ref}
         sx={{
           my: 1,
           width: "38ch",
-          "& .MuiInputBase-input": {
-            color: "#1A3C7E", // texte saisi
-          },
-          "& .MuiInputLabel-root": {
-            color: "#1A3C7E", // label
-          },
-          "& .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#1A3C7E", // bordure
-          },
+          "& .MuiInputBase-input": { color: "#1A3C7E" },
+          "& .MuiInputLabel-root": { color: "#1A3C7E" },
+          "& .MuiOutlinedInput-notchedOutline": { borderColor: "#1A3C7E" },
         }}
+        {...props}
       />
     </Box>
   );
-}
+});
+
+export default BasicTextFields;
