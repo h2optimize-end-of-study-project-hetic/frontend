@@ -1,5 +1,5 @@
 import { Stack, Box } from "@mui/material";
-import BasicButtons from "../components/atoms/BasicButtons";
+import BasicButtons from "../components/atoms/Button";
 import { useNavigate } from "react-router";
 import logo from "/favicon.svg";
 
