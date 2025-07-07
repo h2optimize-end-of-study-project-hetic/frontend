@@ -44,7 +44,12 @@ const MapView = ({ image, bounds, rooms }: Props) => {
       maxZoom={-1}
       minZoom={-3}
       scrollWheelZoom
-      style={{ height: "70vh", width: "100%" }}
+      style={{
+        height: "70vh",
+        width: "100%",
+        margin: "auto",
+        border: "1px solid black",
+      }}
     >
       {/* Image du plan */}
       <ImageOverlay url={image} bounds={bounds} />

@@ -6,9 +6,9 @@ export default function MainLayout() {
   return (
     <>
       <Box>
-        <Box sx={{ p: 2, textAlign: "left" }}>
+        <header>
           <Logo />
-        </Box>
+        </header>
         <Box>
           <Outlet />
         </Box>

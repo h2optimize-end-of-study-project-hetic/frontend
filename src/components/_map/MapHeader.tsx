@@ -13,7 +13,7 @@ const MapHeader = ({ buildingName, floorName }: Props) => {
         borderRadius: "8px",
         fontWeight: "bold",
         fontSize: "1.2rem",
-        boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+        // boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
         margin: "auto",
       }}
     >

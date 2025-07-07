@@ -20,6 +20,7 @@
   --dark-blue: #1a3c7e;
   --primary-blue: #567fae;
   --light-blue: #cde6f2;
+  --light-light-blue: #e2f3fb51;
 }
 
 * {
@@ -31,8 +32,13 @@
 body {
   font-family: "Open Sans", sans-serif;
   color: var(--dark-blue);
-  background-color: var(--light-blue);
+  /* background-color: var(--light-light-blue); */
   min-height: 100vh;
+}
+
+header {
+  background-color: var(--light-blue);
+  padding: 12px;
 }
 
 .custom-popup-false {
