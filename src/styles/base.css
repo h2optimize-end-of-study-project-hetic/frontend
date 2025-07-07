@@ -1,4 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+
+:root {
+  --white: #ffffff;
+  --grey: #efefef;
+  --black: #000000;
+
+  --dark-grey: #888888;
+  --primary-grey: #aeaeae;
+  --light-grey: #cacaca;
+
+  --dark-red: #d53a3a;
+  --primary-red: #ec7b7b;
+  --light-red: #ffeaea;
+
+  --dark-green: #307c23;
+  --primary-green: #83be54;
+  --light-green: #e9ffc5;
+
+  --dark-blue: #1a3c7e;
+  --primary-blue: #567fae;
+  --light-blue: #cde6f2;
+  --light-light-blue: #e2f3fb51;
+}
 
 * {
   margin: 0;
@@ -7,6 +30,23 @@
 }
 
 body {
-  font-family: 'Open Sans', sans-serif;
-  color: #1A3C7E;  
+  font-family: "Open Sans", sans-serif;
+  color: var(--dark-blue);
+  /* background-color: var(--light-light-blue); */
+  min-height: 100vh;
+}
+
+header {
+  background-color: var(--light-blue);
+  padding: 12px;
+}
+
+.custom-popup-false {
+  background-color: var(--light-green);
+  border-color: var(--dark-green);
+}
+
+.custom-popup-true {
+  background-color: var(--light-red);
+  border-color: var(--dark-red);
 }
