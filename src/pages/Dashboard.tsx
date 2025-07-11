@@ -52,11 +52,11 @@ function Dashboard() {
         floorName={selectedFloor.name}
       />
       <div style={{ padding: "10px" }}>
-        {/* <MapWithDrawWrapper
-        image={selectedFloor.image}
-        bounds={selectedFloor.bounds}
-        rooms={selectedFloor.rooms}
-      /> */}
+        <MapWithDrawWrapper
+          image={selectedFloor.image}
+          bounds={selectedFloor.bounds}
+          rooms={selectedFloor.rooms}
+        />
         <MapView
           image={selectedFloor.image}
           bounds={selectedFloor.bounds}

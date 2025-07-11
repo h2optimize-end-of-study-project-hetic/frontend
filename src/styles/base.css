@@ -8,6 +8,7 @@
   --dark-grey: #888888;
   --primary-grey: #aeaeae;
   --light-grey: #cacaca;
+  --lightest-grey: #fafafa;
 
   --dark-red: #d53a3a;
   --primary-red: #ec7b7b;
@@ -32,12 +33,11 @@
 body {
   font-family: "Open Sans", sans-serif;
   color: var(--dark-blue);
-  /* background-color: var(--light-light-blue); */
   min-height: 100vh;
 }
 
 header {
-  background-color: var(--light-blue);
+  background-color: var(--light-grey);
   padding: 12px;
 }
 

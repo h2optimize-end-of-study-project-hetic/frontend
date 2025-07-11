@@ -60,10 +60,18 @@ const MapView = ({ image, bounds, rooms }: Props) => {
           key={room.id}
           positions={room.polygon}
           pathOptions={{
-            color: room.occupied ? "var(--dark-red)" : "var(--dark-green)",
-            fillColor: room.occupied
-              ? "var(--light-red)"
-              : "var(--light-green)",
+            color:
+              room.type === "annex"
+                ? "var(--dark-blue)"
+                : room.occupied
+                ? "var(--dark-red)"
+                : "var(--dark-green)",
+            fillColor:
+              room.type === "annex"
+                ? "var(--light-blue)"
+                : room.occupied
+                ? "var(--light-red)"
+                : "var(--light-green)",
             fillOpacity: 1,
             weight: 1,
           }}
