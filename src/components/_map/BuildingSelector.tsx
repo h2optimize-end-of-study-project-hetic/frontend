@@ -1,10 +1,12 @@
+import type { Building } from "./MapType";
+
 type Props = {
   buildings: Building[];
   selectedBuildingId: string;
   onBuildingChange: (buildingId: string) => void;
 };
 
-const RoomSelector = ({
+const BuildingSelector = ({
   buildings,
   selectedBuildingId,
   onBuildingChange,
@@ -12,6 +14,7 @@ const RoomSelector = ({
   return (
     <div>
       <select
+        className="bg-white !p-2 border-0 rounded-[8px]"
         id="building-select"
         value={selectedBuildingId}
         onChange={(e) => onBuildingChange(e.target.value)}
@@ -26,4 +29,4 @@ const RoomSelector = ({
   );
 };
 
-export default RoomSelector;
+export default BuildingSelector;

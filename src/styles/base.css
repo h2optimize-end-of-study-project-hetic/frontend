@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+@import "tailwindcss";
 
 :root {
   --white: #ffffff;
@@ -37,7 +38,7 @@ body {
 }
 
 header {
-  background-color: var(--light-grey);
+  /* background-color: var(--light-grey); */
   padding: 12px;
 }
 

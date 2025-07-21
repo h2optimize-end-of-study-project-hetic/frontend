@@ -9,7 +9,7 @@ import {
 
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import type { Room } from "./MapData";
+import type { Room } from "./MapType";
 import { useEffect } from "react";
 
 type Props = {

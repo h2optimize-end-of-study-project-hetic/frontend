@@ -1,3 +1,5 @@
+import type { Building } from "./MapType";
+
 type Props = {
   currentBuilding: Building;
   selectedFloorId: string;
@@ -10,7 +12,7 @@ const FloorSelector = ({
   onFloorChange,
 }: Props) => {
   return (
-    <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+    <div className="flex gap-2.5 mb-2.5">
       {currentBuilding.etages.map((floor) => (
         <button
           key={floor.id}
