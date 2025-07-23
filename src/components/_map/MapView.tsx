@@ -4,13 +4,13 @@ import {
   Polygon,
   Popup,
   Tooltip,
-  useMap,
+  // useMap,
 } from "react-leaflet";
 
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import type { Room } from "./MapType";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
 type Props = {
   image: string;
@@ -18,22 +18,22 @@ type Props = {
   rooms: Room[];
 };
 
-const FitBoundsOnLoad = ({
-  bounds,
-}: {
-  bounds: [[number, number], [number, number]];
-}) => {
-  const map = useMap();
+// const FitBoundsOnLoad = ({
+//   bounds,
+// }: {
+//   bounds: [[number, number], [number, number]];
+// }) => {
+//   const map = useMap();
 
-  useEffect(() => {
-    map.fitBounds(bounds, {
-      padding: [20, 20],
-      maxZoom: 1,
-    });
-  }, [map, bounds]);
+//   useEffect(() => {
+//     map.fitBounds(bounds, {
+//       padding: [20, 20],
+//       maxZoom: 1,
+//     });
+//   }, [map, bounds]);
 
-  return null;
-};
+//   return null;
+// };
 
 const MapView = ({ image, bounds, rooms }: Props) => {
   return (

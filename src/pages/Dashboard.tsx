@@ -3,7 +3,7 @@ import { buildings } from "../components/_map/MapData";
 import MapView from "../components/_map/MapView";
 import FloorSelector from "../components/_map/FloorSelector";
 import BuildingSelector from "../components/_map/BuildingSelector";
-import MapWithDrawWrapper from "../components/_map/MapViewWithDraw";
+// import MapWithDrawWrapper from "../components/_map/MapViewWithDraw";
 import MapHeader from "../components/_map/MapHeader";
 
 function Dashboard() {
@@ -50,10 +50,10 @@ function Dashboard() {
         floorName={selectedFloor.name}
       />
       <div style={{ padding: "10px" }}>
-        <MapWithDrawWrapper
+        {/* <MapWithDrawWrapper
           image={selectedFloor.image}
           bounds={selectedFloor.bounds}
-        />
+        /> */}
         <MapView
           image={selectedFloor.image}
           bounds={selectedFloor.bounds}
