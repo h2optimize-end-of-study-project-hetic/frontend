@@ -9,7 +9,7 @@ export default function MainLayout() {
         <header>
           <Logo />
         </header>
-        <Box>
+        <Box p={2}>
           <Outlet />
         </Box>
       </Box>

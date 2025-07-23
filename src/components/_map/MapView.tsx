@@ -4,13 +4,13 @@ import {
   Polygon,
   Popup,
   Tooltip,
-  useMap,
+  // useMap,
 } from "react-leaflet";
 
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import type { Room } from "./MapData";
-import { useEffect } from "react";
+import type { Room } from "./MapType";
+// import { useEffect } from "react";
 
 type Props = {
   image: string;
@@ -18,22 +18,22 @@ type Props = {
   rooms: Room[];
 };
 
-const FitBoundsOnLoad = ({
-  bounds,
-}: {
-  bounds: [[number, number], [number, number]];
-}) => {
-  const map = useMap();
+// const FitBoundsOnLoad = ({
+//   bounds,
+// }: {
+//   bounds: [[number, number], [number, number]];
+// }) => {
+//   const map = useMap();
 
-  useEffect(() => {
-    map.fitBounds(bounds, {
-      padding: [20, 20],
-      maxZoom: 1,
-    });
-  }, [map, bounds]);
+//   useEffect(() => {
+//     map.fitBounds(bounds, {
+//       padding: [20, 20],
+//       maxZoom: 1,
+//     });
+//   }, [map, bounds]);
 
-  return null;
-};
+//   return null;
+// };
 
 const MapView = ({ image, bounds, rooms }: Props) => {
   return (
@@ -60,10 +60,18 @@ const MapView = ({ image, bounds, rooms }: Props) => {
           key={room.id}
           positions={room.polygon}
           pathOptions={{
-            color: room.occupied ? "var(--dark-red)" : "var(--dark-green)",
-            fillColor: room.occupied
-              ? "var(--light-red)"
-              : "var(--light-green)",
+            color:
+              room.type === "annex"
+                ? "var(--dark-blue)"
+                : room.occupied
+                ? "var(--dark-red)"
+                : "var(--dark-green)",
+            fillColor:
+              room.type === "annex"
+                ? "var(--light-blue)"
+                : room.occupied
+                ? "var(--light-red)"
+                : "var(--light-green)",
             fillOpacity: 1,
             weight: 1,
           }}

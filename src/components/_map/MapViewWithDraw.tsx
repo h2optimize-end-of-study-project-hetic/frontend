@@ -10,7 +10,7 @@ type Props = {
 
 const MapViewWithDraw = ({ image, bounds }: Props) => {
   const map = useMap();
-  const drawControlRef = useRef<L.Control.Draw>();
+  const drawControlRef = useRef<L.Control.Draw | null>(null);
 
   function formatLatLngList(latlngs: L.LatLng[]): string {
     // Transforme chaque LatLng en tableau [lat, lng] avec arrondi à 2 décimales
@@ -33,9 +33,9 @@ const MapViewWithDraw = ({ image, bounds }: Props) => {
     // Initialize the draw control and pass it the FeatureGroup of editable layers
     const drawControl = new L.Control.Draw({
       draw: {
-        polygon: true,
+        polygon: {},
         polyline: false,
-        rectangle: true,
+        rectangle: {},
         circle: false,
         marker: false,
         circlemarker: false,

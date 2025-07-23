@@ -1,8 +1,6 @@
 .leaflet-container {
   border-radius: 12px;
-  /* background-color: var(--light-blue); */
-  /* background-color: #f1f1f1; */
-  background-color: #ffffff;
+  background-color: var(--lightest-grey);
 }
 
 .leaflet-bottom.leaflet-right {
