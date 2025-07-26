@@ -49,7 +49,7 @@ const MapViewWithDraw = ({ image, bounds }: Props) => {
     drawControlRef.current = drawControl;
 
     // When a new shape is created
-    map.on(L.Draw.Event.CREATED, (event: any) => {
+    map.on(L.Draw.Event.CREATED, (event: L.LeafletEvent) => {
       const layer = event.layer;
       drawnItems.addLayer(layer);
 
