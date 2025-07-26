@@ -38,16 +38,3 @@ restartd:
 	$(MAKE) clean
 	$(MAKE) buildd
 	$(MAKE) logs
-
-
-
-buildback :
-	docker build --build-arg BACKEND_INT_PORT=$(BACKEND_INT_PORT) --build-arg ENVIRONMENT=$(ENVIRONMENT) -t ghcr.io/$(GHCR_LOCATION)/$(BACKEND_PACKAGE_NAME):v$(BACKEND_PACKAGE_VERSION) -f ./Dockerfile
-
-runback :
-	docker run --env-file .env --env-file .env.local -p $(BACKEND_EXT_PORT):$(BACKEND_INT_PORT) -d ghcr.io/$(GHCR_LOCATION)/$(BACKEND_PACKAGE_NAME):v$(BACKEND_PACKAGE_VERSION) 
-
-pushback :
-	docker push ghcr.io/$(GHCR_LOCATION)/$(BACKEND_PACKAGE_NAME):v$(BACKEND_PACKAGE_VERSION)
-
-
