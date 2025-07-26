@@ -1,0 +1,60 @@
+name: Deploy Frontend via SSH
+
+on:
+  push:
+    branches:
+      - *
+
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to deploy"
+        required: true
+        default: develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      NODE_ENV: production
+      BRANCH: ${{ github.event.inputs.branch || github.ref_name }}
+      ENVIRONMENT: release
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.BRANCH }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build app
+        run: npm run build
+
+      - name: Deploy to remote server
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets[format('{0}_SSH_HOST', env.ENVIRONMENT)] }}
+          username: ${{ secrets[format('{0}_SSH_USER', env.ENVIRONMENT)] }}
+          key: ${{ secrets[format('{0}_SSH_PRIVATE_KEY', env.ENVIRONMENT)] }}
+          source: "dist/*"
+          target: ${{ secrets[format('{0}_DEPLOY_PATH', env.ENVIRONMENT)] }}
+
+      - name: Reload Nginx
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets[format('{0}_SSH_HOST', env.ENVIRONMENT)] }}
+          username: ${{ secrets[format('{0}_SSH_USER', env.ENVIRONMENT)] }}
+          key: ${{ secrets[format('{0}_SSH_PRIVATE_KEY', env.ENVIRONMENT)] }}
+          script: |
+            sudo systemctl reload nginx
