@@ -6,6 +6,8 @@ import BuildingSelector from "../components/_map/BuildingSelector";
 // import MapWithDrawWrapper from "../components/_map/MapViewWithDraw";
 import MapHeader from "../components/_map/MapHeader";
 
+const base = import.meta.env.BASE_URL;
+
 function Dashboard() {
   const [selectedBuildingId, setSelectedBuildingId] = useState(buildings[0].id);
   const selectedBuilding = buildings.find((b) => b.id === selectedBuildingId);
@@ -55,7 +57,7 @@ function Dashboard() {
           bounds={selectedFloor.bounds}
         /> */}
         <MapView
-          image={selectedFloor.image}
+          image={base + selectedFloor.image}
           bounds={selectedFloor.bounds}
           rooms={selectedFloor.rooms}
         />
