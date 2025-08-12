@@ -47,6 +47,10 @@ VITE_BASE_PATH = /release/
 
 ## Tests
 
+#### In your .en.local (to watch the test when he is running):
+
+HEADLESS_PLAYWRIGTH=false
+
 #### Command to run playwright :
 
 npx playwright test
