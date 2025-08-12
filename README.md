@@ -45,3 +45,8 @@ SSH_USER = joachim
 VITE_BASE_PATH = /release/
 ```
 
+## Tests
+
+#### Command to run playwright :
+
+npx playwright test
