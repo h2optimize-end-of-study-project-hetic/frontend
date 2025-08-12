@@ -1,0 +1,19 @@
+services:
+  frontend:
+    container_name: ${FRONTEND_HOST:-frontend}
+    build:
+      context: .
+      target: ${ENVIRONMENT:-production}
+    ports:
+      - "${FRONTEND_EXT_PORT:-5173}:${FRONTEND_INT_PORT:-5173}"
+    env_file:
+      - .env
+      - .env.local
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - frontend_net
+
+networks:
+  frontend_net:

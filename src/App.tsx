@@ -1,9 +1,16 @@
-const App = () => {
+import { BrowserRouter } from "react-router";
+import AppRoutes from "./routes/routes";
+import "./styles/base.css";
+import "./styles/leaflet.css";
+
+const base = import.meta.env.VITE_BASE_PATH || "/";
+
+function App() {
   return (
-    <>
-      <h1>H₂Optimize</h1>
-    </>
-  )
+    <BrowserRouter basename={base}>
+      <AppRoutes />
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
