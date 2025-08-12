@@ -25,7 +25,7 @@ test.describe('Authentification avec API mockée', () => {
     });
 
     // Aller sur /login
-    await page.goto('http://localhost:5173/login', { waitUntil: 'networkidle' });
+    await page.goto('http://localhost:5173/release/login', { waitUntil: 'networkidle' });
 
     // Attendre et remplir le champ email
     const emailInput = page.getByLabel(/email/i);
