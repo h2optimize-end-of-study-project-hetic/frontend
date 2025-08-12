@@ -5,7 +5,8 @@ export default defineConfig({
     exclude: [
       '**/node_modules/**',
       '**/dist/**',
-      '**/tests/**',
+      '**/tests-acceptance/**',
+      '**/src/tests/tests-acceptance/**'
     ],
   },
 });
