@@ -53,6 +53,12 @@ jobs:
 
       - name: Run tests
         run: npm run test
+
+      - name: Run playwright install
+        run: npx playwright install
+
+      - name: Run tests playwright
+        run: npx playwright test
       
       - name: Run lint
         run: npm run lint
