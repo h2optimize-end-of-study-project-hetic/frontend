@@ -7,7 +7,7 @@ export default defineConfig({
   testDir: './src/tests/tests-acceptance',
   use: {
     baseURL: `http://localhost:5173/${process.env.VITE_BASE_PATH}/`,
-    headless: false,
+    headless: true,
   },
   webServer: {
     command: 'npm run dev',

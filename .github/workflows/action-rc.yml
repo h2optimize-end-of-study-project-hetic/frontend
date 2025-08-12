@@ -58,7 +58,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests
-        run: npx playwright test --headless
+        run: npx playwright test
 
       - name: Run lint
         run: npm run lint
