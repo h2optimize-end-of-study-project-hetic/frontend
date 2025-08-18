@@ -26,7 +26,9 @@ const BasicTextFields = forwardRef(function BasicTextFields(
         inputRef={ref}
         sx={{
           my: 1,
-          width: "38ch",
+          width: "100%",
+          maxWidth: "38ch",
+          minWidth: "28ch",
           "& .MuiInputBase-input": { color: "#1A3C7E" },
           "& .MuiInputLabel-root": { color: "#1A3C7E" },
           "& .MuiOutlinedInput-notchedOutline": { borderColor: "#1A3C7E" },
