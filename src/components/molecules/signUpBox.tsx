@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from "@mui/material";
 import BasicTextFields from "../atoms/Input";
 import BasicButtons from "../atoms/Button";
-import LoginActions from "../atoms/Link";
+import LoginSignUpActions from "../atoms/LoginSignUpActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpSchema, type SignUpInput } from "../../schemas/signUp";
 import { useAuth } from "../../hooks/useAuth";
@@ -74,11 +74,10 @@ export default function SignUpBox() {
             helperText={errors.confirmPassword?.message}
           />
 
-          <LoginActions label="Mot de passe oublié ?" />
           <BasicButtons label="S'enregistrer" type="submit" />
 
           <Stack paddingTop={4}>
-            <LoginActions label="Déjà un compte ? Connectez-vous" />
+            <LoginSignUpActions mode={"signup"}  />
           </Stack>
         </Stack>
       </form>
