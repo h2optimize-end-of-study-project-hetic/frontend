@@ -2,7 +2,6 @@ import { Box, Stack, Typography } from "@mui/material";
 import BasicTextFields from "../atoms/Input";
 import BasicButtons from "../atoms/Button";
 import LoginSignUpActions from "../atoms/LoginSignUpActions";
-import LinkActions from "../atoms/Link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginInput} from "../../schemas/login";
  import { useAuth } from "../../hooks/useAuth";

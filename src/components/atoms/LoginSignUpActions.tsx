@@ -10,8 +10,7 @@ const LoginSignUpActions = ({ mode }: LoginActionsProps) => {
   return (
     <Box mt={2}>
     <Link
-            component={RouterLink}
-
+      component={RouterLink}
       to={isLogin ? "/sign-up" : "/login"}
       underline="hover"
       sx={{ color: "#1A3C7E" }}
