@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from "@mui/material";
 import BasicTextFields from "../atoms/Input";
 import BasicButtons from "../atoms/Button";
-import LoginActions from "../atoms/Link";
+import LoginSignUpActions from "../atoms/LoginSignUpActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginInput} from "../../schemas/login";
  import { useAuth } from "../../hooks/useAuth";
@@ -55,11 +55,10 @@ const onSubmit = async (data: LoginInput) => {
             helperText={errors.password?.message}
           />
 
-          <LoginActions label="Mot de passe oublié ?" />
           <BasicButtons label="Se connecter" type="submit" />
 
           <Stack paddingTop={4}>
-            <LoginActions label="Nouveau à H₂Optimize ? Rejoignez-nous" />
+          <LoginSignUpActions mode={"login"}  />
           </Stack>
         </Stack>
       </form>

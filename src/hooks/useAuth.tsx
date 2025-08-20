@@ -11,28 +11,6 @@ export const useAuth = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  //QUAND LE BACKEND EST EN PLACE
-
-  // const login = async (email: string, password: string) => {
-  //   try {
-  //     const response = await fetch("/api/login", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({ email, password }),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error("Échec de la connexion");
-  //     }
-
-  //     const data = await response.json();
-  //     localStorage.setItem("token", data.token);
-  //     setUser(data.user);
-  //   } catch (err) {
-  //     console.error(err);
-  //     setError("Erreur de connexion");
-  //   }
-  // };
 
   const login = async (email: string, password: string) => {
     void password;
@@ -53,6 +31,21 @@ export const useAuth = () => {
     console.error(err);
     setError("Erreur de connexion (mock)");
   }
+};
+
+const signUp = async (firstname: string, lastname: string, email: string, password: string) => {
+try {
+  const res = await fetch(`/api/sign-up`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ firstname, lastname, email, password }),
+  });
+  if (!res.ok) throw new Error("Échec de l'enregistrement");
+  await login(email, password);
+} catch (err) {
+  const message = err instanceof Error ? err.message : String(err);
+  setError(`Erreur: ${message}`);
+}
 };
 
   useEffect(() => {
@@ -91,5 +84,6 @@ export const useAuth = () => {
     };
   }, []);
 
-  return { user, loading, error, login };
+
+  return { user, loading, error, login, signUp };
 };
