@@ -10,6 +10,7 @@ export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const isAuthenticated = Boolean(user);
 
 
   const login = async (email: string, password: string) => {
@@ -85,5 +86,5 @@ try {
   }, []);
 
 
-  return { user, loading, error, login, signUp };
+  return { user, loading, error, login, signUp, isAuthenticated };
 };
