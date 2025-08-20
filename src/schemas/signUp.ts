@@ -5,7 +5,7 @@ export const signUpSchema = z
     firstname: z.string().min(1, "Le prénom est requis"),
     lastname: z.string().min(1, "Le nom est requis"),
     email: z.string().email("Email invalide"),
-    password: z.string().min(6, "Le mot de passe doit contenir au moins 6 caractères"),
+    password: z.string().min(6, "Ce champ doit contenir 6 caractères min"),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
