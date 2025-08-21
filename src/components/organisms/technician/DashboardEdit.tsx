@@ -53,7 +53,6 @@ export default function DashboardEdit({ tag, onChange, onUpdate, onCancel }: Pro
           label="Description"
           value={tag.description}
           onChange={(e) => {
-            console.log("onChange called with:", e.target.value);
             onChange("description", e.target.value);
           }}
           fullWidth

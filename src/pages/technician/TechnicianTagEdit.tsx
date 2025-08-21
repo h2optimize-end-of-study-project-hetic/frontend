@@ -98,7 +98,6 @@ export default function TechnicianTagEdit() {
     }
   };
   const handleDelete = async (tagId: number) => {
-    console.log("Suppression de la balise :", tagId);
     try {
       const res = await fetch(`http://localhost:8000/api/v1/tag/${tagId}`, {
         method: "DELETE",
