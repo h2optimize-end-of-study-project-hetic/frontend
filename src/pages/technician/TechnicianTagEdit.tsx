@@ -17,6 +17,7 @@ type Tag = {
 export default function TechnicianTagEdit() {
   const { id } = useParams();
   const [tag, setTag] = useState<Tag | null>(null);
+  const [updateError, setUpdateError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchTag = async () => {
@@ -62,20 +63,29 @@ export default function TechnicianTagEdit() {
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-      alert("Tag mis à jour !");
+      alert("Tag mis à jour bravo");
+      setUpdateError(null);
     } catch (err) {
       console.error("Erreur dans handleUpdate:", err);
+      setUpdateError("Erreur lors de la mise à jour");
     }
   };
 
   if (!tag) return <div>Chargement...</div>;
 
   return (
-    <DashboardEdit
-      tag={tag}
-      onChange={handleChange}
-      onUpdate={handleUpdate}
-      onCancel={() => window.history.back()}
-    />
+    <>
+      {updateError && (
+        <div role="alert" style={{ color: "red" }}>
+          {updateError}
+        </div>
+      )}
+      <DashboardEdit
+        tag={tag}
+        onChange={handleChange}
+        onUpdate={handleUpdate}
+        onCancel={() => window.history.back()}
+      />
+    </>
   );
 }
