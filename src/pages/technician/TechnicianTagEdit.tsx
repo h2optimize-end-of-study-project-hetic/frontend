@@ -1,6 +1,8 @@
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
-import DashboardEdit from "../../components/organisms/technician/DashboardEdit.tsx";
+import DashboardEdit from "../../components/organisms/technician/DashboardEdit";
+import DashboardTagList from "../../components/organisms/technician/DashboardTagList";
+import { Box, Stack } from "@mui/material";
 
 type Tag = {
   id: number;
@@ -14,10 +16,11 @@ type Tag = {
   updatedAt: string;
 };
 
-export default function TechnicianTagEdit() {
+export default function DashboardTagEdit() {
   const { id } = useParams();
   const [tag, setTag] = useState<Tag | null>(null);
   const [updateError, setUpdateError] = useState<string | null>(null);
+  const [allTags, setAllTags] = useState<Tag[]>([]);
 
   useEffect(() => {
     const fetchTag = async () => {
@@ -38,8 +41,22 @@ export default function TechnicianTagEdit() {
         console.error("Erreur dans fetchTag:", err);
       }
     };
-    fetchTag();
-  }, [id]);
+    const fetchAllTags = async () => {
+    try {
+      const res = await fetch(`http://localhost:8000/api/v1/tag`);
+      if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
+      const data = await res.json();
+      setAllTags(data.data);
+    } catch (err) {
+      console.error("Erreur dans fetchAllTags:", err);
+    }
+  };
+
+  fetchTag();
+  fetchAllTags();
+}, [id]);
+
+  
 
   const handleChange = (field: keyof Tag, value: string) => {
     if (tag) setTag({ ...tag, [field]: value });
@@ -74,7 +91,17 @@ export default function TechnicianTagEdit() {
   if (!tag) return <div>Chargement...</div>;
 
   return (
-    <>
+    <Stack
+      direction={{ xs: "column", md: "row" }}
+      spacing={4}
+      alignItems="flex-start"
+    >
+    <DashboardTagList
+      tags={allTags}
+      onEdit={(id) => window.location.href = `/release/technician/${id}/edit`}
+    />
+
+    <Box flex={1}>
       {updateError && (
         <div role="alert" style={{ color: "red" }}>
           {updateError}
@@ -86,6 +113,7 @@ export default function TechnicianTagEdit() {
         onUpdate={handleUpdate}
         onCancel={() => window.history.back()}
       />
-    </>
+    </Box>
+  </Stack>
   );
 }

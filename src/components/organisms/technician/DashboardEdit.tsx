@@ -23,7 +23,13 @@ type Props = {
 
 export default function DashboardEdit({ tag, onChange, onUpdate, onCancel }: Props) {
   return (
-    <Box padding={4} marginTop={2} border={2} borderColor={'var(--light-blue)'}>
+    <Box
+      padding={3}
+      bgcolor="#fff"
+      borderRadius={4}
+      boxShadow="0 2px 10px rgba(0,0,0,0.1)"
+      width="100%"
+    >
       <Stack spacing={3}>
         <Typography variant="h5" color='var(--black)'>Balise {tag.id}</Typography>
 
