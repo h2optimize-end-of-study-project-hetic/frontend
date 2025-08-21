@@ -16,16 +16,26 @@ type Tag = {
   updatedAt: string;
 };
 
-export default function DashboardTagEdit() {
+export default function TechnicianTagEdit() {
   const { id } = useParams();
   const [tag, setTag] = useState<Tag | null>(null);
   const [updateError, setUpdateError] = useState<string | null>(null);
   const [allTags, setAllTags] = useState<Tag[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [roomFilter, setRoomFilter] = useState("");
+  const [buildingFilter, setBuildingFilter] = useState("");
 
   useEffect(() => {
     const fetchTag = async () => {
       try {
         const res = await fetch(`http://localhost:8000/api/v1/tag/${id}`);
+
+        if (res.status === 404) {
+          console.warn(`La balise avec l'id ${id} n'existe pas.`);
+          setTag(null);
+          return;
+        }
+
         if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
 
         const data = await res.json();
@@ -39,24 +49,24 @@ export default function DashboardTagEdit() {
         });
       } catch (err) {
         console.error("Erreur dans fetchTag:", err);
+        setTag(null); //pour si erreur réseaux
       }
     };
+
     const fetchAllTags = async () => {
-    try {
-      const res = await fetch(`http://localhost:8000/api/v1/tag`);
-      if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
-      const data = await res.json();
-      setAllTags(data.data);
-    } catch (err) {
-      console.error("Erreur dans fetchAllTags:", err);
-    }
-  };
+      try {
+        const res = await fetch(`http://localhost:8000/api/v1/tag`);
+        if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
+        const data = await res.json();
+        setAllTags(data.data);
+      } catch (err) {
+        console.error("Erreur dans fetchAllTags:", err);
+      }
+    };
 
-  fetchTag();
-  fetchAllTags();
-}, [id]);
-
-  
+    fetchTag();
+    fetchAllTags();
+  }, [id]);
 
   const handleChange = (field: keyof Tag, value: string) => {
     if (tag) setTag({ ...tag, [field]: value });
@@ -87,8 +97,40 @@ export default function DashboardTagEdit() {
       setUpdateError("Erreur lors de la mise à jour");
     }
   };
+  const handleDelete = async (tagId: number) => {
+    console.log("Suppression de la balise :", tagId);
+    try {
+      const res = await fetch(`http://localhost:8000/api/v1/tag/${tagId}`, {
+        method: "DELETE",
+      });
 
-  if (!tag) return <div>Chargement...</div>;
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      setAllTags((prev) => prev.filter((tag) => tag.id !== tagId));
+    } catch (err) {
+      console.error("Erreur lors de la suppression :", err);
+    }
+  };
+
+  if (!tag) {
+    return (
+      <Box p={4}>
+        <p style={{ color: "red", fontWeight: 500 }}>
+          La balise demandée n'existe pas ou a été supprimée.
+        </p>
+      </Box>
+    );
+  }
+
+  const filteredTags = allTags.filter((tag) => {
+    const matchesSearch = tag.source_address
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesRoom = roomFilter === "" || tag.room === roomFilter;
+    const matchesBuilding =
+      buildingFilter === "" || tag.building === buildingFilter;
+    return matchesSearch && matchesRoom && matchesBuilding;
+  });
 
   return (
     <Stack
@@ -96,24 +138,33 @@ export default function DashboardTagEdit() {
       spacing={4}
       alignItems="flex-start"
     >
-    <DashboardTagList
-      tags={allTags}
-      onEdit={(id) => window.location.href = `/release/technician/${id}/edit`}
-    />
-
-    <Box flex={1}>
-      {updateError && (
-        <div role="alert" style={{ color: "red" }}>
-          {updateError}
-        </div>
-      )}
-      <DashboardEdit
-        tag={tag}
-        onChange={handleChange}
-        onUpdate={handleUpdate}
-        onCancel={() => window.history.back()}
+      <DashboardTagList
+        tags={filteredTags}
+        onEdit={(id) =>
+          (window.location.href = `/release/technician/${id}/edit`)
+        }
+        onDelete={handleDelete}
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        roomFilter={roomFilter}
+        onRoomFilterChange={setRoomFilter}
+        buildingFilter={buildingFilter}
+        onBuildingFilterChange={setBuildingFilter}
       />
-    </Box>
-  </Stack>
+
+      <Box flex={1}>
+        {updateError && (
+          <div role="alert" style={{ color: "red" }}>
+            {updateError}
+          </div>
+        )}
+        <DashboardEdit
+          tag={tag}
+          onChange={handleChange}
+          onUpdate={handleUpdate}
+          onCancel={() => window.history.back()}
+        />
+      </Box>
+    </Stack>
   );
 }
