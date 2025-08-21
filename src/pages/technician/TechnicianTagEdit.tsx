@@ -30,8 +30,6 @@ export default function TechnicianTagEdit() {
           description: data.description ?? "",
           building: data.building ?? "",
           room: data.room ?? "",
-          installedAt: data.installedAt ?? "",
-          removedAt: data.removedAt ?? "",
           createdAt: data.created_at,
           updatedAt: data.updated_at,
         });
@@ -49,13 +47,25 @@ export default function TechnicianTagEdit() {
   const handleUpdate = async () => {
     if (!tag) return;
 
-    await fetch(`http://localhost:8000/api/v1/tag/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(tag),
-    });
+    const payload = {
+      description: tag.description,
+      building: tag.building,
+      room: tag.room,
+    };
 
-    alert("Tag mise à jour !");
+    try {
+      const res = await fetch(`http://localhost:8000/api/v1/tag/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tag: payload }),
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      alert("Tag mis à jour !");
+    } catch (err) {
+      console.error("Erreur dans handleUpdate:", err);
+    }
   };
 
   if (!tag) return <div>Chargement...</div>;

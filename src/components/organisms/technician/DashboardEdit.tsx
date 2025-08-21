@@ -23,8 +23,8 @@ type Props = {
 
 export default function DashboardEdit({ tag, onChange, onUpdate, onCancel }: Props) {
   return (
-    <Box padding={4}>
-      <Stack spacing={2}>
+    <Box padding={4} marginTop={2} border={2} borderColor={'var(--light-blue)'}>
+      <Stack spacing={3}>
         <Typography variant="h5" color='var(--black)'>Balise {tag.id}</Typography>
 
         <Typography
@@ -37,7 +37,7 @@ export default function DashboardEdit({ tag, onChange, onUpdate, onCancel }: Pro
             display: 'inline-block',
             fontWeight: 500,
             fontSize: '1.1rem',
-            width: '146px',
+            width: '146px'
           }}
         >
           {tag.source_address}
