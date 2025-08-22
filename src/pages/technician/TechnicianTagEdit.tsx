@@ -3,18 +3,8 @@ import { useEffect, useState } from "react";
 import DashboardEdit from "../../components/organisms/technician/DashboardEdit";
 import DashboardTagList from "../../components/organisms/technician/DashboardTagList";
 import { Box, Stack } from "@mui/material";
-
-type Tag = {
-  id: number;
-  source_address: string;
-  description: string;
-  building: string;
-  room: string;
-  installedAt: string;
-  removedAt: string;
-  createdAt: string;
-  updatedAt: string;
-};
+import { useNavigate } from "react-router";
+import type { Tag } from "../../types/tag";
 
 export default function TechnicianTagEdit() {
   const { id } = useParams();
@@ -24,20 +14,20 @@ export default function TechnicianTagEdit() {
   const [searchTerm, setSearchTerm] = useState("");
   const [roomFilter, setRoomFilter] = useState("");
   const [buildingFilter, setBuildingFilter] = useState("");
-
+  
   useEffect(() => {
     const fetchTag = async () => {
       try {
         const res = await fetch(`http://localhost:8000/api/v1/tag/${id}`);
-
+        
         if (res.status === 404) {
           console.warn(`La balise avec l'id ${id} n'existe pas.`);
           setTag(null);
           return;
         }
-
+        
         if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
-
+        
         const data = await res.json();
         setTag({
           ...data,
@@ -52,7 +42,7 @@ export default function TechnicianTagEdit() {
         setTag(null); //pour si erreur réseaux
       }
     };
-
+    
     const fetchAllTags = async () => {
       try {
         const res = await fetch(`http://localhost:8000/api/v1/tag`);
@@ -63,10 +53,16 @@ export default function TechnicianTagEdit() {
         console.error("Erreur dans fetchAllTags:", err);
       }
     };
-
+    
     fetchTag();
     fetchAllTags();
   }, [id]);
+  
+  const navigate = useNavigate();
+
+  const handleCreate = () => {
+    navigate("/technician/create");
+  };
 
   const handleChange = (field: keyof Tag, value: string) => {
     if (tag) setTag({ ...tag, [field]: value });
@@ -131,10 +127,6 @@ export default function TechnicianTagEdit() {
     return matchesSearch && matchesRoom && matchesBuilding;
   });
 
-  const handleCreate = () => {
-  window.location.href = `technician/create`;
-};
-
   return (
     <Stack
       direction={{ xs: "column", md: "row" }}
@@ -143,9 +135,7 @@ export default function TechnicianTagEdit() {
     >
       <DashboardTagList
         tags={filteredTags}
-        onEdit={(id) =>
-          (window.location.href = `technician/${id}/edit`)
-        }
+        onEdit={(id) => (window.location.href = `technician/${id}/edit`)}
         onDelete={handleDelete}
         onCreate={handleCreate}
         searchTerm={searchTerm}

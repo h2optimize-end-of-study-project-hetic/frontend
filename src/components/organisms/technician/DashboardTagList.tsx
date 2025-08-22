@@ -6,13 +6,7 @@ import {
   TextField,
   MenuItem,
 } from "@mui/material";
-
-type TagListItem = {
-  id: number;
-  source_address: string;
-  building?: string;
-  room?: string;
-};
+import type { TagListItem } from "../../../types/tagListItem";
 
 type Props = {
   tags: TagListItem[];

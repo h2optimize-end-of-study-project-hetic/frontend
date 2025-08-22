@@ -1,18 +1,8 @@
 import {
   Box, TextField, Button, Stack, Typography, MenuItem
 } from "@mui/material";
+import type { Tag } from "../../../types/tag";
 
-type Tag = {
-  id: number;
-  source_address: string;
-  description: string;
-  building: string;
-  room: string;
-  installedAt: string;
-  removedAt: string;
-  createdAt: string;
-  updatedAt: string;
-};
 
 type Props = {
   tag: Tag;
