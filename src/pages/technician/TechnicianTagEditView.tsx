@@ -134,7 +134,7 @@ export default function TechnicianTagEdit() {
     >
       <DashboardTagList
         tags={filteredTags}
-        onEdit={ () => navigate(`/technician/edit`)}
+        onEdit={() => navigate(`/technician/edit`)}
         onDelete={handleDelete}
         onCreate={handleCreate}
         searchTerm={searchTerm}
@@ -161,8 +161,8 @@ export default function TechnicianTagEdit() {
               boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
               "&:hover": {
                 backgroundColor: "var(--light-blue)",
-                color: "var(--dark-blue)"
-              }
+                color: "var(--dark-blue)",
+              },
             }}
           >
             Vue Édition
@@ -176,7 +176,7 @@ export default function TechnicianTagEdit() {
               "&:hover": {
                 backgroundColor: "var(--dark-blue)",
                 color: "var(--light-blue)",
-              }
+              },
             }}
           >
             Vue tableau

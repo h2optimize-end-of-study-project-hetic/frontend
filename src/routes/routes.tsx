@@ -4,13 +4,13 @@ import LoginPage from "../pages/connection/Login";
 import SignUpPage from "../pages/connection/SignUp";
 import Dashboard from "../pages/Dashboard";
 import NotFound from "../pages/errors/NotFound";
-import TechnicianTagEdit from "../pages/technician/TechnicianTagEdit";
+import TechnicianTagEdit from "../pages/technician/TechnicianTagEditView";
 // import TechnicianDashboard from "../pages/technician/TechnicianDashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import Unauthorized from "../pages/errors/Unauthorized";
-import TechnicianTagCreate from "../pages/technician/TechnicianTagCreate.tsx";
-import TechnicianDashboard from "../pages/technician/TechnicianDashboard.tsx";
-import TechnicianTagManager from "../pages/technician/TechnicianTagManager.tsx";
+import TechnicianTagCreate from "../pages/technician/TechnicianTagCreate";
+import TechnicianDashboard from "../pages/technician/TechnicianDashboardView";
+import TechnicianTagManager from "../pages/technician/TechnicianTagManager";
 
 export default function AppRoutes() {
   return (
