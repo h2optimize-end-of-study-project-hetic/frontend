@@ -32,6 +32,7 @@ export default function TechnicianTagCreate() {
           removedAt: "",
           createdAt: "",
           updatedAt: "",
+          name: ""
         });
       } catch (err) {
         console.error("Erreur fetch ID max:", err);
