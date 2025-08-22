@@ -2,7 +2,7 @@ import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import DashboardEdit from "../../components/organisms/technician/DashboardEdit";
 import DashboardTagList from "../../components/organisms/technician/DashboardTagList";
-import { Box, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { useNavigate } from "react-router";
 import type { Tag } from "../../types/tag";
 
@@ -14,20 +14,19 @@ export default function TechnicianTagEdit() {
   const [searchTerm, setSearchTerm] = useState("");
   const [roomFilter, setRoomFilter] = useState("");
   const [buildingFilter, setBuildingFilter] = useState("");
-  
+
   useEffect(() => {
     const fetchTag = async () => {
       try {
         const res = await fetch(`http://localhost:8000/api/v1/tag/${id}`);
-        
+
         if (res.status === 404) {
-          console.warn(`La balise avec l'id ${id} n'existe pas.`);
           setTag(null);
           return;
         }
-        
+
         if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
-        
+
         const data = await res.json();
         setTag({
           ...data,
@@ -42,7 +41,7 @@ export default function TechnicianTagEdit() {
         setTag(null); //pour si erreur réseaux
       }
     };
-    
+
     const fetchAllTags = async () => {
       try {
         const res = await fetch(`http://localhost:8000/api/v1/tag`);
@@ -53,11 +52,11 @@ export default function TechnicianTagEdit() {
         console.error("Erreur dans fetchAllTags:", err);
       }
     };
-    
+
     fetchTag();
     fetchAllTags();
   }, [id]);
-  
+
   const navigate = useNavigate();
 
   const handleCreate = () => {
@@ -152,6 +151,36 @@ export default function TechnicianTagEdit() {
             {updateError}
           </div>
         )}
+
+        <Box display="flex" flexDirection="row" gap={2} mb={2}>
+          <Button
+            variant="contained"
+            sx={{
+              color: "var(--dark-blue)",
+              backgroundColor: "var(--light-blue)",
+              "&:hover": {
+                backgroundColor: "var(--dark-blue)",
+                color: "var(--light-blue)",
+              }
+            }}
+          >
+            Vue Édition
+          </Button>
+          <Button
+            onClick={() => navigate("/dashboard")}
+            variant="contained"
+            sx={{
+              color: "var(--dark-blue)",
+              backgroundColor: "var(--light-blue)",
+              "&:hover": {
+                backgroundColor: "var(--dark-blue)",
+                color: "var(--light-blue)",
+              }
+            }}
+          >
+            Vue tableau
+          </Button>
+        </Box>
         <DashboardEdit
           tag={tag}
           onChange={handleChange}

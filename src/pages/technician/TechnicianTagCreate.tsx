@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import type { Tag } from "../../types/tag";
 import type { TagCreatePayload } from "../../types/tagCreatePayload";
 import { useNavigate } from "react-router";
 import DashboardCreate from "../../components/organisms/technician/DashboardCreate";
 
-
 export default function TechnicianTagCreate() {
   const [tag, setTag] = useState<Tag | null>(null);
   const [createError, setCreateError] = useState<string | null>(null);
   const navigate = useNavigate();
-
 
   useEffect(() => {
     const fetchMaxId = async () => {
@@ -50,13 +48,12 @@ export default function TechnicianTagCreate() {
   };
 
   const handleCreate = async () => {
-    
     if (!tag) return;
-    
+
     const payload: TagCreatePayload = {
       name: tag.source_address,
       source_address: tag.source_address,
-      description: tag.description ?? ""
+      description: tag.description ?? "",
     };
     console.log("Payload envoyé :", JSON.stringify({ tag: payload }, null, 2));
 
@@ -64,7 +61,7 @@ export default function TechnicianTagCreate() {
       const res = await fetch(`http://localhost:8000/api/v1/tag`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tag: payload })
+        body: JSON.stringify({ tag: payload }),
       });
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -81,14 +78,30 @@ export default function TechnicianTagCreate() {
 
   return (
     <Box p={4}>
-    {createError && <div style={{ color: "red" }}>{createError}</div>}
-
-    <DashboardCreate
-      tag={tag}
-      onChange={handleChange}
-      onCreate={handleCreate}
-      onCancel={() => window.history.back()}
-    />
-  </Box>
+      {createError && <div style={{ color: "red" }}>{createError}</div>}
+      <Button
+    
+        onClick={() => navigate("/dashboard")}
+        variant="contained"
+        sx={{
+          padding: 1,
+          marginBottom: 2,
+          color: "var(--dark-blue)",
+          backgroundColor: "var(--light-blue)",
+          "&:hover": {
+            backgroundColor: "var(--dark-blue)",
+            color: "var(--light-blue)",
+          },
+        }}
+      >
+        Vue tableau
+      </Button>
+      <DashboardCreate
+        tag={tag}
+        onChange={handleChange}
+        onCreate={handleCreate}
+        onCancel={() => window.history.back()}
+      />
+    </Box>
   );
 }

@@ -60,6 +60,10 @@ export default function TechnicianTagList({
               padding: 0.4,
               fontSize: "1.2rem",
               lineHeight: 1,
+              "&:hover": {
+                backgroundColor: "var(--dark-blue)",
+                color: "var(--light-blue)",
+              }
             }}
             onClick={() => onCreate()}
           >
