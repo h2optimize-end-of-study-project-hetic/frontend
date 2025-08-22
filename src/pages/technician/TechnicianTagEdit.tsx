@@ -131,6 +131,10 @@ export default function TechnicianTagEdit() {
     return matchesSearch && matchesRoom && matchesBuilding;
   });
 
+  const handleCreate = () => {
+  window.location.href = `technician/create`;
+};
+
   return (
     <Stack
       direction={{ xs: "column", md: "row" }}
@@ -140,9 +144,10 @@ export default function TechnicianTagEdit() {
       <DashboardTagList
         tags={filteredTags}
         onEdit={(id) =>
-          (window.location.href = `/release/technician/${id}/edit`)
+          (window.location.href = `technician/${id}/edit`)
         }
         onDelete={handleDelete}
+        onCreate={handleCreate}
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
         roomFilter={roomFilter}

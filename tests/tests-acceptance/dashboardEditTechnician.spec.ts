@@ -22,7 +22,7 @@ test.describe('Technician Dashboard – Édition des balises', () => {
       });
     });
 
-    await page.goto('http://localhost:5173/release/technician/1/edit', { waitUntil: 'networkidle' });
+    await page.goto(`http://localhost:5173${process.env.VITE_BASE_PATH}technician/1/edit`, { waitUntil: 'networkidle' });
 
     await expect(page.getByText('Balise 1')).toBeVisible();
     await expect(page.getByText('123456789012')).toBeVisible();
@@ -39,11 +39,11 @@ test.describe('Technician Dashboard – Édition des balises', () => {
       }
     });
 
-    await page.goto('http://localhost:5173/release/technician/1/edit');
+    await page.goto(`http://localhost:5173${process.env.VITE_BASE_PATH}technician/1/edit`);
 
     const descInput = page.getByLabel('Description');
     await descInput.fill('hihihi');
-    await page.getByRole('button', { name: 'Éditer' }).click();
+    await page.getByRole('button', { name: 'Éditer' }).first().click();
 
     // la page rafraîchie affiche la nouvelle description
     await expect(page.getByLabel('Description')).toHaveValue('hihihi');

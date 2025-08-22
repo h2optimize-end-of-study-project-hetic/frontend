@@ -16,7 +16,7 @@ test.describe("Dashboard – Liste des balises", () => {
       });
     });
 
-    await page.goto("http://localhost:5173/release/technician/1/edit");
+    await page.goto(`http://localhost:5173${process.env.VITE_BASE_PATH}technician/1/edit`);
 
     await expect(page.getByText('123456789012').first()).toBeVisible();
     await expect(page.getByText("987654321098").first()).toBeVisible();
