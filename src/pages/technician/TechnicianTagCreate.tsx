@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
-import DashboardEdit from "../../components/organisms/technician/DashboardEdit";
 import { Box } from "@mui/material";
 import type { Tag } from "../../types/tag";
 import type { TagCreatePayload } from "../../types/tagCreatePayload";
+import { useNavigate } from "react-router";
+import DashboardCreate from "../../components/organisms/technician/DashboardCreate";
+
 
 export default function TechnicianTagCreate() {
   const [tag, setTag] = useState<Tag | null>(null);
   const [createError, setCreateError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchMaxId = async () => {
@@ -46,24 +50,27 @@ export default function TechnicianTagCreate() {
   };
 
   const handleCreate = async () => {
+    
     if (!tag) return;
+    
     const payload: TagCreatePayload = {
       name: tag.source_address,
       source_address: tag.source_address,
-      description: tag.description,
+      description: tag.description ?? ""
     };
+    console.log("Payload envoyé :", JSON.stringify({ tag: payload }, null, 2));
 
     try {
       const res = await fetch(`http://localhost:8000/api/v1/tag`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ payload }),
+        body: JSON.stringify({ tag: payload })
       });
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       alert("Balise créée !");
-      window.location.href = "/technician";
+      navigate("/technician");
     } catch (err) {
       console.error("Erreur dans handleCreate:", err);
       setCreateError("Erreur lors de la création");
@@ -74,14 +81,14 @@ export default function TechnicianTagCreate() {
 
   return (
     <Box p={4}>
-      {createError && <div style={{ color: "red" }}>{createError}</div>}
+    {createError && <div style={{ color: "red" }}>{createError}</div>}
 
-      <DashboardEdit
-        tag={tag}
-        onChange={handleChange}
-        onUpdate={handleCreate}
-        onCancel={() => window.history.back()}
-      />
-    </Box>
+    <DashboardCreate
+      tag={tag}
+      onChange={handleChange}
+      onCreate={handleCreate}
+      onCancel={() => window.history.back()}
+    />
+  </Box>
   );
 }
