@@ -2,7 +2,6 @@ import { Box, Button, Stack } from "@mui/material";
 import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import type { Tag } from "../../../types/tag";
-
 export default function DashboardContent() {
   const navigate = useNavigate();
   const [tags, setTag] = useState<Tag[]>([]);

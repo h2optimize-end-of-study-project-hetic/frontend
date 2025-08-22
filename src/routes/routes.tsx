@@ -9,6 +9,8 @@ import TechnicianTagEdit from "../pages/technician/TechnicianTagEdit";
 import ProtectedRoute from "./ProtectedRoute";
 import Unauthorized from "../pages/errors/Unauthorized";
 import TechnicianTagCreate from "../pages/technician/TechnicianTagCreate.tsx";
+import TechnicianDashboard from "../pages/technician/TechnicianDashboard.tsx";
+import TechnicianTagManager from "../pages/technician/TechnicianTagManager.tsx";
 
 export default function AppRoutes() {
   return (
@@ -24,10 +26,12 @@ export default function AppRoutes() {
         //technician
         <Route path="technician">
           {/* <Route index element={<TechnicianDashboard />} /> */}
-          <Route path="create" element={<TechnicianTagCreate />} />
+          <Route path="edit" element={<TechnicianTagManager />} />
           <Route path=":id/edit" element={<TechnicianTagEdit />} />
+          <Route path="dashboard" element={<TechnicianDashboard />} />
+          <Route path="create" element={<TechnicianTagCreate />} />
+          <Route path="edit" element={<TechnicianTagEdit />} />
         </Route>
-        <Route path="technician"></Route>
       </Route>
       //errors
       <Route path="unauthorized" element={<Unauthorized />} />

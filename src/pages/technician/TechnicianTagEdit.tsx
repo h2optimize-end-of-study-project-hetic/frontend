@@ -134,7 +134,7 @@ export default function TechnicianTagEdit() {
     >
       <DashboardTagList
         tags={filteredTags}
-        onEdit={ () => navigate(`technician/edit`)}
+        onEdit={ () => navigate(`/technician/edit`)}
         onDelete={handleDelete}
         onCreate={handleCreate}
         searchTerm={searchTerm}
@@ -168,7 +168,7 @@ export default function TechnicianTagEdit() {
             Vue Édition
           </Button>
           <Button
-            onClick={() => navigate("technician/dashboard")}
+            onClick={() => navigate("/technician/dashboard")}
             variant="contained"
             sx={{
               color: "var(--dark-blue)",
