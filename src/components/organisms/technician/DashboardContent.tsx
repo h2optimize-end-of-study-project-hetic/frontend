@@ -4,9 +4,10 @@ import type { Tag } from "../../../types/tag";
 
 type Props = {
   tags: Tag[];
+  onDelete: (id: number) => void;
 };
 
-export default function DashboardContent({ tags }: Props) {
+export default function DashboardContent({ tags, onDelete }: Props) {
   const navigate = useNavigate();
 
   return (
@@ -31,8 +32,6 @@ export default function DashboardContent({ tags }: Props) {
         </Button>
       </Stack>
 
-      
-
       <Box
         bgcolor="#fff"
         borderRadius={4}
@@ -52,7 +51,7 @@ export default function DashboardContent({ tags }: Props) {
                 "Pièce",
                 "Bâtiment",
                 "État",
-                "Éditer / supprimer",
+                "Éditer / Supprimer",
               ].map((title) => (
                 <th
                   key={title}
@@ -77,7 +76,38 @@ export default function DashboardContent({ tags }: Props) {
                 <td style={{ padding: "8px" }}>{tag.room || "—"}</td>
                 <td style={{ padding: "8px" }}>{tag.building || "—"}</td>
                 <td style={{ padding: "8px" }}>—</td>
-                <td style={{ padding: "8px" }}></td>
+                <td style={{ padding: "8px" }}>
+                  <Stack direction="row" spacing={2} justifyContent="flex-end">
+                    <Button
+                      onClick={() => navigate("/technician/edit")}
+                      variant="contained"
+                      sx={{
+                        color: "var(--dark-green)",
+                        backgroundColor: "var(--light-green)",
+                        p: "6px 12px",
+                        borderRadius: "4px",
+                        boxShadow: "0 2px 6px rgba(0, 0, 0, 0.10)",
+                        fontWeight: 500,
+                      }}
+                    >
+                      Éditer
+                    </Button>
+                    <Button
+                      onClick={() => onDelete(tag.id)}
+                      variant="contained"
+                      sx={{
+                        color: "var(--dark-red)",
+                        backgroundColor: "var(--light-red)",
+                        p: "6px 12px",
+                        borderRadius: "4px",
+                        boxShadow: "0 2px 6px rgba(0, 0, 0, 0.10)",
+                        fontWeight: 500,
+                      }}
+                    >
+                      Supprimer
+                    </Button>
+                  </Stack>
+                </td>
               </tr>
             ))}
           </tbody>

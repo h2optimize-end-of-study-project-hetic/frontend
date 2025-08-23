@@ -37,39 +37,53 @@ export default function TechnicianDashboard() {
     return matchesSearch && matchesRoom && matchesBuilding;
   });
 
+  const handleDelete = async (tagId: number) => {
+    try {
+      const res = await fetch(`http://localhost:8000/api/v1/tag/${tagId}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      setAllTags((prev) => prev.filter((tag) => tag.id !== tagId));
+    } catch (err) {
+      console.error("Erreur lors de la suppression :", err);
+    }
+  };
+
   return (
     <Box p={4}>
       <Box display="flex" flexDirection="row" gap={2} mb={2} maxWidth={320}>
-          <Button
+        <Button
           onClick={() => navigate("/technician/edit")}
-            variant="contained"
-            sx={{
+          variant="contained"
+          sx={{
+            backgroundColor: "var(--light-blue)",
+            color: "var(--dark-blue)",
+            boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+            "&:hover": {
+              backgroundColor: "var(--dark-blue)",
+              color: "var(--light-blue)",
+            },
+          }}
+        >
+          Vue Édition
+        </Button>
+        <Button
+          onClick={() => navigate("/technician/dashboard")}
+          variant="contained"
+          sx={{
+            color: "var(--light-blue)",
+            backgroundColor: "var(--dark-blue)",
+            "&:hover": {
               backgroundColor: "var(--light-blue)",
               color: "var(--dark-blue)",
-              boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-              "&:hover": {
-                backgroundColor: "var(--dark-blue)",
-                color: "var(--light-blue)",
-              },
-            }}
-          >
-            Vue Édition
-          </Button>
-          <Button
-            onClick={() => navigate("/technician/dashboard")}
-            variant="contained"
-            sx={{
-              color: "var(--light-blue)",
-              backgroundColor: "var(--dark-blue)",
-              "&:hover": {
-                backgroundColor: "var(--light-blue)",
-                color: "var(--dark-blue)",
-              },
-            }}
-          >
-            Vue tableau
-          </Button>
-        </Box>
+            },
+          }}
+        >
+          Vue tableau
+        </Button>
+      </Box>
       <Stack
         direction={{ xs: "column", md: "row" }}
         spacing={4}
@@ -89,7 +103,7 @@ export default function TechnicianDashboard() {
         </Box>
 
         <Box flex={1}>
-          <DashboardContent tags={filteredTags} />
+          <DashboardContent tags={filteredTags} onDelete={handleDelete} />
         </Box>
       </Stack>
     </Box>
