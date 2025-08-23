@@ -5,12 +5,6 @@ on:
       - develop
       - release/*
       - feature/*
-  workflow_dispatch:
-    inputs:
-      branch:
-        description: "Branch to deploy"
-        required: true
-        default: develop
 
 jobs:
   deploy:
@@ -19,7 +13,7 @@ jobs:
 
     env:
       NODE_ENV: develop
-      BRANCH: ${{ github.event.inputs.branch || github.ref_name }}
+      BRANCH: ${{ github.ref_name }}
       ENVIRONMENT: release
       VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH || '/release/' }}
       FRONTEND_HOST: ${{ vars.FRONTEND_HOST || 'frontend_release' }}
