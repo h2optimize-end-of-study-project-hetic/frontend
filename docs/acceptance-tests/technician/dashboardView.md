@@ -14,6 +14,6 @@ Gérer les cas d’erreur.
 
 Cette page doit s'afficher avec les bons champs.
 
-Le backend est bien modifié lorsque l'utilisateur edite les datas. Mise à jour réussie.
+Le backend est bien modifié lorsque l'utilisateur édite les datas. Mise à jour réussie.
 
 En cas d’échec, un message d’erreur doit apparaître et la mise à jour de s'effectue pas.
