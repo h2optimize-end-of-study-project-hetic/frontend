@@ -1,5 +1,5 @@
 import { Stack } from "@mui/material";
-import SignUpBox from "../components/molecules/signUpBox";
+import SignUpBox from "../../components/molecules/signUpBox";
 
 export default function LoginPage() {
   return (

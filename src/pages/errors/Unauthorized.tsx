@@ -1,9 +1,9 @@
 import { Stack, Box } from "@mui/material";
-import BasicButtons from "../components/atoms/Button";
+import BasicButtons from "../../components/atoms/Button";
 import { useNavigate } from "react-router";
 import logo from "/favicon.svg";
 
-export default function NotFound() {
+export default function Unauthorized() {
   const navigate = useNavigate();
   return (
     <>
@@ -49,8 +49,8 @@ export default function NotFound() {
             }}
           />
 
-          <h1>Erreur 404</h1>
-          <p>Oops, cette page n'existe pas !</p>
+          <h1>Erreur 403</h1>
+          <p>Vous n'êtes pas authorisé ici</p>
           <BasicButtons
             label="Retourner au Dashboard"
             onClick={() => navigate("/dashboard")}
