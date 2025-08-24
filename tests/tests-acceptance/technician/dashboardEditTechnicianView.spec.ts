@@ -23,10 +23,11 @@ test.describe('Technician Dashboard – Édition des balises', () => {
     });
 
     await page.goto(`http://localhost:5173${process.env.VITE_BASE_PATH}technician/1/edit`, { waitUntil: 'networkidle' });
-
-    await expect(page.getByText('Balise 1')).toBeVisible();
-    await expect(page.getByText('123456789012')).toBeVisible();
-    await expect(page.getByLabel('Description')).toHaveValue('ahaha');
+    
+    await page.getByRole('button', { name: 'Éditer' }).first().click();
+    await expect(page.getByText('Balise 1').first()).toBeVisible();
+    await expect(page.getByText('123456789012').first()).toBeVisible();
+    await expect(page.getByLabel('Description').first()).toHaveValue('ahaha');
 
   });
 
@@ -59,3 +60,4 @@ test.describe('Technician Dashboard – Édition des balises', () => {
     });
   });
 });
+

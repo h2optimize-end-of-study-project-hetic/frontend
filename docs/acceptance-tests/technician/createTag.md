@@ -18,6 +18,6 @@ Le backend est bien modifié lorsque l'utilisateur créer une balise. Mise à jo
 
 L'utilisateur décide d'annuler la création d'une balise:
  - Le backend n' est pas modifié.
- - la redirection amène bien à la vue d'édition.
+ - la redirection amène bien à la vue tableau.
 
 En cas d’échec, un message d’erreur doit apparaître et la mise à jour de s'effectue pas.
