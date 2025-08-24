@@ -5,6 +5,8 @@ import FloorSelector from "../components/_map/FloorSelector";
 import BuildingSelector from "../components/_map/BuildingSelector";
 // import MapWithDrawWrapper from "../components/_map/MapViewWithDraw";
 import MapHeader from "../components/_map/MapHeader";
+import Selector from "../components/_map/Selector";
+import type { Building, Etage } from "../components/_map/MapType";
 
 const base = import.meta.env.BASE_URL;
 
@@ -17,6 +19,12 @@ function Dashboard() {
   const selectedFloor = selectedBuilding?.etages.find(
     (f) => f.id === selectedFloorId
   );
+
+  const currentBuilding = buildings.find((b) => b.id === selectedBuildingId);
+
+  const onBuildingChange = (id: string) => {
+    setSelectedBuildingId(id);
+  };
 
   // Lors du changement de bâtiment, on met à jour le floorId
   useEffect(() => {
@@ -35,16 +43,22 @@ function Dashboard() {
   return (
     <>
       <div className="flex flex-row gap-2.5 w-full bg-(--light-blue) rounded-[12px] items-center !p-3">
-        <BuildingSelector
-          buildings={buildings}
-          selectedBuildingId={selectedBuildingId}
-          onBuildingChange={setSelectedBuildingId}
+        <Selector<Building>
+          options={buildings}
+          value={selectedBuildingId}
+          onChange={onBuildingChange}
+          getLabel={(b) => b.name}
+          getId={(b) => b.id}
         />
-        <FloorSelector
-          currentBuilding={selectedBuilding}
-          selectedFloorId={selectedFloorId!}
-          onFloorChange={setSelectedFloorId}
-        />
+        {currentBuilding ? (
+          <Selector<Etage>
+            options={currentBuilding.etages}
+            value={selectedFloorId ?? ""}
+            onChange={(id) => setSelectedFloorId(id)}
+            getLabel={(floor) => floor.name}
+            getId={(floor) => floor.id}
+          />
+        ) : null}
       </div>
 
       <MapHeader
