@@ -1,9 +1,9 @@
 type SelectorProps<T> = {
   options: T[];
-  value: string;
+  value: number;
   onChange: (id: string) => void;
   getLabel: (item: T) => string;
-  getId: (item: T) => string;
+  getId: (item: T) => number;
 };
 
 const Selector = <T,>({

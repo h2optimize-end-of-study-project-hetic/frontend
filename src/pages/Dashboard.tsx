@@ -1,79 +1,99 @@
 import { useEffect, useState } from "react";
-import { buildings } from "../components/_map/MapData";
 import MapView from "../components/_map/MapView";
-import FloorSelector from "../components/_map/FloorSelector";
-import BuildingSelector from "../components/_map/BuildingSelector";
-// import MapWithDrawWrapper from "../components/_map/MapViewWithDraw";
 import MapHeader from "../components/_map/MapHeader";
 import Selector from "../components/_map/Selector";
-import type { Building, Etage } from "../components/_map/MapType";
 
-const base = import.meta.env.BASE_URL;
+import type { FloorMap } from "../types/map";
+import { useMaps } from "../hooks/useMap";
 
 function Dashboard() {
-  const [selectedBuildingId, setSelectedBuildingId] = useState(buildings[0].id);
-  const selectedBuilding = buildings.find((b) => b.id === selectedBuildingId);
+  const backendURLAPI = import.meta.env.VITE_BACKEND_URL_API;
 
-  const [selectedFloorId, setSelectedFloorId] = useState<string | null>(null);
+  const { maps, loading, error } = useMaps();
 
-  const selectedFloor = selectedBuilding?.etages.find(
-    (f) => f.id === selectedFloorId
+  const [selectedBuildingId, setSelectedBuildingId] = useState<number | null>(
+    null
+  );
+  const [selectedFloorId, setSelectedFloorId] = useState<number | null>(null);
+
+  // TODO api call building
+  const buildings = Array.from(new Set(maps.map((m) => m.building_id))).map(
+    (id) => ({ id, name: `Bâtiment ${id}` })
   );
 
-  const currentBuilding = buildings.find((b) => b.id === selectedBuildingId);
+  // Floors pour le bâtiment sélectionné
+  const selectedBuildingFloors = maps.filter(
+    (m) => m.building_id === selectedBuildingId
+  );
 
-  const onBuildingChange = (id: string) => {
+  const selectedFloor = selectedBuildingFloors.find(
+    (m) => m.id === selectedFloorId
+  );
+
+  // Init : choisir le premier building/floor
+  useEffect(() => {
+    if (maps.length > 0 && selectedBuildingId === null) {
+      const firstBuildingId = maps[0].building_id;
+      setSelectedBuildingId(firstBuildingId);
+
+      const firstFloor = maps.find((m) => m.building_id === firstBuildingId);
+      if (firstFloor) setSelectedFloorId(firstFloor.id);
+    }
+  }, [maps]);
+
+  // Changement de bâtiment
+  const onBuildingChange = (id: number) => {
     setSelectedBuildingId(id);
+    const firstFloor = maps.find((m) => m.building_id === id);
+    if (firstFloor) setSelectedFloorId(firstFloor.id);
   };
 
-  // Lors du changement de bâtiment, on met à jour le floorId
-  useEffect(() => {
-    if (selectedBuilding && selectedBuilding.etages.length > 0) {
-      setSelectedFloorId(selectedBuilding.etages[0].id);
-    } else {
-      setSelectedFloorId(null);
-    }
-  }, [selectedBuildingId, selectedBuilding]);
-
-  // Tant qu'on a pas de floor sélectionné, on peut afficher un loader ou rien
-  if (!selectedFloor || !selectedBuilding) {
-    return <div>Chargement...</div>;
-  }
+  if (loading) return <div>Chargement des maps...</div>;
+  if (error) return <div>Erreur : {error}</div>;
+  if (!selectedFloor) return <div>Aucune map trouvée</div>;
 
   return (
     <>
       <div className="flex flex-row gap-2.5 w-full bg-(--light-blue) rounded-[12px] items-center !p-3">
-        <Selector<Building>
+        <Selector<{ id: number; name: string }>
           options={buildings}
-          value={selectedBuildingId}
-          onChange={onBuildingChange}
+          value={selectedBuildingId ?? 0}
+          onChange={(id) => onBuildingChange(Number(id))}
           getLabel={(b) => b.name}
           getId={(b) => b.id}
         />
-        {currentBuilding ? (
-          <Selector<Etage>
-            options={currentBuilding.etages}
-            value={selectedFloorId ?? ""}
-            onChange={(id) => setSelectedFloorId(id)}
-            getLabel={(floor) => floor.name}
+
+        {selectedBuildingFloors.length > 0 && (
+          <Selector<FloorMap>
+            options={selectedBuildingFloors}
+            value={selectedFloorId ?? 0}
+            onChange={(id) => setSelectedFloorId(Number(id))}
+            getLabel={(floor) => floor.file_name.split(".")[0]}
             getId={(floor) => floor.id}
           />
-        ) : null}
+        )}
       </div>
 
       <MapHeader
-        buildingName={selectedBuilding.name}
-        floorName={selectedFloor.name}
+        buildingName={`Building ${selectedBuildingId}`}
+        floorName={selectedFloor.file_name}
       />
+
       <div style={{ padding: "10px" }}>
         {/* <MapWithDrawWrapper
-          image={selectedFloor.image}
-          bounds={selectedFloor.bounds}
+          image={`${backendURLAPI}/map/img/${selectedFloor.id}`}
+          bounds={[
+            [0, 0],
+            [selectedFloor.length, selectedFloor.width],
+          ]}
         /> */}
         <MapView
-          image={base + selectedFloor.image}
-          bounds={selectedFloor.bounds}
-          rooms={selectedFloor.rooms}
+          image={`${backendURLAPI}/map/img/${selectedFloor.id}`}
+          bounds={[
+            [0, 0],
+            [selectedFloor.length, selectedFloor.width],
+          ]}
+          rooms={[]} // attente du crud room
         />
       </div>
     </>
