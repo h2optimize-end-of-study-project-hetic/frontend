@@ -10,10 +10,12 @@ export function useCreateUser() {
     setError(null);
 
     try {
-      const res = await fetch("api/users", {
+      const res = await fetch("http://localhost:8000/api/v1/users", {
+
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user }),
+        
       });
 
       if (!res.ok) {
@@ -21,10 +23,13 @@ export function useCreateUser() {
       }
 
       return await res.json();
+    
+
     } catch (err) {
       setError("Erreur lors de la création de l'utilisateur");
       console.error(err);
       return null;
+
     } finally {
       setLoading(false);
     }
