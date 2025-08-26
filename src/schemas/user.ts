@@ -10,4 +10,7 @@ export const userSchema = z.object({
       .regex(/^\+?[0-9\s-]{7,15}$/, "Numéro invalide")
       .trim(),
     email: z.string().email("Email invalide").trim()
-});
+
+    
+  });
+  export type UserInput = z.infer<typeof userSchema>;

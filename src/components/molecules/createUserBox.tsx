@@ -1,30 +1,39 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { userSchema, type UserInput } from "../../schemas/user";
+import { useCreateUser } from "../../hooks/useCreateUser";
+import { Box, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import BasicTextFields from "../atoms/Input";
 import BasicButtons from "../atoms/Button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signUpSchema, type SignUpInput } from "../../schemas/signUp";
-import { useAuth } from "../../hooks/useAuth";
-import { useForm } from "react-hook-form";
+import type { CreateUserBoxProps } from "../../types/AdminCreateUser";
 
-export default function CreateUserBox() {
-  const { signUp: registerUser } = useAuth();
+type Props = CreateUserBoxProps;
+
+export default function CreateUserBox({
+  roleFilter,
+  onRoleFilterChange,
+}: Props) {
+  const { createUser, loading, error } = useCreateUser();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignUpInput>({
-    resolver: zodResolver(signUpSchema),
+  } = useForm<UserInput>({
+    resolver: zodResolver(userSchema),
   });
 
-  const onSubmit = async (data: SignUpInput) => {
-    await registerUser(data.firstname, data.lastname, data.email, data.password);
+  const onSubmit = async (data: UserInput) => {
+    const result = await createUser(data);
+    if (result) {
+      alert("Utilisateur créé !");
+    }
   };
 
   return (
     <Box
       sx={{
-        color: "#1A3C7E",
+        color: "var(--dark-blue)",
         backgroundColor: "#fff",
         padding: 5,
         borderRadius: 2,
@@ -35,8 +44,10 @@ export default function CreateUserBox() {
       }}
     >
       <Typography variant="h4" gutterBottom>
-        S'enregistrer
+        Ajoutez une personne
       </Typography>
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2} alignItems="center">
@@ -52,32 +63,59 @@ export default function CreateUserBox() {
             error={!!errors.lastname}
             helperText={errors.lastname?.message}
           />
+
+          <TextField
+            select
+            label="Rôle"
+            fullWidth
+            value={roleFilter}
+            onChange={(e) => onRoleFilterChange(e.target.value)}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                borderColor: "var(--dark-blue)",
+                "& fieldset": {
+                  borderColor: "var(--dark-blue)",
+                },
+                "&:hover fieldset": {
+                  borderColor: "var(--dark-blue)",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "var(--dark-blue)",
+                },
+              },
+              "& .MuiInputLabel-root": {
+                color: "var(--dark-blue)",
+              },
+              "& .MuiInputBase-input": {
+                color: "var(--dark-blue)",
+              },
+              width: "100%",
+              maxWidth: "28ch",
+              minWidth: "18ch",
+            }}
+          >
+            <MenuItem value="invité">Invité</MenuItem>
+            <MenuItem value="technicien">Technicien</MenuItem>
+            <MenuItem value="admin">Admin</MenuItem>
+          </TextField>
+
           <BasicTextFields
-            label="Email"
+            label="Numéro de téléphone"
+            {...register("phone_number")}
+            error={!!errors.phone_number}
+            helperText={errors.phone_number?.message}
+          />
+          <BasicTextFields
+            label="Adresse mail"
             {...register("email")}
             error={!!errors.email}
             helperText={errors.email?.message}
           />
-          <BasicTextFields
-            label="Mot de passe"
-            type="password"
-            {...register("password")}
-            error={!!errors.password}
-            helperText={errors.password?.message}
-          />
-          <BasicTextFields
-            label="Vérifier le mot de passe"
-            type="password"
-            {...register("confirmPassword")}
-            error={!!errors.confirmPassword}
-            helperText={errors.confirmPassword?.message}
-          />
 
-          <BasicButtons label="S'enregistrer" type="submit" />
-
-          <Stack paddingTop={4}>
-            <Button>Créer</Button>
-          </Stack>
+          <BasicButtons
+            label={loading ? "Création..." : "Créer"}
+            type="submit"
+          />
         </Stack>
       </form>
     </Box>
