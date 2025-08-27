@@ -28,7 +28,8 @@ const AdminUserEdit = () => {
     const matchesSearch =
       searchTerm === "" ||
       u.firstname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      u.lastname.toLowerCase().includes(searchTerm.toLowerCase());
+      u.lastname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      u.role.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesRole = !roleFilter || u.role === roleFilter;
     // const matchesRoom = !roomFilter || u.room === roomFilter;
     return matchesSearch && matchesRole ;
