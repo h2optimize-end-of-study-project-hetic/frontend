@@ -13,7 +13,7 @@ import TechnicianTagManager from "../pages/technician/TechnicianTagManager";
 import AdminUserCreate from "../pages/admin/AdminUserCreate";
 import AdminEditGroupView from "../pages/admin/AdminEditGroupView";
 import AdminEditUserView from "../pages/admin/AdminEditUserView";
-import AdminDashboard from "../pages/admin/AdminDashboard";
+import AdminDashboard from "../pages/admin/AdminDashboardView";
 
 export default function AppRoutes() {
   return (
