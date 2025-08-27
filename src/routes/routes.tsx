@@ -13,6 +13,7 @@ import TechnicianTagManager from "../pages/technician/TechnicianTagManager";
 import AdminUserCreate from "../pages/admin/AdminUserCreate";
 import AdminEditGroupView from "../pages/admin/AdminEditGroupView";
 import AdminEditUserView from "../pages/admin/AdminEditUserView";
+import AdminDashboard from "../pages/admin/AdminDashboard";
 
 export default function AppRoutes() {
   return (
@@ -41,6 +42,8 @@ export default function AppRoutes() {
         <Route path="admin">
           <Route path="create" element={<AdminUserCreate />} />
           {/* <Route path="edit" element={<TechnicianTagEdit />} /> */}
+          <Route path="dashboard" element={<AdminDashboard />} />
+
           <Route path=":id/edit-user" element={<AdminEditUserView/>} /> 
           <Route path=":id/edit-group" element={<AdminEditGroupView />} />
         </Route>
