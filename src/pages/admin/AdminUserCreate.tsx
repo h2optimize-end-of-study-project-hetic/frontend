@@ -7,13 +7,9 @@ const AdminUserCreate = () => {
 
   return (
     <Stack alignItems="center" justifyContent="center" padding={4} px={1}>
-      <CreateUserBox
-        roleFilter={role}
-        onRoleFilterChange={setRole}
-      />
+      <CreateUserBox roleFilter={role} onRoleFilterChange={setRole} />
     </Stack>
   );
 };
 
 export default AdminUserCreate;
-

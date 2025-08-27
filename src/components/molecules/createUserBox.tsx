@@ -1,28 +1,22 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Box, MenuItem, Stack, TextField, Typography } from "@mui/material";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
+
 import { userSchema, type UserInput } from "../../schemas/user";
 import { useCreateUser } from "../../hooks/useCreateUser";
-import {
-  Box,
-  Button,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import BasicTextFields from "../atoms/Input";
-import { useNavigate } from "react-router";
-import { useEffect } from "react";
-import type { CreateUserBoxProps } from "../../types/AdminCreateUser";
 
-type Props = CreateUserBoxProps;
+import BasicTextFields from "../atoms/Input";
+import BasicButtons from "../atoms/Button";
+import type { CreateUserBoxProps } from "../../types/AdminCreateUser";
 
 export default function CreateUserBox({
   roleFilter,
   onRoleFilterChange,
-}: Props) {
-  const { createUser, loading, error } = useCreateUser();
+}: CreateUserBoxProps) {
   const navigate = useNavigate();
+  const { createUser, loading, error } = useCreateUser();
 
   const {
     register,
@@ -37,16 +31,14 @@ export default function CreateUserBox({
   });
 
   useEffect(() => {
-    // Synchronise le champ "role" avec le select
     setValue("role", roleFilter);
   }, [roleFilter, setValue]);
 
   const onSubmit = async (data: UserInput) => {
+    console.log("🚀 onSubmit déclenché avec :", data);
     const result = await createUser(data);
-      console.log("Formulaire valide :", data);
-
     if (result) {
-      alert("Utilisateur créé !");
+      alert("Utilisateur créé bravo!");
       navigate("/admin/dashboard");
     }
   };
@@ -98,7 +90,7 @@ export default function CreateUserBox({
             helperText={errors.role?.message}
             sx={{
               "& .MuiOutlinedInput-root": {
-                height: "40px",
+                maxHeight: "40px",
                 borderColor: "var(--dark-blue)",
                 "& fieldset": {
                   borderColor: "var(--dark-blue)",
@@ -139,19 +131,19 @@ export default function CreateUserBox({
             helperText={errors.email?.message}
           />
 
-          <Button
+          <BasicButtons
             type="submit"
             variant="contained"
             sx={{
-              color: "var(--dark-green)",
               backgroundColor: "var(--light-green)",
+              color: "var(--dark-green)",
               "&:hover": {
-                backgroundColor: "var(--green)",
+                color: "var(--light-green)",
+                backgroundColor: "var(--dark-green)",
               },
             }}
-          >
-            {loading ? "Création..." : "Créer"}
-          </Button>
+            label={loading ? "Création..." : "Créer"}
+          />
         </Stack>
       </form>
     </Box>

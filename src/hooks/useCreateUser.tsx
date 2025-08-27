@@ -11,11 +11,9 @@ export function useCreateUser() {
 
     try {
       const res = await fetch("http://localhost:8000/api/v1/users", {
-
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user }),
-        
+        body: JSON.stringify(user),
       });
 
       if (!res.ok) {
@@ -23,13 +21,10 @@ export function useCreateUser() {
       }
 
       return await res.json();
-    
-
     } catch (err) {
       setError("Erreur lors de la création de l'utilisateur");
-      console.error(err);
+      console.error("Erreur API :", err);
       return null;
-
     } finally {
       setLoading(false);
     }
