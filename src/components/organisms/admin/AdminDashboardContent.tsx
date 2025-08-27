@@ -74,7 +74,6 @@ export default function AdminDashboardContent({ users, onDelete }: Props) {
                 <td style={{ padding: "8px" }}>{user.email}</td>
                 <td style={{ padding: "8px" }}>{user.role || "—"}</td>
                 <td style={{ padding: "8px" }}>{user.phone_number || "—"}</td>
-                <td style={{ padding: "8px" }}>—</td>
                 <td style={{ padding: "8px" }}>
                   <Stack direction="row" spacing={2} justifyContent="flex-end">
                     <Button
