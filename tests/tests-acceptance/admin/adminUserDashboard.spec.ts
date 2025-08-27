@@ -50,6 +50,17 @@ test.describe("Dashboard – Vue tableau de l'admin", () => {
 
 
   test("au click sur le bouton Supprimer, l'admin ne voit plus l'utilisateut", async ({ page }) => {
+    await page.route("**/api/v1/users/1", async route => {
+      if (route.request().method() === "DELETE") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ success: true }),
+        });
+      } else {
+        await route.continue();
+      }
+    });
     await page.getByRole("button", { name: "Supprimer" }).first().click();
 
     await expect(page.getByText("Bob").first()).not.toBeVisible();
