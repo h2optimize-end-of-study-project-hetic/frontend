@@ -21,7 +21,7 @@ export default function DashboardEdit({ tag, onChange, onUpdate, onCancel }: Pro
       width="100%"
     >
       <Stack spacing={3}>
-        <Typography variant="h5" color='var(--black)'>Balise {tag.id}</Typography>
+        <Typography variant="h5" color='var(--black)'>Balise {tag.name}</Typography>
 
         <Typography
           sx={{

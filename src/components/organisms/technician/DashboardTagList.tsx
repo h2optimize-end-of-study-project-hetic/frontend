@@ -21,7 +21,6 @@ type Props = {
   onBuildingFilterChange: (value: string) => void;
 };
 
-
 export default function TechnicianTagList({
   tags,
   onEdit,
@@ -63,7 +62,7 @@ export default function TechnicianTagList({
               "&:hover": {
                 backgroundColor: "var(--dark-blue)",
                 color: "var(--light-blue)",
-              }
+              },
             }}
             onClick={() => onCreate()}
           >
@@ -80,18 +79,6 @@ export default function TechnicianTagList({
         <Stack direction="row" spacing={2}>
           <TextField
             select
-            label="Pièce"
-            fullWidth
-            value={roomFilter}
-            onChange={(e) => onRoomFilterChange(e.target.value)}
-          >
-            <MenuItem value="">Toutes</MenuItem>
-            <MenuItem value="F45">F45</MenuItem>
-            <MenuItem value="A105">A105</MenuItem>
-          </TextField>
-
-          <TextField
-            select
             label="Bâtiment"
             fullWidth
             value={buildingFilter}
@@ -101,10 +88,26 @@ export default function TechnicianTagList({
             <MenuItem value="A">A</MenuItem>
             <MenuItem value="B">B</MenuItem>
           </TextField>
+          <TextField
+            select
+            label="Pièce"
+            fullWidth
+            value={roomFilter}
+            onChange={(e) => onRoomFilterChange(e.target.value)}
+          >
+            <MenuItem value="">Toutes</MenuItem>
+            <MenuItem value="F45">F45</MenuItem>
+            <MenuItem value="A105">A105</MenuItem>
+          </TextField>
         </Stack>
         {tags.map((tag) => (
-          <Box key={tag.id} bgcolor="var(--lightest-grey)" p={2} borderRadius={2}>
-            <Typography fontWeight={600}>Balise {tag.id}</Typography>
+          <Box
+            key={tag.id}
+            bgcolor="var(--lightest-grey)"
+            p={2}
+            borderRadius={2}
+          >
+            <Typography fontWeight={600}>Balise: {tag.name}</Typography>
             <Stack direction="row" spacing={1} mt={1} flexWrap="wrap">
               <Box
                 bgcolor="var(--light-blue)"
@@ -116,12 +119,22 @@ export default function TechnicianTagList({
                 {tag.source_address}
               </Box>
               {tag.room && (
-                <Box bgcolor="var(--light-blue)" px={2} py={0.5} borderRadius={2}>
+                <Box
+                  bgcolor="var(--light-blue)"
+                  px={2}
+                  py={0.5}
+                  borderRadius={2}
+                >
                   {tag.room}
                 </Box>
               )}
               {tag.building && (
-                <Box bgcolor="var(--light-blue)" px={2} py={0.5} borderRadius={2}>
+                <Box
+                  bgcolor="var(--light-blue)"
+                  px={2}
+                  py={0.5}
+                  borderRadius={2}
+                >
                   {tag.building}
                 </Box>
               )}

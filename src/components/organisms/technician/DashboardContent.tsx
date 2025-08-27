@@ -79,7 +79,7 @@ export default function DashboardContent({ tags, onDelete }: Props) {
                 <td style={{ padding: "8px" }}>
                   <Stack direction="row" spacing={2} justifyContent="flex-end">
                     <Button
-                      onClick={() => navigate("/technician/edit")}
+                      onClick={() => navigate(`/technician/${tag.id}/edit`)}
                       variant="contained"
                       sx={{
                         color: "var(--dark-green)",

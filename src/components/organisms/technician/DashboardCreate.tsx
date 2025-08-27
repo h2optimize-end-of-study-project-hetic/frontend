@@ -23,6 +23,13 @@ export default function DashboardCreate({ tag, onChange, onCreate, onCancel }: P
         <Typography variant="h5" color='var(--black)'>Créer une nouvelle balise</Typography>
 
         <TextField
+          label="Nom"
+          value={tag.name}
+          onChange={(e) => onChange("name", e.target.value)}
+          fullWidth
+        />
+
+        <TextField
           label="Identifiant unique"
           value={tag.source_address}
           onChange={(e) => onChange("source_address", e.target.value)}
