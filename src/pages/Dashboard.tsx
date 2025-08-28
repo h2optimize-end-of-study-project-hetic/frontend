@@ -10,7 +10,7 @@ import { formatDateForInput } from "../utils/date";
 const Dashboard = () => {
   const navigate = useNavigate();
   const backendURLAPI = import.meta.env.VITE_BACKEND_URL_API;
-
+  const navigate = useNavigate();
   const { maps, loading, error } = useMaps();
   const { rooms, loadingRoom, errorRoom } = useRooms();
 
