@@ -1,21 +1,23 @@
 import { useEffect, useState } from "react";
-import MapView from "../components/_map/MapView";
-import MapHeader from "../components/_map/MapHeader";
-import Selector from "../components/_map/Selector";
-
-import type { FloorMap } from "../types/map";
+import { useNavigate } from "react-router";
 import { useMaps } from "../hooks/useMap";
 import { buildings as builds } from "../components/_map/MapData";
 
+import MapView from "../components/_map/MapView";
+import MapTitle from "../components/_map/MapTitle";
+import Button from "@mui/material/Button";
+import MapHeader from "../components/_map/MapHeader";
+
 function Dashboard() {
   const backendURLAPI = import.meta.env.VITE_BACKEND_URL_API;
-
+  const navigate = useNavigate();
   const { maps, loading, error } = useMaps();
 
   const [selectedBuildingId, setSelectedBuildingId] = useState<number | null>(
     null
   );
   const [selectedFloorId, setSelectedFloorId] = useState<number | null>(null);
+  const [date, setDate] = useState<string>("");
 
   // TODO api call building
   const buildings = Array.from(new Set(maps.map((m) => m.building_id))).map(
@@ -55,32 +57,36 @@ function Dashboard() {
 
   return (
     <>
-      <div className="flex flex-row gap-2.5 w-full bg-(--light-blue) rounded-[12px] items-center !p-3">
-        <Selector<{ id: number; name: string }>
-          options={buildings}
-          value={selectedBuildingId ?? 0}
-          onChange={(id) => onBuildingChange(Number(id))}
-          getLabel={(b) => b.name}
-          getId={(b) => b.id}
-        />
-
-        {selectedBuildingFloors.length > 0 && (
-          <Selector<FloorMap>
-            options={selectedBuildingFloors}
-            value={selectedFloorId ?? 0}
-            onChange={(id) => setSelectedFloorId(Number(id))}
-            getLabel={(floor) => floor.file_name.split(".")[0]}
-            getId={(floor) => floor.id}
-          />
-        )}
-      </div>
-
       <MapHeader
+        buildings={buildings}
+        selectedBuildingId={selectedBuildingId}
+        onBuildingChange={onBuildingChange}
+        selectedBuildingFloors={selectedBuildingFloors}
+        selectedFloorId={selectedFloorId}
+        onFloorChange={(id) => setSelectedFloorId(id)}
+        date={date}
+        onDateChange={setDate}
+      />
+
+      <MapTitle
         buildingName={`Building ${selectedBuildingId}`}
         floorName={selectedFloor.file_name}
       />
-
-      <div style={{ padding: "10px" }}>
+      <div className="p-2.5 relative">
+        <div className="absolute z-10 !pt-2.5 !pl-13 ">
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "var(--light-green)",
+              color: "var(--dark-green)",
+              fontWeight: 500,
+              boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+            }}
+            onClick={() => navigate("/edit")}
+          >
+            Éditer le planning
+          </Button>
+        </div>
         {/* <MapWithDrawWrapper
           image={`${backendURLAPI}/map/img/${selectedFloor.id}`}
           bounds={[
@@ -94,7 +100,6 @@ function Dashboard() {
             [0, 0],
             [selectedFloor.length, selectedFloor.width],
           ]}
-          // rooms={[]} // attente du crud room
           rooms={builds[1].etages[0].rooms} // attente du crud room
           // rooms={builds[selectedFloor].rooms}
         />

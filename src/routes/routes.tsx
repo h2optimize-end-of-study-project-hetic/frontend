@@ -14,6 +14,7 @@ import EditGroupView from "../pages/group/EditGroupView";
 import EditUserView from "../pages/user/EditUserView";
 import AdminDashboard from "../pages/admin/AdminDashboardView";
 import UserEdit from "../pages/user/UserEdit";
+import Edit from "../pages/Edit";
 import RequireRole from "../components/RequireRole";
 
 export default function AppRoutes() {

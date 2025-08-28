@@ -1,14 +1,61 @@
-type Props = {
-  buildingName: string;
-  floorName: string;
-};
+import type { FloorMap } from "../../types/map";
+import Selector from "./Selector";
 
-const MapHeader = ({ buildingName, floorName }: Props) => {
+type Building = { id: number; name: string };
+
+interface MapHeaderProps {
+  buildings: Building[];
+  selectedBuildingId: number | null;
+  onBuildingChange: (id: number) => void;
+  selectedBuildingFloors: FloorMap[];
+  selectedFloorId: number | null;
+  onFloorChange: (id: number) => void;
+  date: string;
+  onDateChange: (date: string) => void;
+}
+
+export default function MapHeader({
+  buildings,
+  selectedBuildingId,
+  onBuildingChange,
+  selectedBuildingFloors,
+  selectedFloorId,
+  onFloorChange,
+  date,
+  onDateChange,
+}: MapHeaderProps) {
   return (
-    <div className="w-fit bg-white font-bold !my-3.5 !px-4 !py-2 text-xl">
-      🏢 {buildingName} – {floorName}
+    <div className="flex flex-row gap-2.5 justify-between w-full bg-(--light-blue) rounded-[12px] items-center !p-3">
+      <div className="flex flex-row gap-2.5">
+        <Selector<Building>
+          options={buildings}
+          value={selectedBuildingId ?? 0}
+          onChange={(id) => onBuildingChange(Number(id))}
+          getLabel={(b) => b.name}
+          getId={(b) => b.id}
+        />
+
+        {selectedBuildingFloors.length > 0 && (
+          <Selector<FloorMap>
+            options={selectedBuildingFloors}
+            value={selectedFloorId ?? 0}
+            onChange={(id) => onFloorChange(Number(id))}
+            getLabel={(floor) => floor.file_name.split(".")[0]}
+            getId={(floor) => floor.id}
+          />
+        )}
+      </div>
+      <div>
+        <label htmlFor="Date">Date : </label>
+        <input
+          type="date"
+          name="Date"
+          id="Date"
+          value={date}
+          onChange={(e) => onDateChange(e.target.value)}
+          className="bg-white !p-2 rounded-[8px] min-w-[130px]"
+        />
+      </div>
     </div>
   );
-};
-
-export default MapHeader;
+}
