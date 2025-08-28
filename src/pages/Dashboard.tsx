@@ -5,6 +5,7 @@ import Selector from "../components/_map/Selector";
 
 import type { FloorMap } from "../types/map";
 import { useMaps } from "../hooks/useMap";
+import { buildings as builds } from "../components/_map/MapData";
 
 function Dashboard() {
   const backendURLAPI = import.meta.env.VITE_BACKEND_URL_API;
@@ -88,12 +89,14 @@ function Dashboard() {
           ]}
         /> */}
         <MapView
-          image={`${backendURLAPI}/map/img/${selectedFloor.id}`}
+          image={`${backendURLAPI}/api/v1/map/img/${selectedFloor.id}`}
           bounds={[
             [0, 0],
             [selectedFloor.length, selectedFloor.width],
           ]}
-          rooms={[]} // attente du crud room
+          // rooms={[]} // attente du crud room
+          rooms={builds[1].etages[0].rooms} // attente du crud room
+          // rooms={builds[selectedFloor].rooms}
         />
       </div>
     </>
