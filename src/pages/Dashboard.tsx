@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useMaps } from "../hooks/useMap";
-import { buildings as builds } from "../components/_map/MapData";
-
+import { useRooms } from "../hooks/useRoom";
 import MapView from "../components/_map/MapView";
 import MapTitle from "../components/_map/MapTitle";
 import Button from "@mui/material/Button";
 import MapHeader from "../components/_map/MapHeader";
+// import MapWithDrawWrapper from "../components/_map/MapViewWithDraw";
 
 function Dashboard() {
   const backendURLAPI = import.meta.env.VITE_BACKEND_URL_API;
   const navigate = useNavigate();
   const { maps, loading, error } = useMaps();
+  const { rooms, loadingRoom, errorRoom } = useRooms();
 
   const [selectedBuildingId, setSelectedBuildingId] = useState<number | null>(
     null
@@ -33,6 +34,14 @@ function Dashboard() {
     (m) => m.id === selectedFloorId
   );
 
+  const selectedRooms = selectedFloor
+    ? rooms.filter(
+        (room) =>
+          room.building_id === selectedBuildingId &&
+          room.floor === selectedFloor.floor
+      )
+    : [];
+
   // Init : choisir le premier building/floor
   useEffect(() => {
     if (maps.length > 0 && selectedBuildingId === null) {
@@ -51,9 +60,15 @@ function Dashboard() {
     if (firstFloor) setSelectedFloorId(firstFloor.id);
   };
 
-  if (loading) return <div>Chargement des maps...</div>;
-  if (error) return <div>Erreur : {error}</div>;
-  if (!selectedFloor) return <div>Aucune map trouvée</div>;
+  if (loading || loadingRoom)
+    return (
+      <div>
+        {" "}
+        {loading ? "Chargement des plans..." : "Chargement des salles..."}
+      </div>
+    );
+  if (error || errorRoom) return <div>{error ? error : errorRoom}</div>;
+  if (!selectedFloor) return <div>Aucun plan trouvé</div>;
 
   return (
     <>
@@ -88,11 +103,11 @@ function Dashboard() {
           </Button>
         </div>
         {/* <MapWithDrawWrapper
-          image={`${backendURLAPI}/map/img/${selectedFloor.id}`}
+          image={`${backendURLAPI}/api/v1/map/img/${selectedFloor.id}`}
           bounds={[
             [0, 0],
             [selectedFloor.length, selectedFloor.width],
-          ]}
+          ]} 
         /> */}
         <MapView
           image={`${backendURLAPI}/api/v1/map/img/${selectedFloor.id}`}
@@ -100,8 +115,7 @@ function Dashboard() {
             [0, 0],
             [selectedFloor.length, selectedFloor.width],
           ]}
-          rooms={builds[1].etages[0].rooms} // attente du crud room
-          // rooms={builds[selectedFloor].rooms}
+          rooms={selectedRooms}
         />
       </div>
     </>

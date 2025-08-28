@@ -1,10 +1,10 @@
 export type Room = {
   id: string;
   name: string;
-  polygon: [number, number][];
-  coords: [number, number];
-  //   type: string;
+  description: string;
+  floor: number;
+  building_id: number;
+  area: number;
+  shape: [number, number][];
   capacity: number;
-  occupied: boolean;
-  temperature: number;
 };

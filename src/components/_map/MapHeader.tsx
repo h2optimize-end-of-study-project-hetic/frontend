@@ -1,4 +1,4 @@
-import type { FloorMap } from "../../types/map";
+import type { FloorMap } from "../../types/floorMap";
 import Selector from "./Selector";
 
 type Building = { id: number; name: string };

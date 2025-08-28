@@ -4,13 +4,11 @@ import {
   Polygon,
   Popup,
   Tooltip,
-  // useMap,
 } from "react-leaflet";
 
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import type { Room } from "./MapType";
-// import { useEffect } from "react";
+import type { Room } from "../../types/room";
 
 type Props = {
   image: string;
@@ -48,7 +46,7 @@ const MapView = ({ image, bounds, rooms }: Props) => {
         height: "70vh",
         width: "100%",
         margin: "auto",
-        border: "1px solid black",
+        border: "1px solid var(--light-blue)",
       }}
     >
       {/* Image du plan */}
@@ -58,23 +56,23 @@ const MapView = ({ image, bounds, rooms }: Props) => {
       {rooms.map((room) => (
         <Polygon
           key={room.id}
-          positions={room.polygon}
-          pathOptions={{
-            color:
-              room.type === "annex"
-                ? "var(--dark-blue)"
-                : room.occupied
-                ? "var(--dark-red)"
-                : "var(--dark-green)",
-            fillColor:
-              room.type === "annex"
-                ? "var(--light-blue)"
-                : room.occupied
-                ? "var(--light-red)"
-                : "var(--light-green)",
-            fillOpacity: 1,
-            weight: 1,
-          }}
+          positions={room.shape}
+          // pathOptions={{
+          //   color:
+          //     room.type === "annex"
+          //       ? "var(--dark-blue)"
+          //       : room.occupied
+          //       ? "var(--dark-red)"
+          //       : "var(--dark-green)",
+          //   fillColor:
+          //     room.type === "annex"
+          //       ? "var(--light-blue)"
+          //       : room.occupied
+          //       ? "var(--light-red)"
+          //       : "var(--light-green)",
+          //   fillOpacity: 1,
+          //   weight: 1,
+          // }}
         >
           <Tooltip permanent direction="center" opacity={0.8}>
             <strong>{room.name}</strong>
@@ -82,13 +80,15 @@ const MapView = ({ image, bounds, rooms }: Props) => {
 
           <Popup>
             <p>
-              Salle : <strong>{room.name}</strong>
+              <strong className="font-bold">{room.name}</strong>
               <br />
-              Capacité : {room.capacity}
+              <span className="font-semibold">{room.description}</span>
               <br />
-              Occupée : {room.occupied ? "Oui" : "Non"}
+              Capacité : <strong>{room.capacity}</strong>
               <br />
-              Température : {room.temperature}°C
+              {/* Occupée : {room.occupied ? "Oui" : "Non"} */}
+              <br />
+              {/* Température : {room.temperature}°C */}
             </p>
           </Popup>
         </Polygon>

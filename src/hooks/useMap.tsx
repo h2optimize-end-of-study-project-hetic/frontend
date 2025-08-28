@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { FloorMap } from "../types/map";
+import type { FloorMap } from "../types/floorMap";
 
 export function useMaps() {
   const backendURLAPI = import.meta.env.VITE_BACKEND_URL_API;
