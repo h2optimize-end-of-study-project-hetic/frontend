@@ -5,12 +5,6 @@ on:
       - develop
       - release/*
       - feature/*
-  workflow_dispatch:
-    inputs:
-      branch:
-        description: "Branch to deploy"
-        required: true
-        default: develop
 
 jobs:
   deploy:
@@ -19,9 +13,10 @@ jobs:
 
     env:
       NODE_ENV: develop
-      BRANCH: ${{ github.event.inputs.branch || github.ref_name }}
+      BRANCH: ${{ github.ref_name }}
       ENVIRONMENT: release
       VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH || '/release/' }}
+      VITE_BACKEND_URL_API: ${{ vars.VITE_BACKEND_URL_API || 'http://localhost:8000' }}
       FRONTEND_HOST: ${{ vars.FRONTEND_HOST || 'frontend_release' }}
       FRONTEND_EXT_PORT: ${{ vars.FRONTEND_EXT_PORT || 81 }}
       GHCR_LOCATION: ${{ vars.GHCR_LOCATION || github.repository }}
@@ -40,10 +35,12 @@ jobs:
       - name: Override .env with GitHub environment variables
         run: |
           sed -i '/^VITE_BASE_PATH=/d' .env || true
+          sed -i '/^VITE_BACKEND_URL_API=/d' .env || true
           sed -i '/^FRONTEND_EXT_PORT=/d' .env || true
           sed -i '/^FRONTEND_HOST=/d' .env || true
           sed -i '/^GHCR_LOCATION=/d' .env || true
           echo "VITE_BASE_PATH=${VITE_BASE_PATH}" >> .env
+          echo "VITE_BACKEND_URL_API=${VITE_BACKEND_URL_API}" >> .env
           echo "FRONTEND_HOST=${FRONTEND_HOST}" >> .env
           echo "FRONTEND_EXT_PORT=${FRONTEND_EXT_PORT}" >> .env
           echo "GHCR_LOCATION=${GHCR_LOCATION}" >> .env
