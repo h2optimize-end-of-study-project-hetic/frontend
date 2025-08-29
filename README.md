@@ -43,6 +43,10 @@ SSH_HOST = admin-hetic.arcplex.tech
 SSH_PORT = 2328
 SSH_USER = joachim
 VITE_BASE_PATH = /release/
+FRONTEND_HOST=frontend
+FRONTEND_VERSION=0.0.1
+GHCR_LOCATION=h2optimize-end-of-study-project-hetic
+VITE_BACKEND_URL_API=http://localhost:8000
 ```
 
 ## Tests
