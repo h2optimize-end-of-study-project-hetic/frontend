@@ -31,12 +31,14 @@ export default function AppRoutes() {
         </Route>
         
         //technician
-        <Route path="technician">
-          <Route path="dashboard" element={<TechnicianDashboard />} />
-          <Route path="create" element={<TechnicianTagCreate />} />
-          <Route path="edit" element={<TechnicianTagManager />} />
-          <Route path="edit" element={<TechnicianTagEdit />} />
-          <Route path=":id/edit" element={<TechnicianTagEdit />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="technician">
+            <Route path="dashboard" element={<TechnicianDashboard />} />
+            <Route path="create" element={<TechnicianTagCreate />} />
+            <Route path="edit" element={<TechnicianTagManager />} />
+            <Route path="edit" element={<TechnicianTagEdit />} />
+            <Route path=":id/edit" element={<TechnicianTagEdit />} />
+          </Route>
         </Route>
 
         //admin
