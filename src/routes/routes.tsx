@@ -24,6 +24,8 @@ export default function AppRoutes() {
         //public
         <Route path="login" element={<LoginPage />} />
         <Route path="sign-up" element={<SignUpPage />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="edit" element={<Edit />} />
         // general
         <Route
           path="/dashboard"

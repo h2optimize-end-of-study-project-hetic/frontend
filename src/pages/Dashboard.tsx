@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import Button from "@mui/material/Button";
+
+import MapContainer from "../components/_map/MapContainer";
 import { useMaps } from "../hooks/useMap";
 import { useRooms } from "../hooks/useRoom";
-import MapView from "../components/_map/MapView";
-import MapTitle from "../components/_map/MapTitle";
-import Button from "@mui/material/Button";
-import MapHeader from "../components/_map/MapHeader";
-// import MapWithDrawWrapper from "../components/_map/MapViewWithDraw";
+import { formatDateForInput } from "../utils/date";
 
-function Dashboard() {
-  const backendURLAPI = import.meta.env.VITE_BACKEND_URL_API;
+const Dashboard = () => {
   const navigate = useNavigate();
+  const backendURLAPI = import.meta.env.VITE_BACKEND_URL_API;
+
   const { maps, loading, error } = useMaps();
   const { rooms, loadingRoom, errorRoom } = useRooms();
 
@@ -20,12 +20,12 @@ function Dashboard() {
   const [selectedFloorId, setSelectedFloorId] = useState<number | null>(null);
   const [date, setDate] = useState<string>("");
 
-  // TODO api call building
+  // Liste des bâtiments
   const buildings = Array.from(new Set(maps.map((m) => m.building_id))).map(
     (id) => ({ id, name: `Bâtiment ${id}` })
   );
 
-  // Floors pour le bâtiment sélectionné
+  // Étages du bâtiment sélectionné
   const selectedBuildingFloors = maps.filter(
     (m) => m.building_id === selectedBuildingId
   );
@@ -42,8 +42,11 @@ function Dashboard() {
       )
     : [];
 
-  // Init : choisir le premier building/floor
+  // Init : choisir la date et le premier building/floor
   useEffect(() => {
+    const now = new Date();
+    setDate(formatDateForInput(now));
+
     if (maps.length > 0 && selectedBuildingId === null) {
       const firstBuildingId = maps[0].building_id;
       setSelectedBuildingId(firstBuildingId);
@@ -60,19 +63,25 @@ function Dashboard() {
     if (firstFloor) setSelectedFloorId(firstFloor.id);
   };
 
-  if (loading || loadingRoom)
-    return (
-      <div>
-        {" "}
-        {loading ? "Chargement des plans..." : "Chargement des salles..."}
-      </div>
-    );
-  if (error || errorRoom) return <div>{error ? error : errorRoom}</div>;
-  if (!selectedFloor) return <div>Aucun plan trouvé</div>;
-
   return (
-    <>
-      <MapHeader
+    <div>
+      <div className="!my-4">
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: "var(--light-green)",
+            color: "var(--dark-green)",
+            fontWeight: 500,
+            boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+          }}
+          onClick={() => navigate("/edit")}
+        >
+          Éditer le planning
+        </Button>
+      </div>
+
+      <MapContainer
+        backendURLAPI={backendURLAPI}
         buildings={buildings}
         selectedBuildingId={selectedBuildingId}
         onBuildingChange={onBuildingChange}
@@ -81,45 +90,13 @@ function Dashboard() {
         onFloorChange={(id) => setSelectedFloorId(id)}
         date={date}
         onDateChange={setDate}
+        selectedFloor={selectedFloor}
+        selectedRooms={selectedRooms}
+        loading={loading || loadingRoom}
+        error={error || errorRoom}
       />
-
-      <MapTitle
-        buildingName={`Building ${selectedBuildingId}`}
-        floorName={selectedFloor.file_name}
-      />
-      <div className="p-2.5 relative">
-        <div className="absolute z-10 !pt-2.5 !pl-13 ">
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "var(--light-green)",
-              color: "var(--dark-green)",
-              fontWeight: 500,
-              boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-            }}
-            onClick={() => navigate("/edit")}
-          >
-            Éditer le planning
-          </Button>
-        </div>
-        {/* <MapWithDrawWrapper
-          image={`${backendURLAPI}/api/v1/map/img/${selectedFloor.id}`}
-          bounds={[
-            [0, 0],
-            [selectedFloor.length, selectedFloor.width],
-          ]} 
-        /> */}
-        <MapView
-          image={`${backendURLAPI}/api/v1/map/img/${selectedFloor.id}`}
-          bounds={[
-            [0, 0],
-            [selectedFloor.length, selectedFloor.width],
-          ]}
-          rooms={selectedRooms}
-        />
-      </div>
-    </>
+    </div>
   );
-}
+};
 
 export default Dashboard;
