@@ -10,6 +10,7 @@ on:
       
   push:
     branches:
+      - loginPage
       - adminSide
       - develop
       - release/*
