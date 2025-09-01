@@ -16,8 +16,6 @@ const options = [
   { label: "Admin - Dashboard", path: "/admin/dashboard" },
 ];
 
-const ITEM_HEIGHT = 48;
-
 export default function Header() {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -56,7 +54,6 @@ export default function Header() {
         slotProps={{
           paper: {
             style: {
-              maxHeight: ITEM_HEIGHT * 4.5,
               width: "20ch",
             },
           },
