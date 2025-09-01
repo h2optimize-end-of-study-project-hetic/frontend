@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { type UserInput } from "../schemas/user";
+import { useAuthHeaders } from "./useAuthHeader";
 
 export function useCreateUser() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const headers = useAuthHeaders();
 
   const createUser = async (user: UserInput) => {
     setLoading(true);
@@ -14,7 +16,7 @@ export function useCreateUser() {
         `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/users`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers,
           body: JSON.stringify(user),
         }
       );
