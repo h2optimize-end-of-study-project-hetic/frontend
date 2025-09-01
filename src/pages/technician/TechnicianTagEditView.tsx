@@ -76,8 +76,8 @@ export default function TechnicianTagEdit() {
 
     const payload = {
       description: tag.description,
-      building: tag.building,
-      room: tag.room,
+      // building: tag.building,
+      // room: tag.room,
     };
 
     try {
@@ -85,7 +85,7 @@ export default function TechnicianTagEdit() {
         `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/tag/${id}`,
         {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+          headers,
           body: JSON.stringify({ tag: payload }),
         }
       );
