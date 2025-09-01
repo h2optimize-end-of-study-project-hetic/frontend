@@ -1,5 +1,13 @@
 name: Release — Deploy Frontend
 on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to deploy"
+        required: true
+        type: string
+        default: develop
+      
   push:
     branches:
       - adminSide
@@ -14,7 +22,7 @@ jobs:
 
     env:
       NODE_ENV: develop
-      BRANCH: ${{ github.ref_name }}
+      BRANCH: ${{ github.event.inputs.branch || github.ref_name }}
       ENVIRONMENT: release
       VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH || '/release/' }}
       VITE_BACKEND_URL_API: ${{ vars.VITE_BACKEND_URL_API || 'http://localhost:8000' }}
@@ -97,5 +105,3 @@ jobs:
               -e NODE_ENV=${{ env.NODE_ENV }} \
               -p ${{ env.FRONTEND_EXT_PORT }}:80 \
               ghcr.io/${{ env.GHCR_LOCATION }}/${{ env.FRONTEND_HOST }}:latest
-
-
