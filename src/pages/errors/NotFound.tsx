@@ -1,12 +1,13 @@
-import { Stack, Box } from "@mui/material";
-import BasicButtons from "../../components/atoms/Button";
+import { Stack, Box, Button } from "@mui/material";
 import { useNavigate } from "react-router";
 import logo from "/favicon.svg";
+import Header from "../../components/molecules/header";
 
 export default function NotFound() {
   const navigate = useNavigate();
   return (
     <>
+      <Header />
       <Stack
         alignItems="center"
         justifyContent="center"
@@ -51,10 +52,19 @@ export default function NotFound() {
 
           <h1>Erreur 404</h1>
           <p>Oops, cette page n'existe pas !</p>
-          <BasicButtons
-            label="Retourner au Dashboard"
+
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "var(--light-blue)",
+              color: "var(--dark-blue)",
+              fontWeight: 500,
+              boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+            }}
             onClick={() => navigate("/dashboard")}
-          />
+          >
+            Retourner au Dashboard
+          </Button>
         </Box>
       </Stack>
     </>
