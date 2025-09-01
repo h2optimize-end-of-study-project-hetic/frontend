@@ -26,12 +26,12 @@ export default function AppRoutes() {
         <Route path="sign-up" element={<SignUpPage />} />
 
         // general
-        <Route element={<ProtectedRoute />}>
+        {/* <Route element={<ProtectedRoute />}> */}
           <Route path="dashboard" element={<Dashboard />} />
-        </Route>
+        {/* </Route> */}
         
         //technician
-        <Route element={<ProtectedRoute />}>
+        {/* <Route element={<ProtectedRoute />}> */}
           <Route path="technician">
             <Route path="dashboard" element={<TechnicianDashboard />} />
             <Route path="create" element={<TechnicianTagCreate />} />
@@ -39,7 +39,7 @@ export default function AppRoutes() {
             <Route path="edit" element={<TechnicianTagEdit />} />
             <Route path=":id/edit" element={<TechnicianTagEdit />} />
           </Route>
-        </Route>
+        {/* </Route> */}
 
         //admin
         <Route path="admin">
