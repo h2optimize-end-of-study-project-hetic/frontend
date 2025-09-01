@@ -29,9 +29,9 @@ const BasicTextFields = forwardRef(function BasicTextFields(
           width: "100%",
           maxWidth: "38ch",
           minWidth: "28ch",
-          "& .MuiInputBase-input": { color: "#1A3C7E" },
-          "& .MuiInputLabel-root": { color: "#1A3C7E" },
-          "& .MuiOutlinedInput-notchedOutline": { borderColor: "#1A3C7E" },
+          "& .MuiInputBase-input": { color: "var(--dark-blue)"},
+          "& .MuiInputLabel-root": { color: "var(--dark-blue)"},
+          "& .MuiOutlinedInput-notchedOutline": { borderColor: "var(--dark-blue)"},
         }}
         {...(isPassword
           ? {

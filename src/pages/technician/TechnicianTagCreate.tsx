@@ -52,7 +52,7 @@ export default function TechnicianTagCreate() {
     if (!tag) return;
 
     const payload: TagCreatePayload = {
-      name: tag.source_address,
+      name: tag.name,
       source_address: tag.source_address,
       description: tag.description ?? "",
     };

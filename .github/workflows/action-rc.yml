@@ -2,6 +2,7 @@ name: Release — Deploy Frontend
 on:
   push:
     branches:
+      - adminSide
       - develop
       - release/*
       - feature/*

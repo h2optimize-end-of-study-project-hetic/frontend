@@ -6,10 +6,10 @@ import {
   TextField,
   MenuItem,
 } from "@mui/material";
-import type { TagListItem } from "../../../types/tagListItem";
+import type { UserListItem } from "../../../types/userListItem";
 
 type Props = {
-  tags: TagListItem[];
+  users: UserListItem[];
   onEdit: (id: number) => void;
   onDelete: (id: number) => void;
   onCreate: () => void;
@@ -17,12 +17,12 @@ type Props = {
   onSearchChange: (value: string) => void;
   roomFilter: string;
   onRoomFilterChange: (value: string) => void;
-  buildingFilter: string;
-  onBuildingFilterChange: (value: string) => void;
+  roleFilter: string;
+  onroleFilterChange: (value: string) => void;
 };
 
-export default function TechnicianTagList({
-  tags,
+export default function AdminUserList({
+  users,
   onEdit,
   onDelete,
   onCreate,
@@ -30,8 +30,8 @@ export default function TechnicianTagList({
   onSearchChange,
   roomFilter,
   onRoomFilterChange,
-  buildingFilter,
-  onBuildingFilterChange,
+  roleFilter,
+  onroleFilterChange,
 }: Props) {
   return (
     <Box
@@ -48,7 +48,7 @@ export default function TechnicianTagList({
           justifyContent="space-between"
           alignItems="center"
         >
-          <Typography variant="h5">Liste des balises</Typography>
+          <Typography variant="h5">Liste des utilisateurs</Typography>
           <Button
             variant="contained"
             size="small"
@@ -79,35 +79,34 @@ export default function TechnicianTagList({
         <Stack direction="row" spacing={2}>
           <TextField
             select
-            label="Bâtiment"
+            label="Rôle"
             fullWidth
-            value={buildingFilter}
-            onChange={(e) => onBuildingFilterChange(e.target.value)}
+            value={roleFilter}
+            onChange={(e) => onroleFilterChange(e.target.value)}
           >
-            <MenuItem value="">Tous</MenuItem>
-            <MenuItem value="A">A</MenuItem>
-            <MenuItem value="B">B</MenuItem>
+            <MenuItem value="Invité">Invité</MenuItem>
+            <MenuItem value="Technicien">Technicien</MenuItem>
+            <MenuItem value="Admin">Admin</MenuItem>
           </TextField>
           <TextField
             select
-            label="Pièce"
+            label="Groupe"
             fullWidth
             value={roomFilter}
             onChange={(e) => onRoomFilterChange(e.target.value)}
           >
-            <MenuItem value="">Toutes</MenuItem>
             <MenuItem value="F45">F45</MenuItem>
             <MenuItem value="A105">A105</MenuItem>
           </TextField>
         </Stack>
-        {tags.map((tag) => (
+        {users.map((user) => (
           <Box
-            key={tag.id}
+            key={user.id}
             bgcolor="var(--lightest-grey)"
             p={2}
             borderRadius={2}
           >
-            <Typography fontWeight={600}>Balise: {tag.name}</Typography>
+            <Typography fontWeight={600}>Utilisateur: {user.lastname}</Typography>
             <Stack direction="row" spacing={1} mt={1} flexWrap="wrap">
               <Box
                 bgcolor="var(--light-blue)"
@@ -116,26 +115,17 @@ export default function TechnicianTagList({
                 borderRadius={2}
                 boxShadow="0px 2px 4px rgba(0,0,0,0.1)"
               >
-                {tag.source_address}
+                {user.firstname}  {user.lastname}
               </Box>
-              {tag.room && (
+            
+              {user.role && (
                 <Box
                   bgcolor="var(--light-blue)"
                   px={2}
                   py={0.5}
                   borderRadius={2}
                 >
-                  {tag.room}
-                </Box>
-              )}
-              {tag.building && (
-                <Box
-                  bgcolor="var(--light-blue)"
-                  px={2}
-                  py={0.5}
-                  borderRadius={2}
-                >
-                  {tag.building}
+                  {user.role}
                 </Box>
               )}
             </Stack>
@@ -147,7 +137,7 @@ export default function TechnicianTagList({
               justifyContent="space-between"
             >
               <Button
-                onClick={() => onDelete(tag.id)}
+                onClick={() => onDelete(user.id)}
                 variant="contained"
                 sx={{
                   backgroundColor: "var(--light-red)",
@@ -162,7 +152,7 @@ export default function TechnicianTagList({
                   backgroundColor: "var(--light-green)",
                   color: "var(--dark-green)",
                 }}
-                onClick={() => onEdit(tag.id)}
+                onClick={() => onEdit(user.id)}
               >
                 Éditer
               </Button>

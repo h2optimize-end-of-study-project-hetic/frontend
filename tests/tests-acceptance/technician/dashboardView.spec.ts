@@ -52,5 +52,22 @@ test.describe("Dashboard – Vue tableau du technicien", () => {
     await editButton.click();
   });
 
+  test("au click sur le bouton Supprimer, le technicien ne voit plus la balise", async ({ page }) => {
+    await page.route("**/api/v1/tag/1", async route => {
+      if (route.request().method() === "DELETE") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ success: true }),
+        });
+      } else {
+        await route.continue();
+      }
+    });
+
+    await page.getByRole("button", { name: "Supprimer" }).first().click();
+    await expect(page.getByText("Balise 1")).toHaveCount(0);
+  });
+
 
 });
