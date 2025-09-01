@@ -68,7 +68,7 @@ export default function TechnicianTagCreate() {
         `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/tag`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers,
           body: JSON.stringify({ tag: payload }),
         }
       );
