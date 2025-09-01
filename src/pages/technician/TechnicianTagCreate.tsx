@@ -4,16 +4,21 @@ import type { Tag } from "../../types/tag";
 import type { TagCreatePayload } from "../../types/tagCreatePayload";
 import { useNavigate } from "react-router";
 import DashboardCreate from "../../components/organisms/technician/DashboardCreate";
+import { useAuthHeaders } from "../../hooks/useAuthHeader";
 
 export default function TechnicianTagCreate() {
   const [tag, setTag] = useState<Tag | null>(null);
   const [createError, setCreateError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const headers = useAuthHeaders();
 
   useEffect(() => {
     const fetchMaxId = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/v1/tag");
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/tag`,
+          { headers }
+        );
         if (!res.ok) throw new Error("Erreur lors du fetch");
 
         const data = await res.json();
@@ -32,7 +37,7 @@ export default function TechnicianTagCreate() {
           removedAt: "",
           createdAt: "",
           updatedAt: "",
-          name: ""
+          name: "",
         });
       } catch (err) {
         console.error("Erreur fetch ID max:", err);
@@ -40,7 +45,7 @@ export default function TechnicianTagCreate() {
     };
 
     fetchMaxId();
-  }, []);
+  }, [headers]);
 
   const handleChange = (field: keyof Tag, value: string) => {
     if (tag) {
@@ -59,11 +64,14 @@ export default function TechnicianTagCreate() {
     console.log("Payload envoyé :", JSON.stringify({ tag: payload }, null, 2));
 
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/tag`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tag: payload }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/tag`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tag: payload }),
+        }
+      );
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 

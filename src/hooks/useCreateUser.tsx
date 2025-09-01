@@ -10,11 +10,14 @@ export function useCreateUser() {
     setError(null);
 
     try {
-      const res = await fetch("http://localhost:8000/api/v1/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/users`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(user),
+        }
+      );
 
       if (!res.ok) {
         throw new Error(`Erreur HTTP ${res.status}`);

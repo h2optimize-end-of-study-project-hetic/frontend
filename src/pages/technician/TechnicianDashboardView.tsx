@@ -4,6 +4,7 @@ import DashboardContent from "../../components/organisms/technician/DashboardCon
 import FilerTagList from "../../components/organisms/technician/FilterTagList";
 import type { Tag } from "../../types/tag";
 import { useEffect, useState } from "react";
+import { useAuthHeaders } from "../../hooks/useAuthHeader";
 
 export default function TechnicianDashboard() {
   const [allTags, setAllTags] = useState<Tag[]>([]);
@@ -11,11 +12,15 @@ export default function TechnicianDashboard() {
   const [roomFilter, setRoomFilter] = useState("");
   const [buildingFilter, setBuildingFilter] = useState("");
   const navigate = useNavigate();
+  const headers = useAuthHeaders();
 
   useEffect(() => {
     const fetchAllTags = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/v1/tag`);
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/tag`,
+          { headers }
+        );
         if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
         const data = await res.json();
         setAllTags(data.data);
@@ -25,7 +30,7 @@ export default function TechnicianDashboard() {
     };
 
     fetchAllTags();
-  }, []);
+  }, [headers]);
 
   const filteredTags = allTags.filter((tag) => {
     const matchesSearch = tag.source_address
@@ -39,9 +44,13 @@ export default function TechnicianDashboard() {
 
   const handleDelete = async (tagId: number) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/tag/${tagId}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/tag/${tagId}`,
+        {
+          method: "DELETE",
+          headers,
+        }
+      );
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 

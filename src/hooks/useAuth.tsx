@@ -12,79 +12,76 @@ export const useAuth = () => {
   const [error, setError] = useState<string | null>(null);
   const isAuthenticated = Boolean(user);
 
+  const login = async (username: string, password: string) => {
+    try {
+      const data = new URLSearchParams();
+      data.append("grant_type", "password");
+      data.append("username", username);
+      data.append("password", password);
+      data.append("scope", "");
+      data.append("client_id", "string");
+      data.append("client_secret", "**");
+      
 
-  const login = async (email: string, password: string) => {
-    void password;
-  try {
-    await new Promise((res) => setTimeout(res, 500));
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL_API}/api/v1/auth/login`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: data,
+      });
 
-    const fakeToken = "123456";
-    const fakeUser = {
-      id: 1,
-      email,
-      role: "admin",
-    };
+      if (!res.ok) throw new Error("Erreur Auth");
+      const body = await res.json();
 
-    localStorage.setItem("token", fakeToken);
-    setUser(fakeUser);
-    console.log("Mock login réussi !");
-  } catch (err) {
-    console.error(err);
-    setError("Erreur de connexion (mock)");
-  }
-};
+      localStorage.setItem("token", body.access_token);
 
-const signUp = async (firstname: string, lastname: string, email: string, password: string) => {
-try {
-  const res = await fetch(`/api/sign-up`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ firstname, lastname, email, password }),
-  });
-  if (!res.ok) throw new Error("Échec de l'enregistrement");
-  await login(email, password);
-} catch (err) {
-  const message = err instanceof Error ? err.message : String(err);
-  setError(`Erreur: ${message}`);
-}
-};
+      setUser(body.user);
+    } catch (err) {
+      console.error(err);
+      setError("Erreur de connexion");
+    }
+  };
 
   useEffect(() => {
-    const controller = new AbortController();
-    const signal = controller.signal;
     const fetchUser = async () => {
       try {
-        const response = await fetch("/api/me", {
-          method: "GET",
-          signal,
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL_API}/api/v1/auth/me`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-
-        if (!response.ok) {
-          throw new Error("Impossible de charger l'utilisateur");
-        }
-
-        const data: User = await response.json();
+        if (!res.ok) throw new Error("User non trouvé");
+        const data = await res.json();
         setUser(data);
       } catch (err) {
-        const error = err as Error;
-        if (error.name !== "AbortError") {
-          setError(error.message || "Erreur inconnue");
-        }
+        console.error(err);
+        setError("Erreur authentification");
       } finally {
-        setLoading(false);
+        setLoading(false);  
       }
     };
-
     fetchUser();
-
-    return () => {
-      controller.abort();
-    };
   }, []);
 
+  const signUp = async (firstname: string, lastname: string, email: string, password: string) => {
+  try {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL_API}/api/v1/users`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ firstname, lastname, email, password }),
+    });
 
-  return { user, loading, error, login, signUp, isAuthenticated };
+    if (!res.ok) throw new Error("Erreur inscription");
+
+    await login(email, password);
+
+  } catch (err) {
+    console.error(err);
+    setError("Erreur inscription");
+  }
+};
+
+  return { user, loading, error, login, isAuthenticated, signUp };
 };

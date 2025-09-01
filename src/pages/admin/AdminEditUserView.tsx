@@ -6,8 +6,10 @@ import AdminUserList from "../../components/organisms/admin/AdminDashboardUsersL
 import AdminDashboardEdit from "../../components/organisms/admin/AdminDashboardEdit";
 import type { User } from "../../types/user";
 import type { UserListItem } from "../../types/userListItem";
+import { useAuthHeaders } from "../../hooks/useAuthHeader";
 
 const AdminEditUserView = () => {
+  const headers = useAuthHeaders();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
@@ -24,7 +26,10 @@ const AdminEditUserView = () => {
 
     const fetchUser = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/v1/users/${id}`);
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/users/${id}`,
+          { headers }
+        );
         if (res.status === 404) return;
         if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
 
@@ -44,7 +49,10 @@ const AdminEditUserView = () => {
 
     const fetchAllUsers = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/v1/users`);
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/users`,
+          { headers }
+        );
         if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
         const data = await res.json();
         setAllUsers(data.data);
@@ -55,7 +63,7 @@ const AdminEditUserView = () => {
 
     fetchUser();
     fetchAllUsers();
-  }, [id]);
+  }, [headers, id]);
 
   const handleCreate = () => navigate("/admin/create");
 
@@ -75,11 +83,14 @@ const AdminEditUserView = () => {
     };
 
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/users/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/users/${id}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
@@ -95,9 +106,13 @@ const AdminEditUserView = () => {
     if (!confirm("Supprimer cet utilisateur ?")) return;
 
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/users/${userId}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/users/${userId}`,
+        {
+          method: "DELETE",
+          headers,
+        }
+      );
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setAllUsers((prev) => prev.filter((u) => u.id !== userId));
     } catch (err) {
