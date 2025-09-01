@@ -76,7 +76,11 @@ const Edit = () => {
             fontWeight: 500,
             boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
           }}
+<<<<<<< HEAD
           onClick={() => navigate("/dashboard")}
+=======
+          onClick={() => navigate("/edit")}
+>>>>>>> 847d3b1 (facto map)
         >
           Dashboard
         </Button>
