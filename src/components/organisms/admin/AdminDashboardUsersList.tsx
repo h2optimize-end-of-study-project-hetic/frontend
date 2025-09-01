@@ -84,9 +84,9 @@ export default function AdminUserList({
             value={roleFilter}
             onChange={(e) => onroleFilterChange(e.target.value)}
           >
-            <MenuItem value="Invité">Invité</MenuItem>
-            <MenuItem value="Technicien">Technicien</MenuItem>
-            <MenuItem value="Admin">Admin</MenuItem>
+            <MenuItem value="guest">Invité</MenuItem>
+            <MenuItem value="technician">Technicien</MenuItem>
+            <MenuItem value="admin">Admin</MenuItem>
           </TextField>
           <TextField
             select

@@ -50,7 +50,6 @@ export default function DashboardContent({ tags, onDelete }: Props) {
                 "Identifiant",
                 "Pièce",
                 "Bâtiment",
-                "État",
                 "Éditer / Supprimer",
               ].map((title) => (
                 <th
@@ -76,6 +75,7 @@ export default function DashboardContent({ tags, onDelete }: Props) {
                 <td style={{ padding: "8px" }}>{tag.room || "—"}</td>
                 <td style={{ padding: "8px" }}>{tag.building || "—"}</td>
                 <td style={{ padding: "8px" }}>
+
                   <Stack direction="row" spacing={2}>
                     <Button
                       onClick={() => navigate(`/technician/${tag.id}/edit`)}

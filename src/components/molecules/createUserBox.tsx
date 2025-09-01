@@ -113,8 +113,8 @@ export default function CreateUserBox({
               minWidth: "18ch",
             }}
           >
-            <MenuItem value="invité">Invité</MenuItem>
-            <MenuItem value="technicien">Technicien</MenuItem>
+            <MenuItem value="guest">Invité</MenuItem>
+            <MenuItem value="technician">Technicien</MenuItem>
             <MenuItem value="admin">Admin</MenuItem>
           </TextField>
 

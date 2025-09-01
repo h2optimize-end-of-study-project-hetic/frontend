@@ -39,7 +39,7 @@ const AdminEditUserView = () => {
           firstname: data.firstname ?? "",
           lastname: data.lastname ?? "",
           email: data.email ?? "",
-          role: data.role ?? "invité",
+          role: data.role ?? "guest",
           phone_number: data.phone_number ?? "",
         });
       } catch (err) {
