@@ -87,7 +87,7 @@ const AdminEditUserView = () => {
         `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/users/${id}`,
         {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+          headers,
           body: JSON.stringify(payload),
         }
       );
