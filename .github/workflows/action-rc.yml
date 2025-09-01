@@ -1,13 +1,5 @@
 name: Release — Deploy Frontend
-on:
-  workflow_dispatch:
-    inputs:
-      branch:
-        description: "Branch to deploy"
-        required: true
-        type: string
-        default: develop
-      
+on: 
   push:
     branches:
       - loginPage
@@ -15,6 +7,13 @@ on:
       - develop
       - release/*
       - feature/*
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to deploy"
+        required: true
+        type: string
+        default: develop
 
 jobs:
   deploy:
