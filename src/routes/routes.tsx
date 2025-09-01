@@ -5,7 +5,7 @@ import SignUpPage from "../pages/connection/SignUp";
 import Dashboard from "../pages/Dashboard";
 import NotFound from "../pages/errors/NotFound";
 import TechnicianTagEdit from "../pages/technician/TechnicianTagEditView";
-import ProtectedRoute from "./ProtectedRoute";
+// import ProtectedRoute from "./ProtectedRoute";
 import Unauthorized from "../pages/errors/Unauthorized";
 import TechnicianTagCreate from "../pages/technician/TechnicianTagCreate";
 import TechnicianDashboard from "../pages/technician/TechnicianDashboardView";
