@@ -10,8 +10,8 @@ const options = [
   { label: "Login", path: "/login" },
   { label: "Sign Up", path: "/sign-up" },
   { label: "Dashboard", path: "/dashboard" },
-  { label: "Tag - Dashboard", path: "/tag/dashboard" },
-  { label: "Utilisateur - Dashboard", path: "/user/dashboard" },
+  { label: "Balises", path: "/tag/dashboard" },
+  { label: "Utilisateurs", path: "/user/dashboard" },
 ];
 
 export default function Header () {
