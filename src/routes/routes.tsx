@@ -1,5 +1,5 @@
 import MainLayout from "../components/layouts/MainLayout";
-import { Routes, Route } from "react-router";
+import { Routes, Route, Outlet } from "react-router";
 import LoginPage from "../pages/connection/Login";
 import SignUpPage from "../pages/connection/SignUp";
 import Dashboard from "../pages/Dashboard";
@@ -15,39 +15,47 @@ import EditGroupView from "../pages/group/EditGroupView.tsx";
 import EditUserView from "../pages/user/EditUserView";
 import AdminDashboard from "../pages/admin/AdminDashboardView";
 import UserEdit from "../pages/user/UserEdit";
+import RequireRole from "../components/RequireRole";
 
 export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>
-
         //public
         <Route path="login" element={<LoginPage />} />
         <Route path="sign-up" element={<SignUpPage />} />
-
         // general
-        {/* <Route element={<ProtectedRoute />}> */}
-          <Route path="dashboard" element={<Dashboard />} />
-        {/* </Route> */}
-        
+        <Route
+          path="/dashboard"
+          element={
+            <RequireRole allowedRoles={["admin"]}>
+              <Dashboard />
+            </RequireRole>
+          }
+        />
         //technician
         {/* <Route element={<ProtectedRoute />}> */}
-          <Route path="technician">
-            <Route path="dashboard" element={<TechnicianDashboard />} />
-            <Route path="create" element={<TagCreate />} />
-            <Route path="edit" element={<TagManager />} />
-            <Route path="edit" element={<TagEdit />} />
-            <Route path=":id/edit" element={<TagEdit />} />
-          </Route>
+        <Route
+          path="technician"
+          element={
+            <RequireRole allowedRoles={["technician", "admin"]}>
+              <Outlet />
+            </RequireRole>
+          }
+        >
+          <Route path="dashboard" element={<TechnicianDashboard />} />
+          <Route path="create" element={<TagCreate />} />
+          <Route path="edit" element={<TagManager />} />
+          <Route path=":id/edit" element={<TagEdit />} />
+        </Route>
         {/* </Route> */}
-
         //admin
         <Route path="admin">
           <Route path="create" element={<UserCreate />} />
           <Route path="edit" element={<UserEdit />} />
           <Route path="dashboard" element={<AdminDashboard />} />
 
-          <Route path=":id/edit-user" element={<EditUserView/>} /> 
+          <Route path=":id/edit-user" element={<EditUserView />} />
           <Route path=":id/edit-group" element={<EditGroupView />} />
         </Route>
       </Route>
