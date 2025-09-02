@@ -5,7 +5,6 @@ import SignUpPage from "../pages/connection/SignUp";
 import Dashboard from "../pages/Dashboard";
 import NotFound from "../pages/errors/NotFound";
 import TagEdit from "../pages/tag/TagEditView";
-// import ProtectedRoute from "./ProtectedRoute";
 import Unauthorized from "../pages/errors/Unauthorized";
 import TagCreate from "../pages/tag/TagCreate";
 import TechnicianDashboard from "../pages/technician/TechnicianDashboardView";
@@ -36,7 +35,6 @@ export default function AppRoutes() {
           }
         />
         //tag
-        {/* <Route element={<ProtectedRoute />}> */}
         <Route
           path="tag"
           element={
@@ -81,7 +79,6 @@ export default function AppRoutes() {
           <Route path=":id/edit-group" element={<EditGroupView />} />
         </Route>
       </Route>
-      {/* </Route> */}
       //errors
       <Route path="unauthorized" element={<Unauthorized />} />
       <Route path="*" element={<NotFound />} />
