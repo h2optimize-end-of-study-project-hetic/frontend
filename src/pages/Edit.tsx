@@ -10,7 +10,6 @@ import ChevronLeft from "@mui/icons-material/ChevronLeft";
 
 const Edit = () => {
   const navigate = useNavigate();
-  const backendURLAPI = import.meta.env.VITE_BACKEND_URL_API;
 
   const { maps, loading, error } = useMaps();
   const { rooms, loadingRoom, errorRoom } = useRooms();
@@ -84,7 +83,6 @@ const Edit = () => {
       </div>
 
       <MapContainer
-        backendURLAPI={backendURLAPI}
         buildings={buildings}
         selectedBuildingId={selectedBuildingId}
         onBuildingChange={onBuildingChange}
