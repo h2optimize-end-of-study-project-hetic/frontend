@@ -26,7 +26,7 @@ export default function DashboardTagContent({ tags, onDelete }: Props) {
             fontWeight: 500,
             boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
           }}
-          onClick={() => navigate("/technician/create")}
+          onClick={() => navigate("/tag/create")}
         >
           Créer une balise
         </Button>
@@ -78,7 +78,7 @@ export default function DashboardTagContent({ tags, onDelete }: Props) {
 
                   <Stack direction="row" spacing={2}>
                     <Button
-                      onClick={() => navigate(`/technician/${tag.id}/edit`)}
+                      onClick={() => navigate(`/tag/${tag.id}/edit`)}
                       variant="contained"
                       sx={{
 

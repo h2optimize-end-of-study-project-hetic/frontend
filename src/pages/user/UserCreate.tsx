@@ -11,7 +11,7 @@ const UserCreate = () => {
     <Stack alignItems="center" justifyContent="center" padding={4} px={1}>
       <CreateUserBox roleFilter={role} onRoleFilterChange={setRole} />
       <Button
-          onClick={() => navigate("/admin/dashboard")}
+          onClick={() => navigate("/user/dashboard")}
           variant="contained"
           sx={{
             margin: "24px",

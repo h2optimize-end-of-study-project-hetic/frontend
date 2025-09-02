@@ -39,7 +39,7 @@ export default function CreateUserBox({
     const result = await createUser(data);
     if (result) {
       alert("Utilisateur créé bravo!");
-      navigate("/admin/dashboard");
+      navigate("/user/dashboard");
     }
   };
 

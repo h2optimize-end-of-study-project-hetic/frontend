@@ -76,7 +76,7 @@ export default function TagCreate() {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       alert("Balise créée !");
-      navigate("/technician/dashboard");
+      navigate("/tag/dashboard");
     } catch (err) {
       console.error("Erreur dans handleCreate:", err);
       setCreateError("Erreur lors de la création");
@@ -89,7 +89,7 @@ export default function TagCreate() {
     <Box p={4}>
       {createError && <div style={{ color: "red" }}>{createError}</div>}
       <Button
-        onClick={() => navigate("/technician/dashboard")}
+        onClick={() => navigate("/tag/dashboard")}
         variant="contained"
         sx={{
           padding: 1,

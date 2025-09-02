@@ -28,15 +28,17 @@ export default function AppRoutes() {
         <Route
           path="/dashboard"
           element={
-            <RequireRole allowedRoles={["admin"]}>
+            <RequireRole
+              allowedRoles={["admin", "technician", "staff", "guest"]}
+            >
               <Dashboard />
             </RequireRole>
           }
         />
-        //technician
+        //tag
         {/* <Route element={<ProtectedRoute />}> */}
         <Route
-          path="technician"
+          path="tag"
           element={
             <RequireRole allowedRoles={["technician", "admin"]}>
               <Outlet />
@@ -48,17 +50,38 @@ export default function AppRoutes() {
           <Route path="edit" element={<TagManager />} />
           <Route path=":id/edit" element={<TagEdit />} />
         </Route>
-        {/* </Route> */}
-        //admin
-        <Route path="admin">
+        //user
+        <Route
+          path="user"
+          element={
+            <RequireRole allowedRoles={["admin", "staff"]}>
+              <Outlet />
+            </RequireRole>
+          }
+        >
+          {" "}
           <Route path="create" element={<UserCreate />} />
           <Route path="edit" element={<UserEdit />} />
           <Route path="dashboard" element={<AdminDashboard />} />
-
           <Route path=":id/edit-user" element={<EditUserView />} />
+        </Route>
+        //group
+        <Route
+          path="group"
+          element={
+            <RequireRole allowedRoles={["admin", "staff"]}>
+              <Outlet />
+            </RequireRole>
+          }
+        >
+          {" "}
+          {/* <Route path="create" element={<UserCreate />} />
+        <Route path="edit" element={<UserEdit />} /> */}
+          {/* <Route path="dashboard" element={<AdminDashboard />} /> */}
           <Route path=":id/edit-group" element={<EditGroupView />} />
         </Route>
       </Route>
+      {/* </Route> */}
       //errors
       <Route path="unauthorized" element={<Unauthorized />} />
       <Route path="*" element={<NotFound />} />
