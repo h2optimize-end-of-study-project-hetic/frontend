@@ -76,7 +76,7 @@ const Edit = () => {
             fontWeight: 500,
             boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
           }}
-          onClick={() => navigate("/edit")}
+          onClick={() => navigate("/dashboard")}
         >
           Dashboard
         </Button>
