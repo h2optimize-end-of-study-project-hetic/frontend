@@ -3,10 +3,10 @@ import { Box, Button } from "@mui/material";
 import type { Tag } from "../../types/tag";
 import type { TagCreatePayload } from "../../types/tagCreatePayload";
 import { useNavigate } from "react-router";
-import DashboardCreate from "../../components/organisms/technician/DashboardCreate";
+import DashboardCreate from "../../components/organisms/tag/DashboardTagCreate";
 import { useAuthHeaders } from "../../hooks/useAuthHeader";
 
-export default function TechnicianTagCreate() {
+export default function TagCreate() {
   const [tag, setTag] = useState<Tag | null>(null);
   const [createError, setCreateError] = useState<string | null>(null);
   const navigate = useNavigate();

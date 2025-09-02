@@ -1,12 +1,13 @@
 import { useParams, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import DashboardEdit from "../../components/organisms/technician/DashboardEdit";
-import DashboardTagList from "../../components/organisms/technician/DashboardTagList";
+import DashboardEdit from "../../components/organisms/tag/DashboardTagEdit";
+import DashboardTagList from "../../components/organisms/tag/DashboardTagList";
 import { Box, Button, Stack } from "@mui/material";
 import type { Tag } from "../../types/tag";
 import { useAuthHeaders } from "../../hooks/useAuthHeader";
+import { useFilter } from "../../hooks/useFilter";
 
-export default function TechnicianTagEdit() {
+export default function TagEdit() {
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -118,14 +119,13 @@ export default function TechnicianTagEdit() {
     }
   };
 
-  const filteredTags = allTags.filter((tag) => {
-    const matchesSearch = tag.source_address
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
-    const matchesRoom = roomFilter === "" || tag.room === roomFilter;
-    const matchesBuilding =
-      buildingFilter === "" || tag.building === buildingFilter;
-    return matchesSearch && matchesRoom && matchesBuilding;
+  const filteredTags = useFilter(allTags, {
+    searchTerm,
+    searchFields: ["source_address", "name"],
+    filters: {
+      room: roomFilter,
+      building: buildingFilter,
+    },
   });
 
   return (

@@ -21,7 +21,7 @@ type Props = {
   onroleFilterChange: (value: string) => void;
 };
 
-export default function AdminUserList({
+export default function UserList({
   users,
   onEdit,
   onDelete,

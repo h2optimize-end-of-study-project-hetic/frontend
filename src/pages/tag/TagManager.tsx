@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import DashboardTagList from "../../components/organisms/technician/DashboardTagList";
+import DashboardTagList from "../../components/organisms/tag/DashboardTagList";
 import { Box, Button, Stack } from "@mui/material";
 import { useNavigate } from "react-router";
 import type { Tag } from "../../types/tag";
 import { useAuthHeaders } from "../../hooks/useAuthHeader";
+import { useFilter } from "../../hooks/useFilter";
 
-export default function TechnicianTagManager() {
+export default function TagManager() {
   const [allTags, setAllTags] = useState<Tag[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [roomFilter, setRoomFilter] = useState("");
@@ -17,7 +18,10 @@ export default function TechnicianTagManager() {
   useEffect(() => {
     const fetchAllTags = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL_API}/api/v1/tag`, {headers});
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/tag`,
+          { headers }
+        );
         if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
         const data = await res.json();
         setAllTags(data.data);
@@ -35,10 +39,13 @@ export default function TechnicianTagManager() {
 
   const handleDelete = async (tagId: number) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL_API}/api/v1/tag/${tagId}`, {
-        method: "DELETE",
-        headers
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/tag/${tagId}`,
+        {
+          method: "DELETE",
+          headers,
+        }
+      );
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
@@ -48,14 +55,13 @@ export default function TechnicianTagManager() {
     }
   };
 
-  const filteredTags = allTags.filter((tag) => {
-    const matchesSearch = tag.source_address
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
-    const matchesRoom = roomFilter === "" || tag.room === roomFilter;
-    const matchesBuilding =
-      buildingFilter === "" || tag.building === buildingFilter;
-    return matchesSearch && matchesRoom && matchesBuilding;
+  const filteredTags = useFilter(allTags, {
+    searchTerm,
+    searchFields: ["source_address", "name"],
+    filters: {
+      room: roomFilter,
+      building: buildingFilter,
+    },
   });
 
   return (

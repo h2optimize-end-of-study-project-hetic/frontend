@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import AdminUserList from "../../components/organisms/admin/AdminDashboardUsersList.tsx";
-import type { UserListItem } from "../../types/userListItem";
+import AdminUserList from "../../components/organisms/user/DashboardUsersList.tsx";
+import type { UserListItem } from "../../types/userListItem.ts";
 import { useNavigate } from "react-router";
 import { useAuthHeaders } from "../../hooks/useAuthHeader.tsx";
+import { useFilter } from "../../hooks/useFilter.tsx";
 
-const AdminUserEdit = () => {
+const UserEdit = () => {
   const headers = useAuthHeaders();
   const [users, setUsers] = useState<UserListItem[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -29,15 +30,12 @@ const AdminUserEdit = () => {
     fetchUsers();
   }, [headers]);
 
-  const filteredUsers = users.filter((u) => {
-    const matchesSearch =
-      searchTerm === "" ||
-      u.firstname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      u.lastname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      u.role.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesRole = !roleFilter || u.role === roleFilter;
-    // const matchesRoom = !roomFilter || u.room === roomFilter;
-    return matchesSearch && matchesRole;
+  const filteredUsers = useFilter(users, {
+    searchTerm,
+    searchFields: ["firstname", "lastname", "role"],
+    filters: {
+      role: roleFilter,
+    },
   });
 
   const handleDelete = async (id: number) => {
@@ -80,4 +78,4 @@ const AdminUserEdit = () => {
     />
   );
 };
-export default AdminUserEdit;
+export default UserEdit;

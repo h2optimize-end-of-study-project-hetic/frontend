@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import AdminDashboardContent from "../../components/organisms/admin/AdminDashboardContent";
+import AdminDashboardContent from "../../components/organisms/user/DashboardUserContent";
 import type { User } from "../../types/user";
 import { Box, Button } from "@mui/material";
 import { useNavigate } from "react-router";
