@@ -1,13 +1,13 @@
 import { Box, Button, Stack } from "@mui/material";
 import { useNavigate } from "react-router";
-import type { User } from "../../../types/user";
+import type { Tag } from "../../../types/tag";
 
 type Props = {
-  users: User[];
+  tags: Tag[];
   onDelete: (id: number) => void;
 };
 
-export default function AdminDashboardContent({ users, onDelete }: Props) {
+export default function DashboardTagContent({ tags, onDelete }: Props) {
   const navigate = useNavigate();
 
   return (
@@ -26,9 +26,9 @@ export default function AdminDashboardContent({ users, onDelete }: Props) {
             fontWeight: 500,
             boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
           }}
-          onClick={() => navigate("/admin/create")}
+          onClick={() => navigate("/technician/create")}
         >
-          Créer un utilisateur
+          Créer une balise
         </Button>
       </Stack>
 
@@ -45,11 +45,11 @@ export default function AdminDashboardContent({ users, onDelete }: Props) {
           <thead>
             <tr>
               {[
-                "Prénom",
                 "Nom",
-                "Email",
-                "Rôle",
-                "Numéro de téléphone",
+                "Description",
+                "Identifiant",
+                "Pièce",
+                "Bâtiment",
                 "Éditer / Supprimer",
               ].map((title) => (
                 <th
@@ -67,19 +67,21 @@ export default function AdminDashboardContent({ users, onDelete }: Props) {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td style={{ padding: "8px" }}>{user.firstname || "—"}</td>
-                <td style={{ padding: "8px" }}>{user.lastname || "—"}</td>
-                <td style={{ padding: "8px" }}>{user.email}</td>
-                <td style={{ padding: "8px" }}>{user.role || "—"}</td>
-                <td style={{ padding: "8px" }}>{user.phone_number || "—"}</td>
+            {tags.map((tag) => (
+              <tr key={tag.id}>
+                <td style={{ padding: "8px" }}>{tag.name || "—"}</td>
+                <td style={{ padding: "8px" }}>{tag.description || "—"}</td>
+                <td style={{ padding: "8px" }}>{tag.source_address}</td>
+                <td style={{ padding: "8px" }}>{tag.room || "—"}</td>
+                <td style={{ padding: "8px" }}>{tag.building || "—"}</td>
                 <td style={{ padding: "8px" }}>
-                  <Stack direction="row" spacing={2} justifyContent="flex-end">
+
+                  <Stack direction="row" spacing={2}>
                     <Button
-                      onClick={() => navigate(`/admin/${user.id}/edit-user`)}
+                      onClick={() => navigate(`/technician/${tag.id}/edit`)}
                       variant="contained"
                       sx={{
+
                         color: "var(--dark-green)",
                         backgroundColor: "var(--light-green)",
                         p: "6px 12px",
@@ -91,7 +93,7 @@ export default function AdminDashboardContent({ users, onDelete }: Props) {
                       Éditer
                     </Button>
                     <Button
-                      onClick={() => onDelete(user.id)}
+                      onClick={() => onDelete(tag.id)}
                       variant="contained"
                       sx={{
                         color: "var(--dark-red)",

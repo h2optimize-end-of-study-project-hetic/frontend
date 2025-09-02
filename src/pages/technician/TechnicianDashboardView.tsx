@@ -1,10 +1,11 @@
 import { Box, Button, Stack } from "@mui/material";
 import { useNavigate } from "react-router";
-import DashboardContent from "../../components/organisms/technician/DashboardContent";
-import FilerTagList from "../../components/organisms/technician/FilterTagList";
+import DashboardContent from "../../components/organisms/tag/DashboardTagContent";
+import FilerTagList from "../../components/organisms/tag/FilterTagList";
 import type { Tag } from "../../types/tag";
 import { useEffect, useState } from "react";
 import { useAuthHeaders } from "../../hooks/useAuthHeader";
+import { useFilter } from "../../hooks/useFilter";
 
 export default function TechnicianDashboard() {
   const [allTags, setAllTags] = useState<Tag[]>([]);
@@ -32,14 +33,13 @@ export default function TechnicianDashboard() {
     fetchAllTags();
   }, [headers]);
 
-  const filteredTags = allTags.filter((tag) => {
-    const matchesSearch = tag.source_address
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
-    const matchesRoom = roomFilter === "" || tag.room === roomFilter;
-    const matchesBuilding =
-      buildingFilter === "" || tag.building === buildingFilter;
-    return matchesSearch && matchesRoom && matchesBuilding;
+  const filteredTags = useFilter(allTags, {
+    searchTerm,
+    searchFields: ["source_address", "name"],
+    filters: {
+      room: roomFilter,
+      building: buildingFilter,
+    },
   });
 
   const handleDelete = async (tagId: number) => {

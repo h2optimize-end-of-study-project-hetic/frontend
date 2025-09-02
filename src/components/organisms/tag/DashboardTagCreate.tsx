@@ -3,15 +3,14 @@ import {
 } from "@mui/material";
 import type { Tag } from "../../../types/tag";
 
-
 type Props = {
   tag: Tag;
   onChange: (field: keyof Tag, value: string) => void;
-  onUpdate: () => void;
+  onCreate: () => void;
   onCancel?: () => void;
 };
 
-export default function DashboardEdit({ tag, onChange, onUpdate, onCancel }: Props) {
+export default function DashboardTagCreate({ tag, onChange, onCreate, onCancel }: Props) {
   return (
     <Box
       padding={3}
@@ -21,30 +20,26 @@ export default function DashboardEdit({ tag, onChange, onUpdate, onCancel }: Pro
       width="100%"
     >
       <Stack spacing={3}>
-        <Typography variant="h5" color='var(--black)'>Balise {tag.name}</Typography>
+        <Typography variant="h5" color='var(--black)'>Créer une nouvelle balise</Typography>
 
-        <Typography
-          sx={{
-            color: 'var(--black)',
-            backgroundColor: 'var(--light-blue)',
-            p: '6px 12px',
-            borderRadius: '12px',
-            boxShadow: '0 2px 6px rgba(0, 0, 0, 0.15)',
-            display: 'inline-block',
-            fontWeight: 500,
-            fontSize: '1.1rem',
-            width: '146px'
-          }}
-        >
-          {tag.source_address}
-        </Typography>
+        <TextField
+          label="Nom"
+          value={tag.name}
+          onChange={(e) => onChange("name", e.target.value)}
+          fullWidth
+        />
+
+        <TextField
+          label="Identifiant unique"
+          value={tag.source_address}
+          onChange={(e) => onChange("source_address", e.target.value)}
+          fullWidth
+        />
 
         <TextField
           label="Description"
           value={tag.description}
-          onChange={(e) => {
-            onChange("description", e.target.value);
-          }}
+          onChange={(e) => onChange("description", e.target.value)}
           fullWidth
         />
 
@@ -53,7 +48,7 @@ export default function DashboardEdit({ tag, onChange, onUpdate, onCancel }: Pro
             label="Bâtiment"
             select
             value={tag.building}
-            onChange={e => onChange("building", e.target.value)}
+            onChange={(e) => onChange("building", e.target.value)}
             fullWidth
           >
             <MenuItem value="A">Bâtiment A</MenuItem>
@@ -64,7 +59,7 @@ export default function DashboardEdit({ tag, onChange, onUpdate, onCancel }: Pro
             label="Pièce"
             select
             value={tag.room}
-            onChange={e => onChange("room", e.target.value)}
+            onChange={(e) => onChange("room", e.target.value)}
             fullWidth
           >
             <MenuItem value="F45">F45</MenuItem>
@@ -91,13 +86,6 @@ export default function DashboardEdit({ tag, onChange, onUpdate, onCancel }: Pro
           />
         </Stack>
 
-        <Typography color='var(--black)'>
-          Créée le : {tag.createdAt ? new Date(tag.createdAt).toLocaleDateString() : "—"}
-        </Typography>
-        <Typography color='var(--black)'>
-          Modifiée le : {tag.updatedAt ? new Date(tag.updatedAt).toLocaleDateString() : "—"}
-        </Typography>
-
         <Stack direction="row" spacing={2} justifyContent="flex-end">
           <Button
             variant="contained"
@@ -105,27 +93,19 @@ export default function DashboardEdit({ tag, onChange, onUpdate, onCancel }: Pro
             sx={{
               color: 'var(--dark-red)',
               backgroundColor: 'var(--light-red)',
-              p: '6px 12px',
-              borderRadius: '4px',
-              boxShadow: '0 2px 6px rgba(0, 0, 0, 0.10)',
-              fontWeight: 500,
             }}
           >
             Annuler
           </Button>
           <Button
             variant="contained"
-            onClick={onUpdate}
+            onClick={onCreate}
             sx={{
               color: 'var(--dark-green)',
               backgroundColor: 'var(--light-green)',
-              p: '6px 12px',
-              borderRadius: '4px',
-              boxShadow: '0 2px 6px rgba(0, 0, 0, 0.10)',
-              fontWeight: 500,
             }}
           >
-            Éditer
+            Créer
           </Button>
         </Stack>
       </Stack>

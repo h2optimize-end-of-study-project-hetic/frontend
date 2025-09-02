@@ -3,7 +3,7 @@ import CreateUserBox from "../../components/molecules/createUserBox";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
-const AdminUserCreate = () => {
+const UserCreate = () => {
   const [role, setRole] = useState("guest");
   const navigate = useNavigate()
 
@@ -29,4 +29,4 @@ const AdminUserCreate = () => {
   );
 };
 
-export default AdminUserCreate;
+export default UserCreate;

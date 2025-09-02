@@ -10,9 +10,7 @@ const options = [
   { label: "Login", path: "/login" },
   { label: "Sign Up", path: "/sign-up" },
   { label: "Staff - Dashboard", path: "/dashboard" },
-  { label: "Staff - Edit", path: "/edit" },
   { label: "Tech - Dashboard", path: "/technician/dashboard" },
-  { label: "Tech - Edit", path: "/technician/edit" },
   { label: "Admin - Dashboard", path: "/admin/dashboard" },
 ];
 

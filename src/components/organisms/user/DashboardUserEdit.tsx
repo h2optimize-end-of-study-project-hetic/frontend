@@ -15,7 +15,7 @@ type Props = {
   onCancel?: () => void;
 };
 
-export default function AdminDashboardEdit({
+export default function DashboardUserEdit({
   user,
   onChange,
   onUpdate,

@@ -2,13 +2,14 @@ import { Box, Button, Stack } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import AdminUserList from "../../components/organisms/admin/AdminDashboardUsersList";
-import AdminDashboardEdit from "../../components/organisms/admin/AdminDashboardEdit";
+import AdminUserList from "../../components/organisms/user/DashboardUsersList";
+import AdminDashboardEdit from "../../components/organisms/user/DashboardUserEdit";
 import type { User } from "../../types/user";
 import type { UserListItem } from "../../types/userListItem";
 import { useAuthHeaders } from "../../hooks/useAuthHeader";
+import { useFilter } from "../../hooks/useFilter";
 
-const AdminEditUserView = () => {
+const EditUserView = () => {
   const headers = useAuthHeaders();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -120,14 +121,12 @@ const AdminEditUserView = () => {
     }
   };
 
-  const filteredUsers = allUsers.filter((u) => {
-    const matchesSearch =
-      searchTerm === "" ||
-      u.firstname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      u.lastname.toLowerCase().includes(searchTerm.toLowerCase());
-    // const matchesRoom = roomFilter === "" || u.room === roomFilter;
-    const matchesRole = roleFilter === "" || u.role === roleFilter;
-    return matchesSearch && matchesRole;
+  const filteredUsers = useFilter(allUsers, {
+    searchTerm,
+    searchFields: ["firstname", "lastname", "role"],
+    filters: {
+      role: roleFilter,
+    },
   });
 
   return (
@@ -195,4 +194,4 @@ const AdminEditUserView = () => {
   );
 };
 
-export default AdminEditUserView;
+export default EditUserView;
