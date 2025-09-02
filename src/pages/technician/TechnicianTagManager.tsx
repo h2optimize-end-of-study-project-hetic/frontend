@@ -3,6 +3,7 @@ import DashboardTagList from "../../components/organisms/technician/DashboardTag
 import { Box, Button, Stack } from "@mui/material";
 import { useNavigate } from "react-router";
 import type { Tag } from "../../types/tag";
+import { useAuthHeaders } from "../../hooks/useAuthHeader";
 
 export default function TechnicianTagManager() {
   const [allTags, setAllTags] = useState<Tag[]>([]);
@@ -11,11 +12,12 @@ export default function TechnicianTagManager() {
   const [buildingFilter, setBuildingFilter] = useState("");
 
   const navigate = useNavigate();
+  const headers = useAuthHeaders();
 
   useEffect(() => {
     const fetchAllTags = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/v1/tag`);
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL_API}/api/v1/tag`, {headers});
         if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
         const data = await res.json();
         setAllTags(data.data);
@@ -25,7 +27,7 @@ export default function TechnicianTagManager() {
     };
 
     fetchAllTags();
-  }, []);
+  }, [headers]);
 
   const handleCreate = () => {
     navigate("/technician/create");
@@ -33,8 +35,9 @@ export default function TechnicianTagManager() {
 
   const handleDelete = async (tagId: number) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/tag/${tagId}`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL_API}/api/v1/tag/${tagId}`, {
         method: "DELETE",
+        headers
       });
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);

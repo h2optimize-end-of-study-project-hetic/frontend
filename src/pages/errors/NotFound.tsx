@@ -1,7 +1,7 @@
 import { Stack, Box, Button } from "@mui/material";
 import { useNavigate } from "react-router";
 import logo from "/favicon.svg";
-import Header from "../../components/molecules/header";
+import Header from "../../components/molecules/Header";
 
 export default function NotFound() {
   const navigate = useNavigate();

@@ -4,6 +4,7 @@ import DashboardEdit from "../../components/organisms/technician/DashboardEdit";
 import DashboardTagList from "../../components/organisms/technician/DashboardTagList";
 import { Box, Button, Stack } from "@mui/material";
 import type { Tag } from "../../types/tag";
+import { useAuthHeaders } from "../../hooks/useAuthHeader";
 
 export default function TechnicianTagEdit() {
   const { id } = useParams();
@@ -15,6 +16,7 @@ export default function TechnicianTagEdit() {
   const [searchTerm, setSearchTerm] = useState("");
   const [roomFilter, setRoomFilter] = useState("");
   const [buildingFilter, setBuildingFilter] = useState("");
+  const headers = useAuthHeaders();
 
   useEffect(() => {
     if (!id) return;
@@ -23,7 +25,10 @@ export default function TechnicianTagEdit() {
 
     const fetchTag = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/v1/tag/${id}`);
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/tag/${id}`,
+          { headers }
+        );
         if (res.status === 404) return;
 
         if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
@@ -44,7 +49,10 @@ export default function TechnicianTagEdit() {
 
     const fetchAllTags = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/v1/tag`);
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/tag`,
+          { headers }
+        );
         if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
         const data = await res.json();
         setAllTags(data.data);
@@ -55,7 +63,7 @@ export default function TechnicianTagEdit() {
 
     fetchTag();
     fetchAllTags();
-  }, [id]);
+  }, [id, headers]);
 
   const handleCreate = () => navigate("/technician/create");
 
@@ -68,16 +76,19 @@ export default function TechnicianTagEdit() {
 
     const payload = {
       description: tag.description,
-      building: tag.building,
-      room: tag.room,
+      // building: tag.building,
+      // room: tag.room,
     };
 
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/tag/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tag: payload }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/tag/${id}`,
+        {
+          method: "PATCH",
+          headers,
+          body: JSON.stringify({ tag: payload }),
+        }
+      );
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
@@ -91,9 +102,13 @@ export default function TechnicianTagEdit() {
 
   const handleDelete = async (tagId: number) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/tag/${tagId}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/tag/${tagId}`,
+        {
+          method: "DELETE",
+          headers,
+        }
+      );
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 

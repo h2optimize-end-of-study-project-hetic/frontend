@@ -6,9 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpSchema, type SignUpInput } from "../../schemas/signUp";
 import { useAuth } from "../../hooks/useAuth";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 
 export default function SignUpBox() {
-  const { signUp: registerUser } = useAuth();
+  const navigate = useNavigate();
+  const { signUp } = useAuth();
 
   const {
     register,
@@ -19,7 +21,7 @@ export default function SignUpBox() {
   });
 
   const onSubmit = async (data: SignUpInput) => {
-    await registerUser(data.firstname, data.lastname, data.email, data.password);
+    await signUp(data.firstname, data.lastname, data.email, data.password);
   };
 
   return (
@@ -74,7 +76,7 @@ export default function SignUpBox() {
             helperText={errors.confirmPassword?.message}
           />
 
-          <BasicButtons label="S'enregistrer" type="submit" />
+          <BasicButtons label="S'enregistrer" type="submit" onClick={() => navigate("/dashboard")} />
 
           <Stack paddingTop={4}>
             <LoginSignUpActions mode={"signup"}  />

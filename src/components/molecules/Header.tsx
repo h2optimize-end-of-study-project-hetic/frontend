@@ -16,7 +16,7 @@ const options = [
   { label: "Admin - Dashboard", path: "/admin/dashboard" },
 ];
 
-export default function Header() {
+export default function Header () {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);

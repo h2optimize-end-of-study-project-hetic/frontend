@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 
 const AdminUserCreate = () => {
-  const [role, setRole] = useState("invité");
+  const [role, setRole] = useState("guest");
   const navigate = useNavigate()
 
   return (

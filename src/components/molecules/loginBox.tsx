@@ -6,8 +6,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginInput} from "../../schemas/login";
  import { useAuth } from "../../hooks/useAuth";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 
 export default function LoginBox() {
+  const navigate = useNavigate();
   const { login } = useAuth();
   const {
   register,
@@ -17,8 +19,10 @@ export default function LoginBox() {
   resolver: zodResolver(loginSchema),
 });
 
+
+
 const onSubmit = async (data: LoginInput) => {
-  await login(data.email, data.password);
+  await login(data.username, data.password);
 };
   
   return (
@@ -42,9 +46,9 @@ const onSubmit = async (data: LoginInput) => {
         <Stack spacing={2} alignItems="center">
           <BasicTextFields
             label="Email"
-            {...register("email")}
-            error={!!errors.email}
-            helperText={errors.email?.message}
+            {...register("username")}
+            error={!!errors.username}
+            helperText={errors.username?.message}
           />
 
           <BasicTextFields
@@ -55,7 +59,7 @@ const onSubmit = async (data: LoginInput) => {
             helperText={errors.password?.message}
           />
 
-          <BasicButtons label="Se connecter" type="submit" />
+          <BasicButtons label="Se connecter" type="submit" onClick={() => navigate("/dashboard")} />
 
           <Stack paddingTop={4}>
           <LoginSignUpActions mode={"login"}  />

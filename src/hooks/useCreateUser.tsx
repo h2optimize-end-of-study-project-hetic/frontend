@@ -1,20 +1,25 @@
 import { useState } from "react";
 import { type UserInput } from "../schemas/user";
+import { useAuthHeaders } from "./useAuthHeader";
 
 export function useCreateUser() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const headers = useAuthHeaders();
 
   const createUser = async (user: UserInput) => {
     setLoading(true);
     setError(null);
 
     try {
-      const res = await fetch("http://localhost:8000/api/v1/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/users`,
+        {
+          method: "POST",
+          headers,
+          body: JSON.stringify(user),
+        }
+      );
 
       if (!res.ok) {
         throw new Error(`Erreur HTTP ${res.status}`);
