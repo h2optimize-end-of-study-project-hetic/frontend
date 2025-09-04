@@ -9,7 +9,7 @@ env:
   NODE_ENV: dev
   BRANCH: main
   ENVIRONMENT: production
-  VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH || '/' }}
+  VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH || '' }}
   VITE_BACKEND_URL_API: ${{ vars.VITE_BACKEND_URL_API || '/' }}
   FRONTEND_HOST: ${{ vars.FRONTEND_HOST || 'frontend_production' }}
   FRONTEND_EXT_PORT: ${{ vars.FRONTEND_EXT_PORT || 80 }}
