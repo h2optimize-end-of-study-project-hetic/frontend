@@ -1,14 +1,12 @@
 import { Outlet } from "react-router";
-import Logo from "../atoms/Logo";
 import { Box } from "@mui/material";
+import Header from "../molecules/Header";
 
 export default function MainLayout() {
   return (
     <>
       <Box>
-        <header>
-          <Logo />
-        </header>
+        <Header />
         <Box p={2}>
           <Outlet />
         </Box>
