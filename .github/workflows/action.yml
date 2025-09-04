@@ -118,6 +118,8 @@ jobs:
             docker run -d \
               --name ${{ env.FRONTEND_HOST }} \
               --restart always \
+              -e VITE_BASE_PATH=${{ env.VITE_BASE_PATH }} \
+              -e VITE_BACKEND_URL_API=${{ env.VITE_BACKEND_URL_API }} \
               -e NODE_ENV=${{ env.NODE_ENV }} \
               -p ${{ env.FRONTEND_EXT_PORT }}:80 \
               ghcr.io/${{ env.GHCR_LOCATION }}/${{ env.FRONTEND_HOST }}:latest
