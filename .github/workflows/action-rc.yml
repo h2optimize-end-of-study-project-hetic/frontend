@@ -1,4 +1,5 @@
 name: Release — Deploy Frontend
+
 on: 
   push:
     branches:
@@ -16,20 +17,20 @@ on:
         type: string
         default: develop
 
+env:
+  NODE_ENV: develop
+  BRANCH: ${{ github.event.inputs.branch || github.ref_name }}
+  ENVIRONMENT: release
+  VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH || '/release/' }}
+  VITE_BACKEND_URL_API: ${{ vars.VITE_BACKEND_URL_API || 'http://localhost:8000' }}
+  FRONTEND_HOST: ${{ vars.FRONTEND_HOST || 'frontend_release' }}
+  FRONTEND_EXT_PORT: ${{ vars.FRONTEND_EXT_PORT || 81 }}
+  GHCR_LOCATION: ${{ vars.GHCR_LOCATION || github.repository }}
+
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
     environment: release
-
-    env:
-      NODE_ENV: develop
-      BRANCH: ${{ github.event.inputs.branch || github.ref_name }}
-      ENVIRONMENT: release
-      VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH || '/release/' }}
-      VITE_BACKEND_URL_API: ${{ vars.VITE_BACKEND_URL_API || 'http://localhost:8000' }}
-      FRONTEND_HOST: ${{ vars.FRONTEND_HOST || 'frontend_release' }}
-      FRONTEND_EXT_PORT: ${{ vars.FRONTEND_EXT_PORT || 81 }}
-      GHCR_LOCATION: ${{ vars.GHCR_LOCATION || github.repository }}
 
     steps:
       - name: Checkout code
@@ -70,6 +71,25 @@ jobs:
       - name: Run lint
         run: npm run lint
 
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    environment: release
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.BRANCH }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Build app
         run: npm run build
 
@@ -79,7 +99,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-      
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -89,6 +109,12 @@ jobs:
           push: true
           tags: ghcr.io/${{ env.GHCR_LOCATION }}/${{ env.FRONTEND_HOST }}:latest
 
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment: release
+
+    steps:
       - name: Deploy container from GHCR
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -97,6 +123,7 @@ jobs:
           username: ${{ vars.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            docker image prune -af
             docker pull ghcr.io/${{ env.GHCR_LOCATION }}/${{ env.FRONTEND_HOST }}:latest
             docker stop ${{ env.FRONTEND_HOST }} || true
             docker rm ${{ env.FRONTEND_HOST }} || true
