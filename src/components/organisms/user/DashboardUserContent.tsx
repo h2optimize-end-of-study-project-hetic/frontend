@@ -26,7 +26,7 @@ export default function DashboardUserContent({ users, onDelete }: Props) {
             fontWeight: 500,
             boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
           }}
-          onClick={() => navigate("/admin/create")}
+          onClick={() => navigate("/user/create")}
         >
           Créer un utilisateur
         </Button>
@@ -77,7 +77,7 @@ export default function DashboardUserContent({ users, onDelete }: Props) {
                 <td style={{ padding: "8px" }}>
                   <Stack direction="row" spacing={2} justifyContent="flex-end">
                     <Button
-                      onClick={() => navigate(`/admin/${user.id}/edit-user`)}
+                      onClick={() => navigate(`/user/${user.id}/edit-user`)}
                       variant="contained"
                       sx={{
                         color: "var(--dark-green)",

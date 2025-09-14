@@ -9,9 +9,9 @@ import { useNavigate } from "react-router-dom";
 const options = [
   { label: "Login", path: "/login" },
   { label: "Sign Up", path: "/sign-up" },
-  { label: "Staff - Dashboard", path: "/dashboard" },
-  { label: "Tech - Dashboard", path: "/technician/dashboard" },
-  { label: "Admin - Dashboard", path: "/admin/dashboard" },
+  { label: "Dashboard", path: "/dashboard" },
+  { label: "Balises", path: "/tag/dashboard" },
+  { label: "Utilisateurs", path: "/user/dashboard" },
 ];
 
 export default function Header () {

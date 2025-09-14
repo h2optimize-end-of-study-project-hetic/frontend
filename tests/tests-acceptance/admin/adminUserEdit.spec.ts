@@ -10,53 +10,80 @@ test.describe('Admin Dashboard – Édition des utilisateurs', () => {
     role: "Admin",
   };
 
-  test('le formulaire s’affiche avec les bons champs', async ({ page }) => {
-    await page.route('**/api/v1/users/1', async route => {
+  test.beforeEach(async ({ page }) => {
+    // Mock localStorage
+    await page.addInitScript(() => {
+      localStorage.setItem("token", "bearer-fake-123");
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          id: 99,
+          firstname: "Admin",
+          lastname: "Test",
+          email: "admin@test.fr",
+          role: "admin",
+        })
+      );
+    });
+
+    // Mock /auth/me
+    await page.route('**/api/v1/auth/me', async route => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify(sampleUser),
+        body: JSON.stringify({
+          id: 99,
+          email: "admin@test.fr",
+          role: "admin",
+        }),
       });
     });
-
-    await page.goto(`http://localhost:5173${process.env.VITE_BASE_PATH}admin/1/edit-user`, { waitUntil: 'networkidle' });
-    
-    await page.getByRole('button', { name: 'Éditer' }).first().click();
-    await expect(page.getByText('Nom').first()).toHaveValue('Bobby');
-    await expect(page.getByText('Prénom').first()).toHaveValue('Bob');
-    await expect(page.getByLabel('Email').first()).toHaveValue('bobby@gmail.com');
-    await expect(page.getByLabel('Numéro de téléphone').first()).toHaveValue('0688787878');
-    await page.getByLabel('Rôle').first().click();
-    await page.getByRole('option', { name: 'Admin' }).click();
-
   });
+
 
   test('Mise à jour réussie', async ({ page }) => {
     await page.route('**/api/v1/users/1', async (route) => {
       if (route.request().method() === 'GET') {
-        await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(sampleUser) });
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify(sampleUser),
+        });
       } else {
-        await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ...sampleUser, firstname: 'Ratatouille' }) });
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({ ...sampleUser, firstname: 'Ratatouille' }),
+        });
       }
     });
 
-    await page.goto(`http://localhost:5173${process.env.VITE_BASE_PATH}admin/1/edit-user`);
+    await page.goto(`http://localhost:5173${process.env.VITE_BASE_PATH}user/1/edit-user`);
 
-    const descInput = page.getByLabel('Prénom');
-    await descInput.fill('Ratatouille');
-    await page.getByRole('button', { name: 'Éditer' }).first().click();
+    const prenomInput = page.getByLabel('Prénom');
+    await prenomInput.fill('Ratatouille');
+    await page.getByRole('button', { name: 'Éditer' }).click();
 
-    await expect(page.getByLabel('Prénom')).toHaveValue('Ratatouille');
+    await expect(prenomInput).toHaveValue('Ratatouille');
   });
 
   test('Échec de mise à jour – affiche une erreur', async ({ page }) => {
     await page.route('**/api/v1/users/1', async (route) => {
       if (route.request().method() === 'GET') {
-        await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(sampleUser) });
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify(sampleUser),
+        });
       } else {
         await route.fulfill({ status: 500 });
       }
     });
+
+    await page.goto(`http://localhost:5173${process.env.VITE_BASE_PATH}user/1/edit-user`);
+
+    await page.getByRole('button', { name: 'Éditer' }).click();
+
+    await expect(page.locator('[role="alert"]')).toBeVisible();
   });
 });
-

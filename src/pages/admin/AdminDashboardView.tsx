@@ -53,7 +53,7 @@ const AdminDashboardView = () => {
       <Box p={4}>
         <Box display="flex" flexDirection="row" gap={2} mb={2} maxWidth={320}>
           <Button
-            onClick={() => navigate("/admin/edit")}
+            onClick={() => navigate("/user/edit")}
             variant="contained"
             sx={{
               backgroundColor: "var(--light-blue)",
@@ -68,7 +68,7 @@ const AdminDashboardView = () => {
             Vue Édition
           </Button>
           <Button
-            onClick={() => navigate("/admin/dashboard")}
+            onClick={() => navigate("/user/dashboard")}
             variant="contained"
             sx={{
               color: "var(--light-blue)",

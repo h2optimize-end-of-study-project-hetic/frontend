@@ -56,11 +56,11 @@ const UserEdit = () => {
   };
 
   const handleEdit = (id: number) => {
-    navigate(`/admin/${id}/edit-user`);
+    navigate(`/user/${id}/edit-user`);
   };
 
   const handleCreate = () => {
-    navigate("/admin/create");
+    navigate("/user/create");
   };
 
   return (

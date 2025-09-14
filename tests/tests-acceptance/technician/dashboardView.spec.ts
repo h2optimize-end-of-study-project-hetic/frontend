@@ -15,6 +15,29 @@ test.describe("Dashboard – Vue tableau du technicien", () => {
   ];
 
   test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem("token", "bearer-fake-123");
+      localStorage.setItem("user", JSON.stringify({
+        id: 42,
+        firstname: "Technicien",
+        lastname: "Testeur",
+        email: "tech@test.fr",
+        role: "technician",
+      }));
+    });
+
+    await page.route("**/api/v1/auth/me", async route => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          id: 42,
+          email: "tech@test.fr",
+          role: "technician",
+        }),
+      });
+    });
+
     await page.route("**/api/v1/tag", async route => {
       await route.fulfill({
         status: 200,
@@ -23,7 +46,7 @@ test.describe("Dashboard – Vue tableau du technicien", () => {
       });
     });
 
-    await page.goto(`http://localhost:5173${process.env.VITE_BASE_PATH}technician/dashboard`);
+    await page.goto(`http://localhost:5173${process.env.VITE_BASE_PATH}tag/dashboard`);
   });
 
   test("la page s’affiche avec les bons champs et boutons", async ({ page }) => {
@@ -48,7 +71,7 @@ test.describe("Dashboard – Vue tableau du technicien", () => {
       }
     });
 
-    const editButton = page.getByRole("button", { name: "éditer" }).first();
+    const editButton = page.getByRole("button", { name: /éditer/i }).first();
     await editButton.click();
   });
 
@@ -66,8 +89,7 @@ test.describe("Dashboard – Vue tableau du technicien", () => {
     });
 
     await page.getByRole("button", { name: "Supprimer" }).first().click();
+
     await expect(page.getByText("Balise 1")).toHaveCount(0);
   });
-
-
 });

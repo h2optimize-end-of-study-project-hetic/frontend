@@ -64,7 +64,7 @@ export default function TechnicianDashboard() {
     <Box p={4}>
       <Box display="flex" flexDirection="row" gap={2} mb={2} maxWidth={320}>
         <Button
-          onClick={() => navigate("/technician/edit")}
+          onClick={() => navigate("/tag/edit")}
           variant="contained"
           sx={{
             backgroundColor: "var(--light-blue)",
@@ -79,7 +79,7 @@ export default function TechnicianDashboard() {
           Vue Édition
         </Button>
         <Button
-          onClick={() => navigate("/technician/dashboard")}
+          onClick={() => navigate("/tag/dashboard")}
           variant="contained"
           sx={{
             color: "var(--light-blue)",
