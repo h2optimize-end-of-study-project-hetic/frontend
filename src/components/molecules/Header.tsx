@@ -5,6 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Logo from "../atoms/Logo";
 import { useNavigate } from "react-router-dom";
+import Weather from "../atoms/Weather";
 
 const options = [
   { label: "Login", path: "/login" },
@@ -14,7 +15,7 @@ const options = [
   { label: "Utilisateurs", path: "/user/dashboard" },
 ];
 
-export default function Header () {
+export default function Header() {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -34,41 +35,44 @@ export default function Header () {
   return (
     <header className="flex flex-row items-center gap-2.5 justify-between">
       <Logo />
-      <IconButton
-        aria-label="more"
-        id="long-button"
-        aria-controls={open ? "long-menu" : undefined}
-        aria-expanded={open ? "true" : undefined}
-        aria-haspopup="true"
-        onClick={handleClick}
-      >
-        <MoreVertIcon />
-      </IconButton>
-      <Menu
-        id="long-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        slotProps={{
-          paper: {
-            style: {
-              width: "20ch",
+      <div className="flex flex-row items-center gap-2.5">
+        <Weather />
+        <IconButton
+          aria-label="more"
+          id="long-button"
+          aria-controls={open ? "long-menu" : undefined}
+          aria-expanded={open ? "true" : undefined}
+          aria-haspopup="true"
+          onClick={handleClick}
+        >
+          <MoreVertIcon />
+        </IconButton>
+        <Menu
+          id="long-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          slotProps={{
+            paper: {
+              style: {
+                width: "20ch",
+              },
             },
-          },
-          list: {
-            "aria-labelledby": "long-button",
-          },
-        }}
-      >
-        {options.map((option) => (
-          <MenuItem
-            key={option.path}
-            onClick={() => handleNavigate(option.path)}
-          >
-            {option.label}
-          </MenuItem>
-        ))}
-      </Menu>
+            list: {
+              "aria-labelledby": "long-button",
+            },
+          }}
+        >
+          {options.map((option) => (
+            <MenuItem
+              key={option.path}
+              onClick={() => handleNavigate(option.path)}
+            >
+              {option.label}
+            </MenuItem>
+          ))}
+        </Menu>
+      </div>
     </header>
   );
 }

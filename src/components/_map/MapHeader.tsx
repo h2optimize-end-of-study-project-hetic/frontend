@@ -29,7 +29,7 @@ export default function MapHeader({
       <div className="flex flex-row gap-2.5">
         <Selector<Building>
           options={buildings}
-          value={selectedBuildingId ?? 0}
+          value={selectedBuildingId ?? ""}
           onChange={(id) => onBuildingChange(Number(id))}
           getLabel={(b) => b.name}
           getId={(b) => b.id}
@@ -38,7 +38,7 @@ export default function MapHeader({
         {selectedBuildingFloors.length > 0 && (
           <Selector<FloorMap>
             options={selectedBuildingFloors}
-            value={selectedFloorId ?? 0}
+            value={selectedFloorId ?? ""}
             onChange={(id) => onFloorChange(Number(id))}
             // getLabel={(floor) => floor.file_name.split(".")[0]}
             getLabel={(floor) => "Étage " + String(floor.floor)}

@@ -43,16 +43,14 @@ function MapContainer({
   if (loading) return <div>Chargement des plans...</div>;
   if (error) return <div>{error}</div>;
   if (!selectedFloor) return <div>Aucun plan trouvé</div>;
-  const { fetchMapImage } = useMaps();
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+
+  const { imageUrl, loadFloorImage } = useMaps();
 
   useEffect(() => {
     if (selectedFloor?.id) {
-      fetchMapImage(selectedFloor.id).then((url) => {
-        if (url) setImageUrl(url);
-      });
+      loadFloorImage(selectedFloor.id);
     }
-  }, [selectedFloor, fetchMapImage]);
+  }, [selectedFloor]);
 
   return (
     <>
@@ -73,14 +71,16 @@ function MapContainer({
       />
 
       <div className="p-2.5 relative">
-        <MapView
-          image={imageUrl ?? ""}
-          bounds={[
-            [0, 0],
-            [selectedFloor.length, selectedFloor.width],
-          ]}
-          rooms={selectedRooms}
-        />
+        {imageUrl && (
+          <MapView
+            image={imageUrl}
+            bounds={[
+              [0, 0],
+              [selectedFloor.length, selectedFloor.width],
+            ]}
+            rooms={selectedRooms}
+          />
+        )}
       </div>
     </>
   );

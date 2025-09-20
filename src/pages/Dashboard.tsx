@@ -1,3 +1,6 @@
+import { useAtom } from "jotai";
+import { locationAtom } from "../components/atoms/locationAtom";
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import Button from "@mui/material/Button";
@@ -6,6 +9,7 @@ import MapContainer from "../components/_map/MapContainer";
 import { useMaps } from "../hooks/useMap";
 import { useRooms } from "../hooks/useRoom";
 import { formatDateForInput } from "../utils/date";
+import { useBuildings } from "../hooks/useBuilding";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -20,9 +24,11 @@ const Dashboard = () => {
   const [date, setDate] = useState<string>("");
 
   // Liste des bâtiments
-  const buildings = Array.from(new Set(maps.map((m) => m.building_id))).map(
-    (id) => ({ id, name: `Bâtiment ${id}` })
-  );
+  // const buildings = Array.from(new Set(maps.map((m) => m.building_id))).map(
+  //   (id) => ({ id, name: `Bâtiment ${id}` })
+  // );
+
+  const { buildings, buildLoading, buildError } = useBuildings();
 
   // Étages du bâtiment sélectionné
   const selectedBuildingFloors = maps.filter(
@@ -61,6 +67,20 @@ const Dashboard = () => {
     const firstFloor = maps.find((m) => m.building_id === id);
     if (firstFloor) setSelectedFloorId(firstFloor.id);
   };
+
+  const [, setLocation] = useAtom(locationAtom);
+
+  useEffect(() => {
+    const currentBuilding = buildings.find((b) => b.id === selectedBuildingId);
+    if (!currentBuilding) return;
+
+    const locationData = {
+      city: currentBuilding.city,
+      country: currentBuilding.country,
+    };
+    localStorage.setItem("selectedLocation", JSON.stringify(locationData));
+    setLocation(locationData); // <-- met à jour le store global
+  }, [selectedBuildingId, buildings, setLocation]);
 
   return (
     <div>

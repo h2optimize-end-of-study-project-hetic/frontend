@@ -23,8 +23,6 @@ export function useRooms() {
           throw new Error(`Error ${res.status}: ${res.statusText}`);
         }
         const json = await res.json();
-        console.log("header", headers);
-        console.log("json :", json);
         setRooms(json.data ?? []);
       } catch (err: any) {
         setErrorRoom(err.message);

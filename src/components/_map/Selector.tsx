@@ -1,6 +1,6 @@
 type SelectorProps<T> = {
   options: T[];
-  value: number;
+  value: number | string;
   onChange: (id: string) => void;
   getLabel: (item: T) => string;
   getId: (item: T) => number;
