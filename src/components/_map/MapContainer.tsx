@@ -4,7 +4,10 @@ import MapHeader from "./MapHeader";
 import type { FloorMap } from "../../types/floorMap";
 import type { Room } from "../../types/room";
 import { useMaps } from "../../hooks/useMap";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import type { EventsByDate } from "../../types/eventsByDate";
+import { useLocation } from "react-router-dom";
+import { EventContent } from "../organisms/event/EventContent";
 
 interface Building {
   id: number;
@@ -22,6 +25,8 @@ interface MapContainerProps {
   onDateChange: (date: string) => void;
   selectedFloor: FloorMap | undefined;
   selectedRooms: Room[];
+  eventsByDate: EventsByDate[] | null;
+  setEventsByDate: React.Dispatch<React.SetStateAction<EventsByDate[] | null>>;
   loading: boolean;
   error: string | null;
 }
@@ -37,6 +42,8 @@ function MapContainer({
   onDateChange,
   selectedFloor,
   selectedRooms,
+  eventsByDate,
+  setEventsByDate,
   loading,
   error,
 }: MapContainerProps) {
@@ -52,6 +59,9 @@ function MapContainer({
     }
   }, [selectedFloor]);
 
+  const selectedBuild = buildings.find((b) => b.id === selectedBuildingId);
+  const location = useLocation();
+
   return (
     <>
       <MapHeader
@@ -66,12 +76,12 @@ function MapContainer({
       />
 
       <MapTitle
-        buildingName={`Building ${selectedBuildingId}`}
+        buildingName={`${selectedBuild?.name}`}
         floorName={selectedFloor.file_name}
       />
 
-      <div className="p-2.5 relative">
-        {imageUrl && (
+      <div className="p-2.5 relative flex flex-row gap-2.5">
+        {imageUrl && selectedFloor && selectedRooms && eventsByDate && (
           <MapView
             image={imageUrl}
             bounds={[
@@ -79,6 +89,16 @@ function MapContainer({
               [selectedFloor.length, selectedFloor.width],
             ]}
             rooms={selectedRooms}
+            events={eventsByDate}
+          />
+        )}
+        {location.pathname === "/edit" && (
+          <EventContent
+            eventsByDate={eventsByDate}
+            setEventsByDate={setEventsByDate}
+            selectedRooms={selectedRooms}
+            selectedFloorId={selectedFloorId}
+            selectedBuildingId={selectedBuildingId}
           />
         )}
       </div>

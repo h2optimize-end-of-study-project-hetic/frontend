@@ -3,32 +3,32 @@ import BasicTextFields from "../atoms/Input";
 import BasicButtons from "../atoms/Button";
 import LoginSignUpActions from "../atoms/LoginSignUpActions";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, type LoginInput} from "../../schemas/login";
- import { useAuth } from "../../hooks/useAuth";
+import { loginSchema, type LoginInput } from "../../schemas/login";
+import { useAuth } from "../../hooks/useAuth";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import { useState } from "react";
 
 export default function LoginBox() {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const [loginError] = useState<string | null>(null);
   const {
-  register,
-  handleSubmit,
-  formState: { errors },
-} = useForm<LoginInput>({
-  resolver: zodResolver(loginSchema),
-});
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginInput>({
+    resolver: zodResolver(loginSchema),
+  });
 
+  const onSubmit = async (data: LoginInput) => {
+    await login(data.username, data.password);
 
+    if (localStorage.getItem("token")) {
+      navigate("/dashboard");
+    }
+  };
 
-const onSubmit = async (data: LoginInput) => {
-  await login(data.username, data.password);
-
-  if (localStorage.getItem("token")) {
-    navigate("/dashboard");
-  }
-};
-  
   return (
     <Box
       sx={{
@@ -63,10 +63,14 @@ const onSubmit = async (data: LoginInput) => {
             helperText={errors.password?.message}
           />
 
-          <BasicButtons label="Se connecter" type="submit"/>
-
+          <BasicButtons label="Se connecter" type="submit" />
+          {loginError && (
+            <p className="text-red-500">
+              Utilisateur ou mot de passe incorrect
+            </p>
+          )}
           <Stack paddingTop={4}>
-          <LoginSignUpActions mode={"login"}  />
+            <LoginSignUpActions mode={"login"} />
           </Stack>
         </Stack>
       </form>

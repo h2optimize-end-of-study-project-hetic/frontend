@@ -40,7 +40,6 @@ export default function MapHeader({
             options={selectedBuildingFloors}
             value={selectedFloorId ?? ""}
             onChange={(id) => onFloorChange(Number(id))}
-            // getLabel={(floor) => floor.file_name.split(".")[0]}
             getLabel={(floor) => "Étage " + String(floor.floor)}
             getId={(floor) => floor.id}
           />

@@ -7,6 +7,8 @@ import { useMaps } from "../hooks/useMap";
 import { useRooms } from "../hooks/useRoom";
 import { formatDateForInput } from "../utils/date";
 import ChevronLeft from "@mui/icons-material/ChevronLeft";
+import { useEventsByDate } from "../hooks/useEvents";
+import { useBuildings } from "../hooks/useBuilding";
 
 const Edit = () => {
   const navigate = useNavigate();
@@ -18,12 +20,12 @@ const Edit = () => {
     null
   );
   const [selectedFloorId, setSelectedFloorId] = useState<number | null>(null);
-  const [date, setDate] = useState<string>("");
 
-  // Liste des bâtiments
-  const buildings = Array.from(new Set(maps.map((m) => m.building_id))).map(
-    (id) => ({ id, name: `Bâtiment ${id}` })
-  );
+  const [date, setDate] = useState(() => formatDateForInput(new Date()));
+  const { eventsByDate, eventsLoading, eventsError, setEventsByDate } =
+    useEventsByDate(date);
+
+  const { buildings, buildLoading, buildError } = useBuildings();
 
   // Étages du bâtiment sélectionné
   const selectedBuildingFloors = maps.filter(
@@ -83,18 +85,20 @@ const Edit = () => {
       </div>
 
       <MapContainer
-        buildings={buildings}
+        buildings={buildings ?? []}
         selectedBuildingId={selectedBuildingId}
         onBuildingChange={onBuildingChange}
-        selectedBuildingFloors={selectedBuildingFloors}
+        selectedBuildingFloors={selectedBuildingFloors ?? []}
         selectedFloorId={selectedFloorId}
         onFloorChange={(id) => setSelectedFloorId(id)}
         date={date}
         onDateChange={setDate}
-        selectedFloor={selectedFloor}
-        selectedRooms={selectedRooms}
-        loading={loading || loadingRoom}
-        error={error || errorRoom}
+        selectedFloor={selectedFloor ?? undefined}
+        selectedRooms={selectedRooms ?? []}
+        eventsByDate={eventsByDate ?? []}
+        setEventsByDate={setEventsByDate}
+        loading={loading || loadingRoom || eventsLoading || buildLoading}
+        error={error || errorRoom || eventsError || buildError}
       />
     </div>
   );

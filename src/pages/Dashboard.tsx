@@ -10,6 +10,7 @@ import { useMaps } from "../hooks/useMap";
 import { useRooms } from "../hooks/useRoom";
 import { formatDateForInput } from "../utils/date";
 import { useBuildings } from "../hooks/useBuilding";
+import { useEventsByDate } from "../hooks/useEvents";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -21,13 +22,9 @@ const Dashboard = () => {
     null
   );
   const [selectedFloorId, setSelectedFloorId] = useState<number | null>(null);
-  const [date, setDate] = useState<string>("");
 
-  // Liste des bâtiments
-  // const buildings = Array.from(new Set(maps.map((m) => m.building_id))).map(
-  //   (id) => ({ id, name: `Bâtiment ${id}` })
-  // );
-
+  const [date, setDate] = useState(() => formatDateForInput(new Date()));
+  const { eventsByDate, eventsLoading, eventsError } = useEventsByDate(date);
   const { buildings, buildLoading, buildError } = useBuildings();
 
   // Étages du bâtiment sélectionné
@@ -49,9 +46,6 @@ const Dashboard = () => {
 
   // Init : choisir la date et le premier building/floor
   useEffect(() => {
-    const now = new Date();
-    setDate(formatDateForInput(now));
-
     if (maps.length > 0 && selectedBuildingId === null) {
       const firstBuildingId = maps[0].building_id;
       setSelectedBuildingId(firstBuildingId);
@@ -59,7 +53,7 @@ const Dashboard = () => {
       const firstFloor = maps.find((m) => m.building_id === firstBuildingId);
       if (firstFloor) setSelectedFloorId(firstFloor.id);
     }
-  }, [maps]);
+  }, [maps, selectedBuildingId]);
 
   // Changement de bâtiment
   const onBuildingChange = (id: number) => {
@@ -79,7 +73,7 @@ const Dashboard = () => {
       country: currentBuilding.country,
     };
     localStorage.setItem("selectedLocation", JSON.stringify(locationData));
-    setLocation(locationData); // <-- met à jour le store global
+    setLocation(locationData);
   }, [selectedBuildingId, buildings, setLocation]);
 
   return (
@@ -100,18 +94,19 @@ const Dashboard = () => {
       </div>
 
       <MapContainer
-        buildings={buildings}
+        buildings={buildings ?? []}
         selectedBuildingId={selectedBuildingId}
         onBuildingChange={onBuildingChange}
-        selectedBuildingFloors={selectedBuildingFloors}
+        selectedBuildingFloors={selectedBuildingFloors ?? []}
         selectedFloorId={selectedFloorId}
         onFloorChange={(id) => setSelectedFloorId(id)}
         date={date}
         onDateChange={setDate}
-        selectedFloor={selectedFloor}
-        selectedRooms={selectedRooms}
-        loading={loading || loadingRoom}
-        error={error || errorRoom}
+        selectedFloor={selectedFloor ?? undefined}
+        selectedRooms={selectedRooms ?? []}
+        eventsByDate={eventsByDate ?? []}
+        loading={loading || loadingRoom || eventsLoading || buildLoading}
+        error={error || errorRoom || eventsError || buildError}
       />
     </div>
   );
