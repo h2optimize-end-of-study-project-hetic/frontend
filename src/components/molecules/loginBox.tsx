@@ -23,6 +23,10 @@ export default function LoginBox() {
 
 const onSubmit = async (data: LoginInput) => {
   await login(data.username, data.password);
+
+  if (localStorage.getItem("token")) {
+    navigate("/dashboard");
+  }
 };
   
   return (
@@ -59,7 +63,7 @@ const onSubmit = async (data: LoginInput) => {
             helperText={errors.password?.message}
           />
 
-          <BasicButtons label="Se connecter" type="submit" onClick={() => navigate("/dashboard")} />
+          <BasicButtons label="Se connecter" type="submit"/>
 
           <Stack paddingTop={4}>
           <LoginSignUpActions mode={"login"}  />
