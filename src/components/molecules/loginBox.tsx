@@ -12,7 +12,7 @@ import { useState } from "react";
 export default function LoginBox() {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [loginError] = useState<string | null>(null);
+  const [loginError, setLoginError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -22,10 +22,14 @@ export default function LoginBox() {
   });
 
   const onSubmit = async (data: LoginInput) => {
-    await login(data.username, data.password);
+    try {
+      await login(data.username, data.password);
 
-    if (localStorage.getItem("token")) {
-      navigate("/dashboard");
+      if (localStorage.getItem("token")) {
+        navigate("/dashboard");
+      }
+    } catch (err: any) {
+      setLoginError(err.message);
     }
   };
 

@@ -7,18 +7,25 @@ import Logo from "../atoms/Logo";
 import { useNavigate } from "react-router-dom";
 import Weather from "../atoms/Weather";
 
-const options = [
-  { label: "Login", path: "/login" },
-  { label: "Sign Up", path: "/sign-up" },
-  { label: "Dashboard", path: "/dashboard" },
-  { label: "Balises", path: "/tag/dashboard" },
-  { label: "Utilisateurs", path: "/user/dashboard" },
-];
-
 export default function Header() {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
+  const token = localStorage.getItem("token");
+  const isAuthenticated = Boolean(token);
+
+  const options = isAuthenticated
+    ? [
+        { label: "Dashboard", path: "/dashboard" },
+        { label: "Balises", path: "/tag/dashboard" },
+        { label: "Utilisateurs", path: "/user/dashboard" },
+        { label: "Se déconnecter", path: "/login" },
+      ]
+    : [
+        { label: "Se connecter", path: "/login" },
+        { label: "S'inscrire", path: "/sign-up" },
+      ];
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -27,7 +34,10 @@ export default function Header() {
     setAnchorEl(null);
   };
 
-  const handleNavigate = (path: string) => {
+  const handleNavigate = (path: string, label?: string) => {
+    if (label === "Se déconnecter") {
+      localStorage.removeItem("token"); // ✅ supprime le token
+    }
     navigate(path);
     handleClose();
   };
@@ -66,7 +76,7 @@ export default function Header() {
           {options.map((option) => (
             <MenuItem
               key={option.path}
-              onClick={() => handleNavigate(option.path)}
+              onClick={() => handleNavigate(option.path, option.label)}
             >
               {option.label}
             </MenuItem>
