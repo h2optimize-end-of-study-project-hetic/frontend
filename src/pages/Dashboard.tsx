@@ -22,9 +22,9 @@ const Dashboard = () => {
     null
   );
   const [selectedFloorId, setSelectedFloorId] = useState<number | null>(null);
-
   const [date, setDate] = useState(() => formatDateForInput(new Date()));
-  const { eventsByDate, eventsLoading, eventsError } = useEventsByDate(date);
+  const { eventsByDate, eventsLoading, eventsError, setEventsByDate } =
+    useEventsByDate(date);
   const { buildings, buildLoading, buildError } = useBuildings();
 
   // Étages du bâtiment sélectionné
@@ -107,6 +107,7 @@ const Dashboard = () => {
         eventsByDate={eventsByDate ?? []}
         loading={loading || loadingRoom || eventsLoading || buildLoading}
         error={error || errorRoom || eventsError || buildError}
+        setEventsByDate={setEventsByDate}
       />
     </div>
   );
