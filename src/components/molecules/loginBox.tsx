@@ -1,18 +1,19 @@
-import { Box, Stack, Typography } from "@mui/material";
-import BasicTextFields from "../atoms/Input";
-import BasicButtons from "../atoms/Button";
-import LoginSignUpActions from "../atoms/LoginSignUpActions";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, type LoginInput } from "../../schemas/login";
-import { useAuth } from "../../hooks/useAuth";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Box, Stack, Typography } from "@mui/material";
+
+import BasicButtons from "../atoms/Button";
+import BasicTextFields from "../atoms/Input";
+import { useAuth } from "../../hooks/useAuth";
+import { useSnackbar } from "../../context/SnackbarContext";
+import LoginSignUpActions from "../atoms/LoginSignUpActions";
+import { loginSchema, type LoginInput} from "../../schemas/login";
 
 export default function LoginBox() {
+  const { showMessage } = useSnackbar()
   const navigate = useNavigate();
-  const { login } = useAuth();
-  const [loginError, setLoginError] = useState<string | null>(null);
+  const { login, error } = useAuth();
   const {
     register,
     handleSubmit,
@@ -22,16 +23,15 @@ export default function LoginBox() {
   });
 
   const onSubmit = async (data: LoginInput) => {
-    try {
-      await login(data.username, data.password);
-
-      if (localStorage.getItem("token")) {
-        navigate("/dashboard");
-      }
-    } catch (err: any) {
-      setLoginError(err.message);
+    await login(data.username, data.password);
+    if (error && error === 'Erreur de connexion') {
+      showMessage(error, 'error')
+      return
     }
+    showMessage('Connecté', 'success')
+    navigate('/dashboard')
   };
+
 
   return (
     <Box
@@ -57,7 +57,8 @@ export default function LoginBox() {
             {...register("username")}
             error={!!errors.username}
             helperText={errors.username?.message}
-          />
+            autoComplete="username" 
+       />
 
           <BasicTextFields
             label="Mot de passe"
@@ -65,14 +66,11 @@ export default function LoginBox() {
             {...register("password")}
             error={!!errors.password}
             helperText={errors.password?.message}
+            autoComplete="current-password"
           />
 
           <BasicButtons label="Se connecter" type="submit" />
-          {loginError && (
-            <p className="text-red-500">
-              Utilisateur ou mot de passe incorrect
-            </p>
-          )}
+
           <Stack paddingTop={4}>
             <LoginSignUpActions mode={"login"} />
           </Stack>

@@ -52,8 +52,8 @@ export default function Unauthorized() {
           <h1>Erreur 403</h1>
           <p>Vous n'êtes pas authorisé ici</p>
           <BasicButtons
-            label="Retourner au Dashboard"
-            onClick={() => navigate("/dashboard")}
+            label="Retourner à la page d'acceuil"
+            onClick={() => navigate("/")}
           />
         </Box>
       </Stack>

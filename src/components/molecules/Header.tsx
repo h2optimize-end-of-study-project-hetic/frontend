@@ -6,9 +6,14 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Logo from "../atoms/Logo";
 import { useNavigate } from "react-router-dom";
 import Weather from "../atoms/Weather";
+import { useAuth } from "../../hooks/useAuth";
+import { useSnackbar } from "../../context/SnackbarContext";
+
 
 export default function Header() {
   const navigate = useNavigate();
+  const { error, logout } = useAuth();
+  const { showMessage } = useSnackbar()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -18,7 +23,8 @@ export default function Header() {
   const options = isAuthenticated
     ? [
         { label: "Dashboard", path: "/dashboard" },
-        { label: "Balises", path: "/tag/dashboard" },
+        { label: "Pièces", path: "/room" },
+        { label: "Balises", path: "/tag" },
         { label: "Utilisateurs", path: "/user/dashboard" },
         { label: "Se déconnecter", path: "/login" },
       ]
@@ -40,6 +46,20 @@ export default function Header() {
     }
     navigate(path);
     handleClose();
+  };
+
+
+  const handleLogout = () => {
+    logout()
+
+    if (error) {
+      showMessage(error, 'error')
+      handleClose();
+      return 
+    }
+    showMessage('Déconnecté', 'success')
+    handleClose();
+    navigate("/login");
   };
 
   return (
@@ -81,7 +101,10 @@ export default function Header() {
               {option.label}
             </MenuItem>
           ))}
-        </Menu>
+          <MenuItem onClick={handleLogout}>
+          Déconnexion
+        </MenuItem>
+      </Menu>
       </div>
     </header>
   );
