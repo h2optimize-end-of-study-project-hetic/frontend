@@ -7,7 +7,7 @@ import NotFound from "../pages/errors/NotFound";
 import TagEdit from "../pages/tag/TagEditView";
 import Unauthorized from "../pages/errors/Unauthorized";
 import TagCreate from "../pages/tag/TagCreate";
-import TechnicianDashboard from "../pages/technician/TechnicianDashboardView";
+import TechnicianDashboard from "../components/organisms/technician/TechnicianDashboardView.tsx";
 import TagManager from "../pages/tag/TagManager";
 import UserCreate from "../pages/user/UserCreate";
 import EditGroupView from "../pages/group/EditGroupView.tsx";
