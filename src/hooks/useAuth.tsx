@@ -45,7 +45,6 @@ export const useAuth = () => {
       localStorage.setItem("token", body.access_token);
 
       setUser(body.user);
-      navigate("/dashboard");
     } catch (err) {
       console.error(err);
       setError("Erreur de connexion");

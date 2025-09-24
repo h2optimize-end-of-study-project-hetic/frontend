@@ -1,14 +1,10 @@
 import MainLayout from "../components/layouts/MainLayout";
 import { Routes, Route, Outlet, Navigate } from "react-router";
-import { Routes, Route, Outlet, Navigate } from "react-router";
 import LoginPage from "../pages/connection/Login";
 import SignUpPage from "../pages/connection/SignUp";
 import Dashboard from "../pages/Dashboard";
 import NotFound from "../pages/errors/NotFound";
 import Unauthorized from "../pages/errors/Unauthorized";
-import TagCreate from "../pages/tag/TagCreate";
-import TechnicianDashboard from "../pages/technician/TechnicianDashboardView";
-import TagManager from "../pages/tag/TagManager";
 import UserCreate from "../pages/user/UserCreate";
 import EditGroupView from "../pages/group/EditGroupView";
 import EditUserView from "../pages/user/EditUserView";
