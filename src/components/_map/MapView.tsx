@@ -4,6 +4,7 @@ import {
   Polygon,
   Popup,
   Tooltip,
+  Marker,
 } from "react-leaflet";
 
 import L from "leaflet";
@@ -11,6 +12,7 @@ import "leaflet/dist/leaflet.css";
 import type { Room } from "../../types/room";
 import type { EventsByDate } from "../../types/eventsByDate";
 import { formatEventTime } from "../../utils/date";
+import { useRef } from "react";
 
 type Props = {
   image: string;
@@ -19,7 +21,22 @@ type Props = {
   events: EventsByDate[] | null;
 };
 
+function getPolygonCentroid(points: [number, number][]): [number, number] {
+  let x = 0,
+    y = 0;
+  points.forEach(([px, py]) => {
+    x += px;
+    y += py;
+  });
+  return [x / points.length, y / points.length];
+}
+
 const MapView = ({ image, bounds, rooms, events }: Props) => {
+  const invisibleIcon = L.divIcon({
+    className: "invisible-marker",
+    iconSize: [0, 0],
+  });
+
   return (
     <MapContainer
       crs={L.CRS.Simple}
@@ -34,14 +51,13 @@ const MapView = ({ image, bounds, rooms, events }: Props) => {
         border: "1px solid var(--light-blue)",
       }}
     >
-      {/* Image du plan */}
       <ImageOverlay url={image} bounds={bounds} />
 
-      {/* Marqueurs pour chaque salle */}
       {rooms.map((room) => {
         const roomEvents =
           events?.filter((event) => event.room_id === room.id) || [];
-
+        const center = getPolygonCentroid(room.shape);
+        const markerRef = useRef<L.Marker>(null);
         return (
           <Polygon
             key={room.id}
@@ -56,37 +72,64 @@ const MapView = ({ image, bounds, rooms, events }: Props) => {
               fillOpacity: 1,
               weight: 1,
             }}
+            eventHandlers={{
+              click: () => {
+                markerRef.current?.openPopup();
+              },
+            }}
           >
             <Tooltip permanent direction="center" opacity={0.8}>
               <strong>{room.name}</strong>
             </Tooltip>
+            <Marker
+              ref={markerRef}
+              position={center}
+              icon={invisibleIcon}
+              keyboard={true}
+              eventHandlers={{
+                add: (e) => {
+                  const el = e.target.getElement();
+                  if (!el) return;
 
-            <Popup>
-              <div>
-                <strong className="font-bold">{room.name}</strong>
-                <br />
-                <span className="font-semibold">{room.description}</span>
-                <br />
-                Capacité : <strong>{room.capacity}</strong>
-                <br />
-                Occupée : {roomEvents.length > 0 ? "Oui" : "Non"}
-                <br />
-                {/* Température : {room.temperature}°C */}
-                {roomEvents.length > 0 && (
-                  <div className="mt-2">
-                    <strong>Événements :</strong>
-                    <ul className="list-disc pl-4">
-                      {roomEvents.map((event, idx) => (
-                        <li key={`${event.event_id}-${idx}`}>
-                          {formatEventTime(event.start_at, event.end_at)} |{" "}
-                          {event.group_name} - {event.event_name}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            </Popup>
+                  el.setAttribute("tabindex", "0");
+                  el.addEventListener("focus", () => e.target.openPopup());
+                  el.addEventListener("blur", () => e.target.closePopup());
+
+                  el.addEventListener("keydown", (ev: any) => {
+                    if (ev.key === "Enter" || ev.key === " ") {
+                      e.target.openPopup();
+                    }
+                  });
+                },
+              }}
+            >
+              <Popup>
+                <div>
+                  <strong className="font-bold">{room.name}</strong>
+                  <br />
+                  <span className="font-semibold">{room.description}</span>
+                  <br />
+                  Capacité : <strong>{room.capacity}</strong>
+                  <br />
+                  Occupée : {roomEvents.length > 0 ? "Oui" : "Non"}
+                  <br />
+                  {/* Température : {room.temperature}°C */}
+                  {roomEvents.length > 0 && (
+                    <div className="mt-2">
+                      <strong>Événements :</strong>
+                      <ul className="list-disc pl-4">
+                        {roomEvents.map((event, idx) => (
+                          <li key={`${event.event_id}-${idx}`}>
+                            {formatEventTime(event.start_at, event.end_at)} |{" "}
+                            {event.group_name} - {event.event_name}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </Popup>
+            </Marker>
           </Polygon>
         );
       })}
