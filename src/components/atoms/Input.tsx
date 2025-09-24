@@ -41,6 +41,7 @@ const BasicTextFields = forwardRef(function BasicTextFields(
                     <IconButton
                       onClick={() => setShowPassword((prev) => !prev)}
                       edge="end"
+                      aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
                     >
                       {!showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
