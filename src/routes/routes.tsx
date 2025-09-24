@@ -1,5 +1,5 @@
 import MainLayout from "../components/layouts/MainLayout";
-import { Routes, Route, Outlet } from "react-router";
+import { Routes, Route, Outlet, Navigate } from "react-router";
 import LoginPage from "../pages/connection/Login";
 import SignUpPage from "../pages/connection/SignUp";
 import Dashboard from "../pages/Dashboard";
@@ -14,6 +14,7 @@ import EditGroupView from "../pages/group/EditGroupView";
 import EditUserView from "../pages/user/EditUserView";
 import AdminDashboard from "../pages/admin/AdminDashboardView";
 import UserEdit from "../pages/user/UserEdit";
+import Edit from "../pages/Edit";
 import RequireRole from "../components/RequireRole";
 
 export default function AppRoutes() {
@@ -23,6 +24,10 @@ export default function AppRoutes() {
         //public
         <Route path="login" element={<LoginPage />} />
         <Route path="sign-up" element={<SignUpPage />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="edit" element={<Edit />} />
+        {/* redirection automatique si on ouvre "/" */}
+        <Route index element={<Navigate to="/login" replace />} />
         // general
         <Route
           path="/dashboard"

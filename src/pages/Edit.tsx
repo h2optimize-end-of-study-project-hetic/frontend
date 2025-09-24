@@ -1,6 +1,3 @@
-import { useAtom } from "jotai";
-import { locationAtom } from "../components/atoms/locationAtom";
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import Button from "@mui/material/Button";
@@ -9,10 +6,11 @@ import MapContainer from "../components/_map/MapContainer";
 import { useMaps } from "../hooks/useMap";
 import { useRooms } from "../hooks/useRoom";
 import { formatDateForInput } from "../utils/date";
-import { useBuildings } from "../hooks/useBuilding";
+import ChevronLeft from "@mui/icons-material/ChevronLeft";
 import { useEventsByDate } from "../hooks/useEvents";
+import { useBuildings } from "../hooks/useBuilding";
 
-const Dashboard = () => {
+const Edit = () => {
   const navigate = useNavigate();
 
   const { maps, loading, error } = useMaps();
@@ -22,9 +20,11 @@ const Dashboard = () => {
     null
   );
   const [selectedFloorId, setSelectedFloorId] = useState<number | null>(null);
+
   const [date, setDate] = useState(() => formatDateForInput(new Date()));
   const { eventsByDate, eventsLoading, eventsError, setEventsByDate } =
     useEventsByDate(date);
+
   const { buildings, buildLoading, buildError } = useBuildings();
 
   // Étages du bâtiment sélectionné
@@ -46,6 +46,9 @@ const Dashboard = () => {
 
   // Init : choisir la date et le premier building/floor
   useEffect(() => {
+    const now = new Date();
+    setDate(formatDateForInput(now));
+
     if (maps.length > 0 && selectedBuildingId === null) {
       const firstBuildingId = maps[0].building_id;
       setSelectedBuildingId(firstBuildingId);
@@ -53,7 +56,7 @@ const Dashboard = () => {
       const firstFloor = maps.find((m) => m.building_id === firstBuildingId);
       if (firstFloor) setSelectedFloorId(firstFloor.id);
     }
-  }, [maps, selectedBuildingId]);
+  }, [maps]);
 
   // Changement de bâtiment
   const onBuildingChange = (id: number) => {
@@ -62,35 +65,23 @@ const Dashboard = () => {
     if (firstFloor) setSelectedFloorId(firstFloor.id);
   };
 
-  const [, setLocation] = useAtom(locationAtom);
-
-  useEffect(() => {
-    const currentBuilding = buildings.find((b) => b.id === selectedBuildingId);
-    if (!currentBuilding) return;
-
-    const locationData = {
-      city: currentBuilding.city,
-      country: currentBuilding.country,
-    };
-    localStorage.setItem("selectedLocation", JSON.stringify(locationData));
-    setLocation(locationData);
-  }, [selectedBuildingId, buildings, setLocation]);
-
   return (
     <div>
-      <div className="!my-4">
+      <div className="!my-4 flex flex-row gap-4 items-center">
         <Button
           variant="contained"
+          startIcon={<ChevronLeft />}
           sx={{
-            backgroundColor: "var(--light-green)",
-            color: "var(--dark-green)",
+            backgroundColor: "var(--light-blue)",
+            color: "var(--dark-blue)",
             fontWeight: 500,
             boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
           }}
-          onClick={() => navigate("/edit")}
+          onClick={() => navigate("/dashboard")}
         >
-          Éditer le planning
+          Dashboard
         </Button>
+        <h1 className="font-bold text-2xl">Édition du planning</h1>
       </div>
 
       <MapContainer
@@ -105,12 +96,12 @@ const Dashboard = () => {
         selectedFloor={selectedFloor ?? undefined}
         selectedRooms={selectedRooms ?? []}
         eventsByDate={eventsByDate ?? []}
+        setEventsByDate={setEventsByDate}
         loading={loading || loadingRoom || eventsLoading || buildLoading}
         error={error || errorRoom || eventsError || buildError}
-        setEventsByDate={setEventsByDate}
       />
     </div>
   );
 };
 
-export default Dashboard;
+export default Edit;

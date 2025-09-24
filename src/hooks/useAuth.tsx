@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 type User = {
   id: number;
@@ -11,6 +12,7 @@ export const useAuth = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const isAuthenticated = Boolean(user);
+  const navigate = useNavigate();
 
   const login = async (username: string, password: string) => {
     try {
@@ -21,16 +23,18 @@ export const useAuth = () => {
       data.append("scope", "");
       data.append("client_id", "string");
       data.append("client_secret", "**");
-      
 
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL_API}/api/v1/auth/login`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: data,
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: data,
+        }
+      );
 
       if (!res.ok) throw new Error("Erreur Auth");
       const body = await res.json();
@@ -38,20 +42,25 @@ export const useAuth = () => {
       localStorage.setItem("token", body.access_token);
 
       setUser(body.user);
+      navigate("/dashboard");
     } catch (err) {
       console.error(err);
       setError("Erreur de connexion");
+      throw err;
     }
   };
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL_API}/api/v1/auth/me`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/auth/me`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         if (!res.ok) throw new Error("User non trouvé");
         const data = await res.json();
         setUser(data);
@@ -59,29 +68,36 @@ export const useAuth = () => {
         console.error(err);
         setError("Erreur authentification");
       } finally {
-        setLoading(false);  
+        setLoading(false);
       }
     };
     fetchUser();
   }, []);
 
-  const signUp = async (firstname: string, lastname: string, email: string, password: string) => {
-  try {
-    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL_API}/api/v1/users`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ firstname, lastname, email, password }),
-    });
+  const signUp = async (
+    firstname: string,
+    lastname: string,
+    email: string,
+    password: string
+  ) => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL_API}/api/v1/users`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ firstname, lastname, email, password }),
+        }
+      );
 
-    if (!res.ok) throw new Error("Erreur inscription");
+      if (!res.ok) throw new Error("Erreur inscription");
 
-    await login(email, password);
-
-  } catch (err) {
-    console.error(err);
-    setError("Erreur inscription");
-  }
-};
+      await login(email, password);
+    } catch (err) {
+      console.error(err);
+      setError("Erreur inscription");
+    }
+  };
 
   return { user, loading, error, login, isAuthenticated, signUp };
 };
