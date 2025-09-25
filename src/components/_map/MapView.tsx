@@ -60,7 +60,7 @@ const MapView = ({ image, bounds, rooms, events }: Props) => {
         if (!markerRefs.current[room.id]) {
           markerRefs.current[room.id] = null;
         }
-        console.log(markerRefs.current[room.id]);
+        // console.log(markerRefs.current[room.id]);
         return (
           <Polygon
             key={room.id}
