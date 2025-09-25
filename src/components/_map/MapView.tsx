@@ -57,10 +57,10 @@ const MapView = ({ image, bounds, rooms, events }: Props) => {
         const roomEvents =
           events?.filter((event) => event.room_id === room.id) || [];
         const center = getPolygonCentroid(room.shape);
-        // const markerRef = useRef<L.Marker>(null);
         if (!markerRefs.current[room.id]) {
           markerRefs.current[room.id] = null;
         }
+        console.log(markerRefs.current[room.id]);
         return (
           <Polygon
             key={room.id}
