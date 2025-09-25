@@ -146,10 +146,7 @@ export function EventContent({
                 p={2}
                 borderRadius={2}
               >
-                <Typography fontWeight={600}>
-                  {event.id}
-                  {event.event_name}
-                </Typography>
+                <Typography fontWeight={600}>{event.event_name}</Typography>
                 <p>{formatEventTime(event.start_at, event.end_at)}</p>
                 <p className="text-xs">{event.description}</p>
                 <Stack

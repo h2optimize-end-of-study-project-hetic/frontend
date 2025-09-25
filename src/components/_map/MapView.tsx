@@ -36,7 +36,7 @@ const MapView = ({ image, bounds, rooms, events }: Props) => {
     className: "invisible-marker",
     iconSize: [0, 0],
   });
-
+  const markerRefs = useRef<Record<number, L.Marker | null>>({});
   return (
     <MapContainer
       crs={L.CRS.Simple}
@@ -57,7 +57,10 @@ const MapView = ({ image, bounds, rooms, events }: Props) => {
         const roomEvents =
           events?.filter((event) => event.room_id === room.id) || [];
         const center = getPolygonCentroid(room.shape);
-        const markerRef = useRef<L.Marker>(null);
+        if (!markerRefs.current[room.id]) {
+          markerRefs.current[room.id] = null;
+        }
+        console.log(markerRefs.current[room.id]);
         return (
           <Polygon
             key={room.id}
@@ -74,7 +77,7 @@ const MapView = ({ image, bounds, rooms, events }: Props) => {
             }}
             eventHandlers={{
               click: () => {
-                markerRef.current?.openPopup();
+                markerRefs.current[room.id]?.openPopup();
               },
             }}
           >
@@ -82,7 +85,9 @@ const MapView = ({ image, bounds, rooms, events }: Props) => {
               <strong>{room.name}</strong>
             </Tooltip>
             <Marker
-              ref={markerRef}
+              ref={(el) => {
+                markerRefs.current[room.id] = el;
+              }}
               position={center}
               icon={invisibleIcon}
               keyboard={true}
