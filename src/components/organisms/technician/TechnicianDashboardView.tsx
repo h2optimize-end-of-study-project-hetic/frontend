@@ -1,8 +1,8 @@
 import { Box, Button, Stack } from "@mui/material";
 import { useNavigate } from "react-router";
-import DashboardContent from "../tag/DashboardTagContent";
-import FilerTagList from "../tag/FilterTagList";
-import type { Tag } from "../../../types/tag";
+import DashboardContent from "../../components/organisms/tag/DashboardTagContent";
+import FilerTagList from "../../components/organisms/tag/LateralPanel";
+import type { Tag } from "../../types/tag";
 import { useEffect, useState } from "react";
 import { useAuthHeaders } from "../../../hooks/useAuthHeader";
 import { useFilter } from "../../../hooks/useFilter";

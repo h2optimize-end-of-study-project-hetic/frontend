@@ -23,6 +23,10 @@
   --primary-blue: #567fae;
   --light-blue: #cde6f2;
   --light-light-blue: #e2f3fb51;
+
+  --dark-yellow: #9c7b16;
+  --primary-yellow: #ffd347;
+  --light-yellow: #fff5cc;
 }
 
 * {

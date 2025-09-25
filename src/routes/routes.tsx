@@ -4,11 +4,7 @@ import LoginPage from "../pages/connection/Login";
 import SignUpPage from "../pages/connection/SignUp";
 import Dashboard from "../pages/Dashboard";
 import NotFound from "../pages/errors/NotFound";
-import TagEdit from "../pages/tag/TagEditView";
 import Unauthorized from "../pages/errors/Unauthorized";
-import TagCreate from "../pages/tag/TagCreate";
-import TechnicianDashboard from "../components/organisms/technician/TechnicianDashboardView";
-import TagManager from "../pages/tag/TagManager";
 import UserCreate from "../pages/user/UserCreate";
 import EditGroupView from "../pages/group/EditGroupView";
 import EditUserView from "../pages/user/EditUserView";
@@ -16,19 +12,25 @@ import AdminDashboard from "../pages/admin/AdminDashboardView";
 import UserEdit from "../pages/user/UserEdit";
 import Edit from "../pages/Edit";
 import RequireRole from "../components/RequireRole";
+import TagExplorerPage from "../pages/tag/TagExplorerPage.tsx";
+import TagEditPage from "../pages/tag/TagEditPage.tsx";
+import TagCreatePage from "../pages/tag/TagCreatePage.tsx";
+import RoomExplorerPage from "../pages/room/RoomExplorerPage.tsx";
+import RoomEditPage from "../pages/room/RoomEditPage.tsx";
+import RoomCreatePage from "../pages/room/RoomCreatePage.tsx";
+import RoomStatistiquePage from "../pages/room/RoomStatistiquePage.tsx";
 
 export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>
-        //public
+        <Route path="" element={<LoginPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="sign-up" element={<SignUpPage />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="edit" element={<Edit />} />
         {/* redirection automatique si on ouvre "/" */}
         <Route index element={<Navigate to="/login" replace />} />
-        // general
         <Route
           path="/dashboard"
           element={
@@ -39,7 +41,6 @@ export default function AppRoutes() {
             </RequireRole>
           }
         />
-        //tag
         <Route
           path="tag"
           element={
@@ -48,12 +49,27 @@ export default function AppRoutes() {
             </RequireRole>
           }
         >
-          <Route path="dashboard" element={<TechnicianDashboard />} />
-          <Route path="create" element={<TagCreate />} />
-          <Route path="edit" element={<TagManager />} />
-          <Route path=":id/edit" element={<TagEdit />} />
+          <Route path="" element={<TagExplorerPage />} />
+          <Route path="dashboard" element={<Navigate to="" replace />} />
+          <Route path="create" element={<TagCreatePage />} />
+          <Route path=":id/edit" element={<TagEditPage />} />
+          <Route path="edit" element={<TagEditPage />} />
         </Route>
-        //user
+        <Route
+          path="room"
+          element={
+            <RequireRole allowedRoles={["technician", "admin"]}>
+              <Outlet />
+            </RequireRole>
+          }
+        >
+          <Route path="" element={<RoomExplorerPage />} />
+          <Route path="dashboard" element={<Navigate to="" replace />} />
+          <Route path="create" element={<RoomCreatePage />} />
+          <Route path=":id/edit" element={<RoomEditPage />} />
+          <Route path="edit" element={<RoomEditPage />} />
+          <Route path="statistique" element={<RoomStatistiquePage />} />
+        </Route>
         <Route
           path="user"
           element={
@@ -68,7 +84,6 @@ export default function AppRoutes() {
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path=":id/edit-user" element={<EditUserView />} />
         </Route>
-        //group
         <Route
           path="group"
           element={
@@ -84,7 +99,6 @@ export default function AppRoutes() {
           <Route path=":id/edit-group" element={<EditGroupView />} />
         </Route>
       </Route>
-      //errors
       <Route path="unauthorized" element={<Unauthorized />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

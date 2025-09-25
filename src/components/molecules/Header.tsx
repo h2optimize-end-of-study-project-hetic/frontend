@@ -18,7 +18,8 @@ export default function Header() {
   const options = isAuthenticated
     ? [
         { label: "Dashboard", path: "/dashboard" },
-        { label: "Balises", path: "/tag/dashboard" },
+        { label: "Pièces", path: "/room" },
+        { label: "Balises", path: "/tag" },
         { label: "Utilisateurs", path: "/user/dashboard" },
         { label: "Se déconnecter", path: "/login" },
       ]
@@ -81,7 +82,7 @@ export default function Header() {
               {option.label}
             </MenuItem>
           ))}
-        </Menu>
+      </Menu>
       </div>
     </header>
   );
