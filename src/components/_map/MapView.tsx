@@ -4,43 +4,43 @@ import {
   Polygon,
   Popup,
   Tooltip,
-  // useMap,
+  Marker,
 } from "react-leaflet";
 
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import type { Room } from "./MapType";
-// import { useEffect } from "react";
+import type { Room } from "../../types/room";
+import type { EventsByDate } from "../../types/eventsByDate";
+import { formatEventTime } from "../../utils/date";
+import { useRef } from "react";
 
 type Props = {
   image: string;
   bounds: [[number, number], [number, number]];
   rooms: Room[];
+  events: EventsByDate[] | null;
 };
 
-// const FitBoundsOnLoad = ({
-//   bounds,
-// }: {
-//   bounds: [[number, number], [number, number]];
-// }) => {
-//   const map = useMap();
+function getPolygonCentroid(points: [number, number][]): [number, number] {
+  let x = 0,
+    y = 0;
+  points.forEach(([px, py]) => {
+    x += px;
+    y += py;
+  });
+  return [x / points.length, y / points.length];
+}
 
-//   useEffect(() => {
-//     map.fitBounds(bounds, {
-//       padding: [20, 20],
-//       maxZoom: 1,
-//     });
-//   }, [map, bounds]);
-
-//   return null;
-// };
-
-const MapView = ({ image, bounds, rooms }: Props) => {
+const MapView = ({ image, bounds, rooms, events }: Props) => {
+  const invisibleIcon = L.divIcon({
+    className: "invisible-marker",
+    iconSize: [0, 0],
+  });
+  const markerRefs = useRef<Record<number, L.Marker | null>>({});
   return (
     <MapContainer
       crs={L.CRS.Simple}
       bounds={bounds}
-      // zoom={0}
       maxZoom={-1}
       minZoom={-3}
       scrollWheelZoom
@@ -48,51 +48,96 @@ const MapView = ({ image, bounds, rooms }: Props) => {
         height: "70vh",
         width: "100%",
         margin: "auto",
-        border: "1px solid black",
+        border: "1px solid var(--light-blue)",
       }}
     >
-      {/* Image du plan */}
       <ImageOverlay url={image} bounds={bounds} />
 
-      {/* Marqueurs pour chaque salle */}
-      {rooms.map((room) => (
-        <Polygon
-          key={room.id}
-          positions={room.polygon}
-          pathOptions={{
-            color:
-              room.type === "annex"
-                ? "var(--dark-blue)"
-                : room.occupied
-                ? "var(--dark-red)"
-                : "var(--dark-green)",
-            fillColor:
-              room.type === "annex"
-                ? "var(--light-blue)"
-                : room.occupied
-                ? "var(--light-red)"
-                : "var(--light-green)",
-            fillOpacity: 1,
-            weight: 1,
-          }}
-        >
-          <Tooltip permanent direction="center" opacity={0.8}>
-            <strong>{room.name}</strong>
-          </Tooltip>
+      {rooms.map((room) => {
+        const roomEvents =
+          events?.filter((event) => event.room_id === room.id) || [];
+        const center = getPolygonCentroid(room.shape);
+        if (!markerRefs.current[room.id]) {
+          markerRefs.current[room.id] = null;
+        }
+        console.log(markerRefs.current[room.id]);
+        return (
+          <Polygon
+            key={room.id}
+            positions={room.shape}
+            pathOptions={{
+              color:
+                roomEvents.length > 0 ? "var(--dark-red)" : "var(--dark-green)",
+              fillColor:
+                roomEvents.length > 0
+                  ? "var(--light-red)"
+                  : "var(--light-green)",
+              fillOpacity: 1,
+              weight: 1,
+            }}
+            eventHandlers={{
+              click: () => {
+                markerRefs.current[room.id]?.openPopup();
+              },
+            }}
+          >
+            <Tooltip permanent direction="center" opacity={0.8}>
+              <strong>{room.name}</strong>
+            </Tooltip>
+            <Marker
+              ref={(el) => {
+                markerRefs.current[room.id] = el;
+              }}
+              position={center}
+              icon={invisibleIcon}
+              keyboard={true}
+              eventHandlers={{
+                add: (e) => {
+                  const el = e.target.getElement();
+                  if (!el) return;
 
-          <Popup>
-            <p>
-              Salle : <strong>{room.name}</strong>
-              <br />
-              Capacité : {room.capacity}
-              <br />
-              Occupée : {room.occupied ? "Oui" : "Non"}
-              <br />
-              Température : {room.temperature}°C
-            </p>
-          </Popup>
-        </Polygon>
-      ))}
+                  el.setAttribute("tabindex", "0");
+                  el.addEventListener("focus", () => e.target.openPopup());
+                  el.addEventListener("blur", () => e.target.closePopup());
+
+                  el.addEventListener("keydown", (ev: any) => {
+                    if (ev.key === "Enter" || ev.key === " ") {
+                      e.target.openPopup();
+                    }
+                  });
+                },
+              }}
+            >
+              <Popup>
+                <div>
+                  <strong className="font-bold">{room.name}</strong>
+                  <br />
+                  <span className="font-semibold">{room.description}</span>
+                  <br />
+                  Capacité : <strong>{room.capacity}</strong>
+                  <br />
+                  Occupée : {roomEvents.length > 0 ? "Oui" : "Non"}
+                  <br />
+                  {/* Température : {room.temperature}°C */}
+                  {roomEvents.length > 0 && (
+                    <div className="mt-2">
+                      <strong>Événements :</strong>
+                      <ul className="list-disc pl-4">
+                        {roomEvents.map((event, idx) => (
+                          <li key={`${event.event_id}-${idx}`}>
+                            {formatEventTime(event.start_at, event.end_at)} |{" "}
+                            {event.group_name} - {event.event_name}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </Popup>
+            </Marker>
+          </Polygon>
+        );
+      })}
     </MapContainer>
   );
 };

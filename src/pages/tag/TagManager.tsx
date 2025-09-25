@@ -34,7 +34,7 @@ export default function TagManager() {
   }, [headers]);
 
   const handleCreate = () => {
-    navigate("/technician/create");
+    navigate("/tag/create");
   };
 
   const handleDelete = async (tagId: number) => {
@@ -82,7 +82,7 @@ export default function TagManager() {
         </Button>
 
         <Button
-          onClick={() => navigate("/technician/dashboard")}
+          onClick={() => navigate("/tag/dashboard")}
           variant="contained"
           sx={{
             color: "var(--dark-blue)",
@@ -99,7 +99,7 @@ export default function TagManager() {
 
       <DashboardTagList
         tags={filteredTags}
-        onEdit={(tagId) => navigate(`/technician/${tagId}/edit`)}
+        onEdit={(tagId) => navigate(`/tag/${tagId}/edit`)}
         onDelete={handleDelete}
         onCreate={handleCreate}
         searchTerm={searchTerm}

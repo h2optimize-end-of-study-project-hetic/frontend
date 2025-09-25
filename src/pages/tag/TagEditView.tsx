@@ -66,7 +66,7 @@ export default function TagEdit() {
     fetchAllTags();
   }, [id, headers]);
 
-  const handleCreate = () => navigate("/technician/create");
+  const handleCreate = () => navigate("/tag/create");
 
   const handleChange = (field: keyof Tag, value: string) => {
     if (tag) setTag({ ...tag, [field]: value });
@@ -136,7 +136,7 @@ export default function TagEdit() {
     >
       <DashboardTagList
         tags={filteredTags}
-        onEdit={(tagId) => navigate(`/technician/${tagId}/edit`)}
+        onEdit={(tagId) => navigate(`/tag/${tagId}/edit`)}
         onDelete={handleDelete}
         onCreate={handleCreate}
         searchTerm={searchTerm}
@@ -174,7 +174,7 @@ export default function TagEdit() {
                 Vue Édition
               </Button>
               <Button
-                onClick={() => navigate("/technician/dashboard")}
+                onClick={() => navigate("/tag/dashboard")}
                 variant="contained"
                 sx={{
                   color: "var(--dark-blue)",

@@ -1,11 +1,11 @@
 import { Box, Button, Stack } from "@mui/material";
 import { useNavigate } from "react-router";
-import DashboardContent from "../../components/organisms/tag/DashboardTagContent";
-import FilerTagList from "../../components/organisms/tag/FilterTagList";
-import type { Tag } from "../../types/tag";
+import DashboardContent from "../tag/DashboardTagContent";
+import FilerTagList from "../tag/FilterTagList";
+import type { Tag } from "../../../types/tag";
 import { useEffect, useState } from "react";
-import { useAuthHeaders } from "../../hooks/useAuthHeader";
-import { useFilter } from "../../hooks/useFilter";
+import { useAuthHeaders } from "../../../hooks/useAuthHeader";
+import { useFilter } from "../../../hooks/useFilter";
 
 export default function TechnicianDashboard() {
   const [allTags, setAllTags] = useState<Tag[]>([]);
@@ -64,7 +64,7 @@ export default function TechnicianDashboard() {
     <Box p={4}>
       <Box display="flex" flexDirection="row" gap={2} mb={2} maxWidth={320}>
         <Button
-          onClick={() => navigate("/technician/edit")}
+          onClick={() => navigate("/tag/edit")}
           variant="contained"
           sx={{
             backgroundColor: "var(--light-blue)",
@@ -79,7 +79,7 @@ export default function TechnicianDashboard() {
           Vue Édition
         </Button>
         <Button
-          onClick={() => navigate("/technician/dashboard")}
+          onClick={() => navigate("/tag/dashboard")}
           variant="contained"
           sx={{
             color: "var(--light-blue)",

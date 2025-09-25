@@ -1,53 +1,48 @@
-// import { test, expect } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
-// test.describe('Authentification avec API mockée', () => {
-//   test('Connexion OK', async ({ page }) => {
-//     // Interception de /api/login
-//     await page.route('**/api/login', async route => {
-//       await route.fulfill({
-//         status: 200,
-//         contentType: 'application/json',
-//         body: JSON.stringify({
-//           access_token: '123456',
-//           user: {
-//             id: 1,
-//             email: 'john.doe@example.com',
-//             role: 'admin',
-//           },
-//         }),
-//       });
-//     });
+test.describe('Authentification via useAuth', () => {
+  test('Connexion réussie avec API mockée', async ({ page }) => {
+    await page.route('**/api/v1/auth/login', async route => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          access_token: '123456',
+          user: {
+            id: 1,
+            email: 'bemol.lecat@example.com',
+            role: 'admin',
+          },
+        }),
+      });
+    });
 
-//     // Interception de /api/me
-//     await page.route('**/api/me', async route => {
-//       await route.fulfill({
-//         status: 200,
-//         contentType: 'application/json',
-//         body: JSON.stringify({
-//           id: 1,
-//           email: 'john.doe@example.com',
-//           role: 'admin',
-//         }),
-//       });
-//     });
+    // Mock de la route me
+    await page.route('**/api/v1/auth/me', async route => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          id: 1,
+          email: 'bemol.lecat@example.com',
+          role: 'admin',
+        }),
+      });
+    });
 
-//     // Navigation vers la page de login
-//     await page.goto('http://localhost:5173/release/login', { waitUntil: 'networkidle' });
+    await page.goto('http://localhost:5173/login', { waitUntil: 'networkidle' });
 
-//     // Remplissage du formulaire
-//     await page.getByLabel(/email/i).fill('john.doe@example.com');
-//     await page.getByLabel(/mot de passe/i).fill('password123');
+    await page.getByLabel(/email/i).fill('bemol.lecat@example.com');
+    await page.locator('input[type="password"]').fill('miaou');
 
-//     // Clic sur le bouton
-//     await page.getByRole('button', { name: /se connecter/i }).click();
+    await page.getByRole('button', { name: /se connecter/i }).click();
 
-//     // Vérifie que access_token a bien été stocké
-//     await expect.poll(
-//       () => page.evaluate(() => localStorage.getItem('access_token')),
-//       { timeout: 2000 }
-//     ).toBe('123456');
+    // Await token stocké
+    await expect.poll(
+      () => page.evaluate(() => localStorage.getItem('token')),
+      { timeout: 2000 }
+    ).toBe('123456');
 
-//     const token = await page.evaluate(() => localStorage.getItem('access_token'));
-//     console.log(' Token stocké :', token);
-//   });
-// });
+    await expect(page).toHaveURL(/.*dashboard/);
+  });
+});

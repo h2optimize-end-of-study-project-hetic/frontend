@@ -66,7 +66,7 @@ const EditUserView = () => {
     fetchAllUsers();
   }, [headers, id]);
 
-  const handleCreate = () => navigate("/admin/create");
+  const handleCreate = () => navigate("/user/create");
 
   const handleChange = (field: keyof User, value: string) => {
     if (user) setUser({ ...user, [field]: value });
@@ -170,7 +170,7 @@ const EditUserView = () => {
                 Vue Édition
               </Button>
               <Button
-                onClick={() => navigate("/admin/dashboard")}
+                onClick={() => navigate("/user/dashboard")}
                 variant="contained"
                 sx={{
                   backgroundColor: "var(--light-blue)",
