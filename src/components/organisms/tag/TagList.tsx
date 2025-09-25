@@ -1,4 +1,4 @@
-import { Delete, Edit, Sensors } from "@mui/icons-material";
+import { Delete, Edit } from "@mui/icons-material";
 import { Box, Typography, Button, Stack } from "@mui/material";
 
 import type { Tag } from "../../../types/tag";

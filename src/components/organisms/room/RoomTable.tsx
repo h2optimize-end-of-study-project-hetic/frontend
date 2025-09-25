@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router";
-import { useEffect, useState } from "react";
 
 import { Box, Button, Stack } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";

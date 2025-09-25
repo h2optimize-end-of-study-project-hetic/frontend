@@ -1,5 +1,5 @@
 import { Box, Typography, Button, Stack } from "@mui/material";
-import { Delete, Edit, Sensors } from "@mui/icons-material";
+import { Delete, Edit } from "@mui/icons-material";
 
 import type { Building } from "../../../types/Building";
 import type { RoomWithTag } from "../../../types/roomWithTag";

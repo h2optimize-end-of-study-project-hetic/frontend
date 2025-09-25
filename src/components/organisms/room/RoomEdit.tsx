@@ -10,7 +10,7 @@ import type { RoomWithTag } from "../../../types/roomWithTag";
 import type { Building } from "../../../types/Building";
 import { useAuthHeaders } from "../../../hooks/useAuthHeader";
 import { useSnackbar } from "../../../context/SnackbarContext";
-import { Add, BorderAll, Clear, Delete, Edit, HighlightOff, Send } from "@mui/icons-material";
+import { Add, Clear, Delete, Edit, Send } from "@mui/icons-material";
 
 const NameTextField = styled(TextField)({
   "& .MuiInputBase-input": {

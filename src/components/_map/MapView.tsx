@@ -56,7 +56,7 @@ const MapView = ({ image, bounds, rooms, events }: Props) => {
       {rooms.map((room) => {
         const roomEvents =
           events?.filter((event) => event.room_id === room.id) || [];
-        const center = getPolygonCentroid(room.shape);
+        const center = getPolygonCentroid(room.shape|| []);
         if (!markerRefs.current[room.id]) {
           markerRefs.current[room.id] = null;
         }
@@ -64,7 +64,7 @@ const MapView = ({ image, bounds, rooms, events }: Props) => {
         return (
           <Polygon
             key={room.id}
-            positions={room.shape}
+            positions={room.shape ||[]}
             pathOptions={{
               color:
                 roomEvents.length > 0 ? "var(--dark-red)" : "var(--dark-green)",
