@@ -33,7 +33,7 @@ test.describe('Authentification via useAuth', () => {
     await page.goto('http://localhost:5173/login', { waitUntil: 'networkidle' });
 
     await page.getByLabel(/email/i).fill('bemol.lecat@example.com');
-    await page.getByLabel(/mot de passe/i).fill('miaou');
+    await page.locator('input[type="password"]').fill('miaou');
 
     await page.getByRole('button', { name: /se connecter/i }).click();
 
